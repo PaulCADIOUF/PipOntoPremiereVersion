@@ -1,0 +1,78 @@
+2026-03-11 00:39:21,627 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-11 00:39:21,627 [INFO]   PDF Extractor — DRY RUN
+2026-03-11 00:39:21,627 [INFO] ════════════════════════════════════════════════════════════
+2026-03-11 00:39:21,631 [INFO]   5 articles à traiter
+2026-03-11 00:39:21,631 [INFO] 
+  [1/5] 2026 | Becerra-Becerra Diego Alejandro, Rangel ...
+2026-03-11 00:39:21,631 [INFO]     Stochastic modeling, analysis, and simulation of Dengue in Valle del Cauca: A ca...
+2026-03-11 00:39:23,255 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:39:23,274 [INFO]     → formalism=SIR | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:39:23,275 [INFO]     [DRY RUN] Would insert: SIR_Dengue_BecerraBecerra_2026
+2026-03-11 00:39:23,275 [INFO]     name=SIR Alejandro 2026 — Dengue
+2026-03-11 00:39:23,275 [INFO]     formalism=SIR, type=STOCHASTIC
+2026-03-11 00:39:23,275 [INFO]     params=[]
+2026-03-11 00:39:23,275 [INFO]     geos=[]
+2026-03-11 00:39:23,275 [INFO]     confidence=0.35
+2026-03-11 00:39:23,776 [INFO] 
+  [2/5] 2026 | Tinde Haoua, Sawadogo Wenddabo Olivier, ...
+2026-03-11 00:39:23,776 [INFO]     Mathematical modeling of the 2023 dengue outbreak in the Centre Region of Burkin...
+2026-03-11 00:39:25,919 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:39:25,926 [INFO]     → formalism=SEIR | params=0 | geos=['Burkina Faso', 'Afrique subsaharienne'] | confidence=0.55
+2026-03-11 00:39:25,927 [INFO]     [DRY RUN] Would insert: SEIR_Dengue_Tinde_2026
+2026-03-11 00:39:25,927 [INFO]     name=SEIR Haoua 2026 — Dengue — Burkina Faso, Afrique subsaharienne
+2026-03-11 00:39:25,927 [INFO]     formalism=SEIR, type=DETERMINISTIC
+2026-03-11 00:39:25,927 [INFO]     params=[]
+2026-03-11 00:39:25,927 [INFO]     geos=['Burkina Faso', 'Afrique subsaharienne']
+2026-03-11 00:39:25,927 [INFO]     confidence=0.55
+2026-03-11 00:39:26,427 [INFO] 
+  [3/5] 2026 | Ahman Queeneth Ojoma, Swnewo Emmanuel Ol...
+2026-03-11 00:39:26,427 [INFO]     A Fractional-Order Framework for Dengue Transmission Dynamics with Human-to-Huma...
+2026-03-11 00:39:28,098 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:39:28,107 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:39:28,108 [INFO]     [DRY RUN] Would insert: OTHER_Dengue_Ahman_2026
+2026-03-11 00:39:28,108 [INFO]     name=OTHER Ojoma 2026 — Dengue
+2026-03-11 00:39:28,108 [INFO]     formalism=OTHER, type=DETERMINISTIC
+2026-03-11 00:39:28,108 [INFO]     params=[]
+2026-03-11 00:39:28,108 [INFO]     geos=[]
+2026-03-11 00:39:28,108 [INFO]     confidence=0.15
+2026-03-11 00:39:28,608 [INFO] 
+  [4/5] 2026 | Hathaway Christine L, Hall Michaela, de ...
+2026-03-11 00:39:28,608 [INFO]     The impact of HIV on cervical cancer elimination in KwaZulu-Natal: a comparative...
+2026-03-11 00:39:30,321 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:39:30,329 [INFO]     → formalism=OTHER | params=0 | geos=['Afrique du Sud'] | confidence=0.35
+2026-03-11 00:39:30,330 [INFO]     [DRY RUN] Would insert: OTHER_HIV_Hathaway_2026
+2026-03-11 00:39:30,330 [INFO]     name=OTHER L 2026 — HIV — Afrique du Sud
+2026-03-11 00:39:30,330 [INFO]     formalism=OTHER, type=DETERMINISTIC
+2026-03-11 00:39:30,330 [INFO]     params=[]
+2026-03-11 00:39:30,330 [INFO]     geos=['Afrique du Sud']
+2026-03-11 00:39:30,330 [INFO]     confidence=0.35
+2026-03-11 00:39:30,831 [INFO] 
+  [5/5] 2026 | Jin Shihui, Jung Sung-Mok, Gan Gregory, ...
+2026-03-11 00:39:30,831 [INFO]     Spatiotemporal dynamics of chikungunya transmission in Foshan City, China: A mod...
+2026-03-11 00:39:32,062 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:39:32,065 [INFO]     → formalism=BAYESIAN | params=0 | geos=['Chine'] | confidence=0.55
+2026-03-11 00:39:32,066 [INFO]     [DRY RUN] Would insert: BAYESIAN_Generic_Jin_2026
+2026-03-11 00:39:32,066 [INFO]     name=BAYESIAN Shihui 2026 — Generic — Chine
+2026-03-11 00:39:32,066 [INFO]     formalism=BAYESIAN, type=DETERMINISTIC
+2026-03-11 00:39:32,066 [INFO]     params=[]
+2026-03-11 00:39:32,066 [INFO]     geos=['Chine']
+2026-03-11 00:39:32,066 [INFO]     confidence=0.55
+2026-03-11 00:39:32,566 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-11 00:39:32,567 [INFO]   RAPPORT FINAL — PDF Extractor
+2026-03-11 00:39:32,567 [INFO] ════════════════════════════════════════════════════════════
+2026-03-11 00:39:32,567 [INFO]   Articles traités      : 5
+2026-03-11 00:39:32,567 [INFO]   PDFs téléchargés      : 0
+2026-03-11 00:39:32,567 [INFO]   Texte extrait OK      : 5
+2026-03-11 00:39:32,567 [INFO]   Modèles créés         : 5
+2026-03-11 00:39:32,567 [INFO]   Avec paramètres (β,γ) : 0
+2026-03-11 00:39:32,567 [INFO]   Avec géographie       : 3
+2026-03-11 00:39:32,567 [INFO]   Avec code GitHub      : 0
+2026-03-11 00:39:32,567 [INFO]   Ignorés               : 0
+2026-03-11 00:39:32,567 [INFO]   Erreurs               : 0
+2026-03-11 00:39:32,567 [INFO] ════════════════════════════════════════════════════════════
+2026-03-11 00:39:32,567 [INFO] 
+  ✅ Prochaine étape : validation manuelle
+2026-03-11 00:39:32,567 [INFO]      python3 pipeline_runner.py stats
+2026-03-11 00:39:32,567 [INFO]      python3 pipeline_runner.py export

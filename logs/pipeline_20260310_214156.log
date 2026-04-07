@@ -1,0 +1,43 @@
+2026-03-10 21:41:56,618 [INFO] Connexion à PostgreSQL...
+2026-03-10 21:41:56,643 [INFO] Base connectée — 0 DOIs existants
+2026-03-10 21:41:56,643 [INFO] Clé API NCBI détectée — vitesse maximale (10 req/s)
+2026-03-10 21:41:56,643 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-10 21:41:56,644 [INFO]   PIPOnto Pipeline PubMed — PRODUCTION
+2026-03-10 21:41:56,644 [INFO]   1 requêtes à traiter
+2026-03-10 21:41:56,644 [INFO] ════════════════════════════════════════════════════════════
+
+2026-03-10 21:41:56,644 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:41:56,644 [INFO]   Traitement : COVID-19 [COVID19]
+2026-03-10 21:41:56,644 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:41:56,645 [INFO]   disease_id PostgreSQL : 1
+2026-03-10 21:41:57,463 [INFO]   ESearch : +300 PMIDs (offset=0, total=1428)
+2026-03-10 21:41:57,584 [INFO]   300 PMIDs trouvés — 300 nouveaux
+2026-03-10 21:41:57,584 [INFO]   EFetch lot 1 : 100 articles...
+2026-03-10 21:42:02,241 [INFO]   EFetch lot 2 : 100 articles...
+2026-03-10 21:42:07,152 [INFO]   EFetch lot 3 : 100 articles...
+2026-03-10 21:42:11,760 [INFO]   299 articles parsés
+2026-03-10 21:42:11,783 [INFO]   191 articles pertinents (score ≥ 0.3)
+2026-03-10 21:42:11,803 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:42:11,818 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:42:11,833 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:42:11,848 [INFO]   ✓ 80 articles insérés...
+2026-03-10 21:42:11,860 [INFO]   ✓ 100 articles insérés...
+2026-03-10 21:42:11,874 [INFO]   ✓ 120 articles insérés...
+2026-03-10 21:42:11,886 [INFO]   ✓ 140 articles insérés...
+2026-03-10 21:42:11,901 [INFO]   ✓ 160 articles insérés...
+2026-03-10 21:42:11,915 [INFO]   ✓ 180 articles insérés...
+2026-03-10 21:42:11,923 [INFO]   ✅ COVID19 terminé — insérés=191, doublons=0, score_bas=108, erreurs=0
+2026-03-10 21:42:11,925 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-10 21:42:11,925 [INFO]   RAPPORT FINAL — Pipeline PubMed PIPOnto
+2026-03-10 21:42:11,925 [INFO] ════════════════════════════════════════════════════════════
+2026-03-10 21:42:11,925 [INFO]   Articles récupérés    : 299
+2026-03-10 21:42:11,925 [INFO]   Articles pertinents   : 191
+2026-03-10 21:42:11,925 [INFO]   Articles insérés en BD: 191
+2026-03-10 21:42:11,925 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:42:11,925 [INFO]   ✅ COVID19                        insérés=191  doublons=  0  bas=108  err=0
+2026-03-10 21:42:11,926 [INFO] ════════════════════════════════════════════════════════════
+
+2026-03-10 21:42:11,926 [INFO]   Statistiques exportées : /home/pacadi/piponto/data/pipeline_stats_20260310_214211.csv

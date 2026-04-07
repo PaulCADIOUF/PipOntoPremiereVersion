@@ -1,0 +1,1756 @@
+2026-03-11 00:39:56,620 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-11 00:39:56,620 [INFO]   PDF Extractor — PRODUCTION
+2026-03-11 00:39:56,620 [INFO] ════════════════════════════════════════════════════════════
+2026-03-11 00:39:56,631 [INFO]   249 articles à traiter
+2026-03-11 00:39:56,631 [INFO] 
+  [1/249] 2026 | Becerra-Becerra Diego Alejandro, Rangel ...
+2026-03-11 00:39:56,631 [INFO]     Stochastic modeling, analysis, and simulation of Dengue in Valle del Cauca: A ca...
+2026-03-11 00:39:58,276 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:39:58,295 [INFO]     → formalism=SIR | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:39:58,802 [INFO] 
+  [2/249] 2026 | Tinde Haoua, Sawadogo Wenddabo Olivier, ...
+2026-03-11 00:39:58,802 [INFO]     Mathematical modeling of the 2023 dengue outbreak in the Centre Region of Burkin...
+2026-03-11 00:40:00,222 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:00,230 [INFO]     → formalism=SEIR | params=0 | geos=['Burkina Faso', 'Afrique subsaharienne'] | confidence=0.55
+2026-03-11 00:40:00,736 [INFO] 
+  [3/249] 2026 | Ahman Queeneth Ojoma, Swnewo Emmanuel Ol...
+2026-03-11 00:40:00,736 [INFO]     A Fractional-Order Framework for Dengue Transmission Dynamics with Human-to-Huma...
+2026-03-11 00:40:01,963 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:01,970 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:40:02,474 [INFO] 
+  [4/249] 2026 | Hathaway Christine L, Hall Michaela, de ...
+2026-03-11 00:40:02,474 [INFO]     The impact of HIV on cervical cancer elimination in KwaZulu-Natal: a comparative...
+2026-03-11 00:40:03,600 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:03,608 [INFO]     → formalism=OTHER | params=0 | geos=['Afrique du Sud'] | confidence=0.35
+2026-03-11 00:40:04,112 [INFO] 
+  [5/249] 2026 | Jin Shihui, Jung Sung-Mok, Gan Gregory, ...
+2026-03-11 00:40:04,112 [INFO]     Spatiotemporal dynamics of chikungunya transmission in Foshan City, China: A mod...
+2026-03-11 00:40:05,649 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:05,651 [INFO]     → formalism=BAYESIAN | params=0 | geos=['Chine'] | confidence=0.55
+2026-03-11 00:40:06,157 [INFO] 
+  [6/249] 2026 | Howes Adam, Stringer Alex, Flaxman Seth ...
+2026-03-11 00:40:06,157 [INFO]     Fast approximate Bayesian inference of HIV indicators using PCA adaptive Gauss-H...
+2026-03-11 00:40:08,517 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:08,522 [INFO]     → formalism=BAYESIAN | params=0 | geos=['Afrique subsaharienne'] | confidence=0.55
+2026-03-11 00:40:09,027 [INFO] 
+  [7/249] 2026 | Bayley Thomas, Ward Tony, Sturman Fabian...
+2026-03-11 00:40:09,027 [INFO]     ML-ABC: Machine-learning assisted Approximate Bayesian Computation for efficient...
+2026-03-11 00:40:11,383 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:11,392 [INFO]     → formalism=ABM | params=0 | geos=[] | confidence=0.50
+2026-03-11 00:40:11,396 [ERROR]   Erreur article #7: invalid input value for enum piponto.platform_type: "COVASIM"
+LINE 17:                 'COVASIM', true, NULL, NULL,
+                         ^
+
+2026-03-11 00:40:11,396 [INFO] 
+  [8/249] 2026 | Palomares Alfonso Diz-Lois, de Blasio Bi...
+2026-03-11 00:40:11,396 [INFO]     Combining an agent-based model with Gaussian process emulation to model the emer...
+2026-03-11 00:40:13,329 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:13,336 [INFO]     → formalism=ABM | params=0 | geos=['Afrique du Sud'] | confidence=0.55
+2026-03-11 00:40:13,336 [ERROR]   Erreur article #8: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:13,336 [INFO] 
+  [9/249] 2026 | Tian Feng, Kronfli Nadine, Eze Nkiruka, ...
+2026-03-11 00:40:13,336 [INFO]     Impact of Hepatitis C screening and treatment among incarcerated populations in ...
+2026-03-11 00:40:15,479 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:15,485 [INFO]     → formalism=ABM | params=0 | geos=['Canada'] | confidence=0.55
+2026-03-11 00:40:15,485 [ERROR]   Erreur article #9: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:15,485 [INFO] 
+  [10/249] 2026 | Srinivasa Rao Arni S R, Krantz Steven G,...
+2026-03-11 00:40:15,486 [INFO]     Integrating community level transmission geographical networks into a dynamical ...
+2026-03-11 00:40:17,527 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:17,532 [INFO]     → formalism=NETWORK | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:40:17,533 [ERROR]   Erreur article #10: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:17,533 [INFO] 
+  [11/249] 2025 | Alahakoon Punya, Taylor Peter G, McCaw J...
+2026-03-11 00:40:17,533 [INFO]     Stochastic modelling of early-stage COVID-19 epidemic dynamics in rural communit...
+2026-03-11 00:40:19,678 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:19,685 [INFO]     → formalism=STOCHASTIC_SIR | params=0 | geos=['États-Unis'] | confidence=0.55
+2026-03-11 00:40:19,685 [ERROR]   Erreur article #11: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:19,685 [INFO] 
+  [12/249] 2025 | Xue Ling, Huo Junqi, Zhang Yuxin...
+2026-03-11 00:40:19,685 [INFO]     Modelling and analysis of an epidemic model with awareness caused by deaths due ...
+2026-03-11 00:40:21,112 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:21,115 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:40:21,116 [ERROR]   Erreur article #12: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:21,116 [INFO] 
+  [13/249] 2025 | Korir Evans Kiptoo, Vizi Zsolt...
+2026-03-11 00:40:21,116 [INFO]     Eigenvector-based sensitivity analysis of contact patterns in epidemic modelling...
+2026-03-11 00:40:22,545 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:22,549 [INFO]     → formalism=OTHER | params=0 | geos=['Royaume-Uni'] | confidence=0.20
+2026-03-11 00:40:22,549 [ERROR]   Erreur article #13: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:22,549 [INFO] 
+  [14/249] 2025 | Diabaté Abou Bakari, Sangaré Boureima, K...
+2026-03-11 00:40:22,549 [INFO]     Optimal control analysis of a mathematical model of malaria and COVID-19 co-infe...
+2026-03-11 00:40:23,776 [INFO]     ✓ PDF téléchargé (2417 Ko)
+2026-03-11 00:40:25,070 [INFO]     → formalism=SIS | params=1 | geos=['Burkina Faso', 'Afrique du Sud'] | confidence=0.65
+2026-03-11 00:40:25,071 [ERROR]   Erreur article #14: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:25,071 [INFO] 
+  [15/249] 2025 | McCarthy Gabriel, Dobrovolny Hana M...
+2026-03-11 00:40:25,071 [INFO]     Determining the best mathematical model for implementation of non-pharmaceutical...
+2026-03-11 00:40:27,255 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:27,259 [INFO]     → formalism=SEIR | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:40:27,260 [ERROR]   Erreur article #15: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:27,260 [INFO] 
+  [16/249] 2025 | Murzakhmetov Aslanbek, Borankulova Gaukh...
+2026-03-11 00:40:27,260 [INFO]     Working Set: adapted model to the epidemiological context....
+2026-03-11 00:40:28,791 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:28,797 [INFO]     → formalism=SEIR | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:40:28,797 [ERROR]   Erreur article #16: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:28,797 [INFO] 
+  [17/249] 2025 | O'Gara David, Kerr Cliff C, Klein Daniel...
+2026-03-11 00:40:28,797 [INFO]     Improving policy-oriented agent-based modeling with history matching: A case stu...
+2026-03-11 00:40:31,248 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:31,254 [INFO]     → formalism=ABM | params=0 | geos=[] | confidence=0.50
+2026-03-11 00:40:31,254 [ERROR]   Erreur article #17: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:31,255 [INFO] 
+  [18/249] 2025 | Khalighi Moein, Lahti Leo, Ndaïrou Faïça...
+2026-03-11 00:40:31,255 [INFO]     Fractional modelling of COVID-19 transmission incorporating asymptomatic and sup...
+2026-03-11 00:40:33,195 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:33,199 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:40:33,200 [ERROR]   Erreur article #18: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:33,200 [INFO] 
+  [19/249] 2025 | Estill Janne, Belayneh Emneteab G, Beale...
+2026-03-11 00:40:33,200 [INFO]     Estimation of the number of people affected by post COVID-19 condition in Switze...
+2026-03-11 00:40:34,423 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:34,428 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:40:34,429 [ERROR]   Erreur article #19: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:34,429 [INFO] 
+  [20/249] 2025 | Chowdhury Sourav, Bose Indrani, Roychowd...
+2026-03-11 00:40:34,429 [INFO]     Universal features of epidemic and vaccine models....
+2026-03-11 00:40:34,430 [INFO]     ✓ PDF téléchargé (3119 Ko)
+2026-03-11 00:40:36,729 [INFO]     → formalism=SIS | params=3 | geos=['Inde'] | confidence=0.85
+2026-03-11 00:40:36,729 [ERROR]   Erreur article #20: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:36,729 [INFO] 
+  [21/249] 2025 | Ganser Iris, Paireau Juliette, Buckeridg...
+2026-03-11 00:40:36,730 [INFO]     Comparative evaluation of methodologies for estimating the effectiveness of non-...
+2026-03-11 00:40:37,804 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:37,810 [INFO]     → formalism=ABM | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:40:37,811 [ERROR]   Erreur article #21: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:37,811 [INFO] 
+  [22/249] 2025 | Bergström Fanny, Günther Felix, Britton ...
+2026-03-11 00:40:37,811 [INFO]     A counterfactual analysis quantifying the COVID-19 vaccination impact in Sweden....
+2026-03-11 00:40:40,877 [INFO]     ✓ PDF téléchargé (1322 Ko)
+2026-03-11 00:40:41,919 [INFO]     → formalism=ABM | params=0 | geos=['Suède'] | confidence=0.55
+2026-03-11 00:40:41,920 [ERROR]   Erreur article #22: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:41,920 [INFO] 
+  [23/249] 2025 | Temfack Dhorasso, Wyse Jason...
+2026-03-11 00:40:41,920 [INFO]     Sequential Monte Carlo Squared for online inference in stochastic epidemic model...
+2026-03-11 00:40:44,561 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:44,563 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:40:44,564 [ERROR]   Erreur article #23: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:44,564 [INFO] 
+  [24/249] 2025 | Cornfeld Ofer, Niu Kaicheng, Neeman Oded...
+2026-03-11 00:40:44,564 [INFO]     Integrating macroeconomic and public health impacts in social planning policies ...
+2026-03-11 00:40:46,814 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:40:46,821 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:40:46,822 [ERROR]   Erreur article #24: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:46,822 [INFO] 
+  [25/249] 2025 | Demers Jeffery, Fagan William F, Potluri...
+2026-03-11 00:40:46,822 [INFO]     Testing-isolation interventions will likely be insufficient to contain future no...
+2026-03-11 00:40:48,966 [INFO]     ✓ PDF téléchargé (3918 Ko)
+2026-03-11 00:40:51,096 [INFO]     → formalism=SIR | params=1 | geos=['Vietnam', 'Chine'] | confidence=0.65
+2026-03-11 00:40:51,096 [ERROR]   Erreur article #25: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:51,096 [INFO] 
+  [26/249] 2025 | Sabbatino Michela, De Reggi Simone, Pugl...
+2026-03-11 00:40:51,097 [INFO]     A Theoretical Analysis of Mass Testing Strategies to Control Epidemics....
+2026-03-11 00:40:53,675 [INFO]     ✓ PDF téléchargé (1722 Ko)
+2026-03-11 00:40:55,488 [INFO]     → formalism=SEIR | params=0 | geos=['Chine'] | confidence=0.55
+2026-03-11 00:40:55,488 [ERROR]   Erreur article #26: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:55,488 [INFO] 
+  [27/249] 2025 | Hridoy Mahmudul Bari, Allen Linda J S...
+2026-03-11 00:40:55,488 [INFO]     Investigating seasonal disease emergence and extinction in stochastic epidemic m...
+2026-03-11 00:40:57,567 [INFO]     ✓ PDF téléchargé (983 Ko)
+2026-03-11 00:40:59,718 [INFO]     → formalism=RENEWAL_EQUATION | params=1 | geos=[] | confidence=0.60
+2026-03-11 00:40:59,718 [ERROR]   Erreur article #27: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:40:59,718 [INFO] 
+  [28/249] 2025 | Lotter Clara R, Sherratt Jonathan A...
+2026-03-11 00:40:59,718 [INFO]     Pulmonary epithelial wound healing and the immune system. Mathematical modeling ...
+2026-03-11 00:41:01,867 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:01,876 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:41:01,877 [ERROR]   Erreur article #28: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:01,877 [INFO] 
+  [29/249] 2025 | Zelner Jon, Stone Danielle, Eisenberg Ma...
+2026-03-11 00:41:01,877 [INFO]     Capturing the implications of residential segregation for the dynamics of infect...
+2026-03-11 00:41:05,042 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:05,047 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:41:05,047 [ERROR]   Erreur article #29: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:05,047 [INFO] 
+  [30/249] 2025 | Lee Hyosun, Abbas Wasim, Lee Sieun, Kim ...
+2026-03-11 00:41:05,047 [INFO]     Mathematical modeling of age-specific intervention strategies for latent tubercu...
+2026-03-11 00:41:07,192 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:07,199 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:41:07,200 [ERROR]   Erreur article #30: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:07,200 [INFO] 
+  [31/249] 2025 | Seong Hye, Lee Yunjeong, Suh Jiyeon, Lee...
+2026-03-11 00:41:07,200 [INFO]     Impact of age-stratified latent tuberculosis treatment on disease burden of acti...
+2026-03-11 00:41:08,319 [INFO]     ✓ PDF téléchargé (1955 Ko)
+2026-03-11 00:41:10,149 [INFO]     → formalism=OTHER | params=0 | geos=['Kenya', 'Chine'] | confidence=0.35
+2026-03-11 00:41:10,149 [ERROR]   Erreur article #31: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:10,149 [INFO] 
+  [32/249] 2025 | Zhai Pei-Yao, Zang Xiao, Jiang Ting, Fen...
+2026-03-11 00:41:10,149 [INFO]     Health and Economic Impacts of Introducing Vaccae and Enhanced Drug-Resistant Tu...
+2026-03-11 00:41:11,594 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:11,600 [INFO]     → formalism=OTHER | params=0 | geos=['Chine'] | confidence=0.35
+2026-03-11 00:41:11,600 [ERROR]   Erreur article #32: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:11,600 [INFO] 
+  [33/249] 2025 | Aldila Dipo, Chukwu Chidozie Williams, G...
+2026-03-11 00:41:11,600 [INFO]     Backward bifurcation and periodic dynamics in a tuberculosis model with integrat...
+2026-03-11 00:41:13,437 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:13,443 [INFO]     → formalism=OTHER | params=0 | geos=['Indonésie'] | confidence=0.20
+2026-03-11 00:41:13,443 [ERROR]   Erreur article #33: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:13,443 [INFO] 
+  [34/249] 2025 | Zhai Pei-Yao, Chen Zhi-Xian, Jiang Ting,...
+2026-03-11 00:41:13,443 [INFO]     Modeling the epidemiologic impact of age-targeted vaccination for drug-resistant...
+2026-03-11 00:41:16,101 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:16,103 [INFO]     → formalism=OTHER | params=0 | geos=['Chine'] | confidence=0.20
+2026-03-11 00:41:16,103 [ERROR]   Erreur article #34: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:16,104 [INFO] 
+  [35/249] 2025 | Peter Olumuyiwa James...
+2026-03-11 00:41:16,104 [INFO]     Modelling measles transmission dynamics and the impact of control strategies on ...
+2026-03-11 00:41:17,149 [INFO]     ✓ PDF téléchargé (1150 Ko)
+2026-03-11 00:41:18,342 [INFO]     → formalism=SIR | params=2 | geos=['États-Unis', 'Mexique'] | confidence=0.75
+2026-03-11 00:41:18,342 [ERROR]   Erreur article #35: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:18,342 [INFO] 
+  [36/249] 2025 | Samuel Shiny, Przybycien Todd...
+2026-03-11 00:41:18,342 [INFO]     Mathematical Model for Measles Virus Production in Batch Bioreactors....
+2026-03-11 00:41:20,093 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:20,098 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:41:20,098 [ERROR]   Erreur article #36: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:20,099 [INFO] 
+  [37/249] 2025 | Mwanga Gasper G...
+2026-03-11 00:41:20,099 [INFO]     Mathematical modelling and optimal control of malaria transmission with antimala...
+2026-03-11 00:41:21,941 [INFO]     ✓ PDF téléchargé (5671 Ko)
+2026-03-11 00:41:25,476 [INFO]     → formalism=ABM | params=1 | geos=['Nigeria'] | confidence=0.65
+2026-03-11 00:41:25,476 [ERROR]   Erreur article #37: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:25,477 [INFO] 
+  [38/249] 2025 | Qu Zhuolin, Childs Lauren M...
+2026-03-11 00:41:25,477 [INFO]     Assessing the impact of the Wolbachia-based control of malaria....
+2026-03-11 00:41:27,672 [INFO]     ✓ PDF téléchargé (674 Ko)
+2026-03-11 00:41:28,919 [INFO]     → formalism=OTHER | params=0 | geos=['Vietnam', 'Royaume-Uni'] | confidence=0.35
+2026-03-11 00:41:28,919 [ERROR]   Erreur article #38: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:28,920 [INFO] 
+  [39/249] 2025 | Abbasi Ebrahim...
+2026-03-11 00:41:28,920 [INFO]     The impact of climate change on travel-related vector-borne diseases: A case stu...
+2026-03-11 00:41:31,156 [INFO]     ✓ PDF téléchargé (990 Ko)
+2026-03-11 00:41:32,539 [INFO]     → formalism=OTHER | params=0 | geos=['Tanzanie'] | confidence=0.35
+2026-03-11 00:41:32,539 [ERROR]   Erreur article #39: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:32,539 [INFO] 
+  [40/249] 2025 | Astete Helvio, Flores-Mendoza Carmen, Ló...
+2026-03-11 00:41:32,539 [INFO]     A Review of Aedes aegypti Control in Peru: Approaches and Lessons Learned....
+2026-03-11 00:41:34,226 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:34,230 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:41:34,231 [ERROR]   Erreur article #40: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:34,231 [INFO] 
+  [41/249] 2025 | Anbalagan Rajalakshmi, Srivastava P K, B...
+2026-03-11 00:41:34,231 [INFO]     Insecticide resistance status and bar-coding of dengue vectors in three district...
+2026-03-11 00:41:35,359 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:35,368 [INFO]     → formalism=OTHER | params=0 | geos=['Inde'] | confidence=0.20
+2026-03-11 00:41:35,368 [ERROR]   Erreur article #41: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:35,368 [INFO] 
+  [42/249] 2025 | Lee Ye-Ji, Cho Seung-Rye, Kim Won Kyong,...
+2026-03-11 00:41:35,368 [INFO]     Imported dengue fever in South Korea, 2020-2024: Epidemiological trends and sero...
+2026-03-11 00:41:37,868 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:37,876 [INFO]     → formalism=OTHER | params=0 | geos=['Indonésie', 'Philippines'] | confidence=0.20
+2026-03-11 00:41:37,876 [ERROR]   Erreur article #42: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:37,876 [INFO] 
+  [43/249] 2025 | Kyaw Zwa Thant, Tan Amelia Hui Shan, Ngu...
+2026-03-11 00:41:37,876 [INFO]     Architectural Design Features in High Density Urban Residential Estates and Thei...
+2026-03-11 00:41:40,574 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:40,579 [INFO]     → formalism=NETWORK | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:41:40,579 [ERROR]   Erreur article #43: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:40,579 [INFO] 
+  [44/249] 2025 | Priskilla Jency J, Kulandaisamy Athisaya...
+2026-03-11 00:41:40,579 [INFO]     Industrial hotspot: Infestation of invasive Aedes aegypti and Aedes albopictus i...
+2026-03-11 00:41:42,622 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:42,629 [INFO]     → formalism=OTHER | params=0 | geos=['Inde'] | confidence=0.35
+2026-03-11 00:41:42,630 [ERROR]   Erreur article #44: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:42,630 [INFO] 
+  [45/249] 2025 | Coba-Alcalá Eleazar, Chihu-Amparán Lilia...
+2026-03-11 00:41:42,630 [INFO]     Evaluation of dengue virus seroprevalence in four boroughs of Mexico City among ...
+2026-03-11 00:41:42,630 [INFO]     ✓ PDF téléchargé (1098 Ko)
+2026-03-11 00:41:43,699 [INFO]     → formalism=OTHER | params=0 | geos=['Mexique'] | confidence=0.35
+2026-03-11 00:41:43,699 [ERROR]   Erreur article #45: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:43,699 [INFO] 
+  [46/249] 2025 | Ambia Julie, van Sighem Ard, Pantazis Ni...
+2026-03-11 00:41:43,699 [INFO]     Projecting changes in demographics and causes of death in people with HIV in wes...
+2026-03-11 00:41:47,128 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:47,139 [INFO]     → formalism=BAYESIAN | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:41:47,139 [ERROR]   Erreur article #46: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:47,139 [INFO] 
+  [47/249] 2025 | Loosli Tom, Han Nuri, Hauser Anthony, Jo...
+2026-03-11 00:41:47,140 [INFO]     Predicted dolutegravir resistance in people living with HIV in South Africa duri...
+2026-03-11 00:41:48,989 [INFO]     ✓ PDF téléchargé (430 Ko)
+2026-03-11 00:41:49,808 [INFO]     → formalism=OTHER | params=0 | geos=['Afrique du Sud', 'Royaume-Uni'] | confidence=0.35
+2026-03-11 00:41:49,809 [ERROR]   Erreur article #47: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:49,809 [INFO] 
+  [48/249] 2025 | Nsuami Mozart Umba, Witbooi Peter Joseph...
+2026-03-11 00:41:49,809 [INFO]     Modeling the population dynamics of HIV/AIDS with opportunistic infections at th...
+2026-03-11 00:41:51,530 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:51,536 [INFO]     → formalism=OTHER | params=0 | geos=['Afrique du Sud'] | confidence=0.35
+2026-03-11 00:41:51,537 [ERROR]   Erreur article #48: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:51,537 [INFO] 
+  [49/249] 2025 | Riaz Sara, Ali Asghar, Munir Muhammad...
+2026-03-11 00:41:51,537 [INFO]     Modeling and sensitivity analysis of cholera dynamics under fuzzy imprecision....
+2026-03-11 00:41:53,784 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:41:53,788 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:41:53,789 [ERROR]   Erreur article #49: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:53,789 [INFO] 
+  [50/249] 2025 | Omame Andrew, Iyaniwura Sarafa A, Han Qi...
+2026-03-11 00:41:53,789 [INFO]     Dynamics of Mpox in an HIV endemic community: A mathematical modelling approach....
+2026-03-11 00:41:55,422 [INFO]     ✓ PDF téléchargé (1392 Ko)
+2026-03-11 00:41:57,113 [INFO]     → formalism=SIS | params=0 | geos=['Philippines'] | confidence=0.55
+2026-03-11 00:41:57,113 [ERROR]   Erreur article #50: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:41:57,113 [INFO] 
+  [51/249] 2025 | Cao Jianping, Ling Lin...
+2026-03-11 00:41:57,113 [INFO]     miRNA-GABA influences female Aedes aegypti reproduction by modulating midgut hom...
+2026-03-11 00:41:58,290 [INFO]     ✓ PDF téléchargé (6060 Ko)
+2026-03-11 00:42:01,815 [INFO]     → formalism=ABM | params=0 | geos=['Chine', 'États-Unis'] | confidence=0.70
+2026-03-11 00:42:01,815 [ERROR]   Erreur article #51: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:01,815 [INFO] 
+  [52/249] 2025 | Merkenschlager Christian, Bangelesa Fred...
+2026-03-11 00:42:01,815 [INFO]     Evolution of the recent habitat suitability area of Aedes albopictus in the exte...
+2026-03-11 00:42:03,912 [INFO]     ✓ PDF téléchargé (3032 Ko)
+2026-03-11 00:42:05,836 [INFO]     → formalism=SIS | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:42:05,837 [ERROR]   Erreur article #52: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:05,837 [INFO] 
+  [53/249] 2025 | Ni Jing, Li Zhifang, Hu Xiaowei, Zhou Hu...
+2026-03-11 00:42:05,837 [INFO]     Chikungunya's global rebound and Asia's growing vulnerability: Implications for ...
+2026-03-11 00:42:05,838 [INFO]     ✓ PDF téléchargé (594 Ko)
+2026-03-11 00:42:06,336 [INFO]     → formalism=OTHER | params=0 | geos=['Chine'] | confidence=0.35
+2026-03-11 00:42:06,336 [ERROR]   Erreur article #53: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:06,336 [INFO] 
+  [54/249] 2025 | Wunrow Han Yong, Pei Sen, Shaman Jeffrey...
+2026-03-11 00:42:06,336 [INFO]     Data assimilation for estimating time-varying reproduction numbers....
+2026-03-11 00:42:07,914 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:07,921 [INFO]     → formalism=SIR | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:42:07,921 [ERROR]   Erreur article #54: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:07,921 [INFO] 
+  [55/249] 2025 | Hridoy Mahmudul Bari...
+2026-03-11 00:42:07,921 [INFO]     An exploration of modeling approaches for capturing seasonal transmission in sto...
+2026-03-11 00:42:10,270 [INFO]     ✓ PDF téléchargé (6594 Ko)
+2026-03-11 00:42:12,264 [INFO]     → formalism=NETWORK | params=1 | geos=[] | confidence=0.45
+2026-03-11 00:42:12,264 [ERROR]   Erreur article #55: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:12,264 [INFO] 
+  [56/249] 2025 | Adeoye Matthew, Didelot Xavier, Spencer ...
+2026-03-11 00:42:12,264 [INFO]     Bayesian spatio-temporal modelling for infectious disease outbreak detection....
+2026-03-11 00:42:14,571 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:14,577 [INFO]     → formalism=BAYESIAN | params=0 | geos=[] | confidence=0.50
+2026-03-11 00:42:14,577 [ERROR]   Erreur article #56: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:14,578 [INFO] 
+  [57/249] 2025 | Ghosh Adrita, Das Parthasakha, Chakrabor...
+2026-03-11 00:42:14,578 [INFO]     Developing cholera outbreak forecasting through qualitative dynamics: Insights i...
+2026-03-11 00:42:19,140 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:19,146 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:42:19,147 [ERROR]   Erreur article #57: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:19,147 [INFO] 
+  [58/249] 2025 | Ward Jack, Gressani Oswaldo, Kim Sol, He...
+2026-03-11 00:42:19,147 [INFO]     The epidemiology of pathogens with pandemic potential: A review of key parameter...
+2026-03-11 00:42:21,421 [INFO]     ✓ PDF téléchargé (750 Ko)
+2026-03-11 00:42:22,520 [INFO]     → formalism=ABM | params=1 | geos=['Belgique'] | confidence=0.80
+2026-03-11 00:42:22,521 [ERROR]   Erreur article #58: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:22,521 [INFO] 
+  [59/249] 2025 | Curran-Sebastian Jacob, Andersen Frederi...
+2026-03-11 00:42:22,521 [INFO]     Modelling the stochastic importation dynamics and establishment of novel pathoge...
+2026-03-11 00:42:24,620 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:24,625 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:42:24,626 [ERROR]   Erreur article #59: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:24,626 [INFO] 
+  [60/249] 2025 | Ajelli Marco, Muyembe Jean-Jacques, Tour...
+2026-03-11 00:42:24,626 [INFO]     Vaccination strategies for Ebola in the democratic republic of Congo: the WHO-Eb...
+2026-03-11 00:42:26,244 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:26,250 [INFO]     → formalism=ABM | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:42:26,250 [ERROR]   Erreur article #60: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:26,250 [INFO] 
+  [61/249] 2025 | Di Lauro Francesco, Probert William J M,...
+2026-03-11 00:42:26,250 [INFO]     Large connected components in sexual networks and their role in HIV transmission...
+2026-03-11 00:42:28,293 [INFO]     ✓ PDF téléchargé (654 Ko)
+2026-03-11 00:42:32,570 [INFO]     → formalism=ABM | params=0 | geos=['Kenya', 'Tanzanie'] | confidence=0.55
+2026-03-11 00:42:32,571 [ERROR]   Erreur article #61: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:32,571 [INFO] 
+  [62/249] 2025 | Wallrafen-Sam Karina, Quesada Maria Garc...
+2026-03-11 00:42:32,571 [INFO]     Modelling the interplay between responsive individual vaccination decisions and ...
+2026-03-11 00:42:35,257 [INFO]     ✓ PDF téléchargé (2569 Ko)
+2026-03-11 00:42:36,311 [INFO]     → formalism=OTHER | params=0 | geos=['Brésil'] | confidence=0.35
+2026-03-11 00:42:36,311 [ERROR]   Erreur article #62: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:36,311 [INFO] 
+  [63/249] 2025 | Cai Xiaoyan, Wang Xu, Ni Haobo, Zhou Jia...
+2026-03-11 00:42:36,311 [INFO]     Epidemiological characteristics and transmission dynamics of epidemic Japanese e...
+2026-03-11 00:42:38,943 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:38,948 [INFO]     → formalism=NETWORK | params=0 | geos=['Chine'] | confidence=0.55
+2026-03-11 00:42:38,949 [ERROR]   Erreur article #63: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:38,949 [INFO] 
+  [64/249] 2025 | Verma Pranav, Kumar Viney, Bhattacharyya...
+2026-03-11 00:42:38,949 [INFO]     Modelling behavioural interactions in infection disclosure during an outbreak: A...
+2026-03-11 00:42:41,195 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:41,201 [INFO]     → formalism=OTHER | params=0 | geos=['Inde'] | confidence=0.35
+2026-03-11 00:42:41,202 [ERROR]   Erreur article #64: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:41,202 [INFO] 
+  [65/249] 2024 | Wu Shuying, Yuan Sanling...
+2026-03-11 00:42:41,202 [INFO]     Threshold dynamics of a switching diffusion SIR model with logistic growth and h...
+2026-03-11 00:42:42,949 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:42,954 [INFO]     → formalism=SIR | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:42:42,954 [ERROR]   Erreur article #65: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:42,954 [INFO] 
+  [66/249] 2024 | Srivastava Abhay, Nilam...
+2026-03-11 00:42:42,954 [INFO]     Optimal control of a fractional order SEIQR epidemic model with non-monotonic in...
+2026-03-11 00:42:46,315 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:46,320 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:42:46,321 [ERROR]   Erreur article #66: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:46,321 [INFO] 
+  [67/249] 2024 | Chen Shi, Janies Daniel, Paul Rajib, Thi...
+2026-03-11 00:42:46,321 [INFO]     Leveraging advances in data-driven deep learning methods for hybrid epidemic mod...
+2026-03-11 00:42:48,262 [INFO]     ✓ PDF téléchargé (2707 Ko)
+2026-03-11 00:42:49,108 [INFO]     → formalism=NETWORK | params=0 | geos=['Inde', 'Chine'] | confidence=0.55
+2026-03-11 00:42:49,108 [ERROR]   Erreur article #67: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:49,108 [INFO] 
+  [68/249] 2024 | Baister Matthew, McTaggart Ewan, McMenem...
+2026-03-11 00:42:49,108 [INFO]     COVID-19 in Scottish care homes: A metapopulation model of spread among resident...
+2026-03-11 00:42:50,103 [INFO]     ✓ PDF téléchargé (1530 Ko)
+2026-03-11 00:42:51,422 [INFO]     → formalism=METAPOPULATION | params=1 | geos=[] | confidence=0.60
+2026-03-11 00:42:51,423 [ERROR]   Erreur article #68: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:51,423 [INFO] 
+  [69/249] 2024 | Avusuglo Wisdom S, Han Qing, Woldegerima...
+2026-03-11 00:42:51,423 [INFO]     Assessment of bidirectional impact of stigmatization induced self-medication on ...
+2026-03-11 00:42:53,687 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:53,694 [INFO]     → formalism=OTHER | params=0 | geos=['Nigeria'] | confidence=0.20
+2026-03-11 00:42:53,694 [ERROR]   Erreur article #69: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:53,694 [INFO] 
+  [70/249] 2024 | El Khalifi Mohamed, Britton Tom...
+2026-03-11 00:42:53,694 [INFO]     SIRS epidemics with individual heterogeneity of immunity waning....
+2026-03-11 00:42:55,943 [INFO]     ✓ PDF téléchargé (2773 Ko)
+2026-03-11 00:42:57,245 [INFO]     → formalism=SIRS | params=0 | geos=['Allemagne'] | confidence=0.55
+2026-03-11 00:42:57,245 [ERROR]   Erreur article #70: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:57,245 [INFO] 
+  [71/249] 2024 | Kreabkhontho Pannathon, Teparos Watchara...
+2026-03-11 00:42:57,245 [INFO]     Potential for eliminating COVID-19 in Thailand through third-dose vaccination: A...
+2026-03-11 00:42:59,216 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:42:59,224 [INFO]     → formalism=OTHER | params=0 | geos=['Thaïlande'] | confidence=0.35
+2026-03-11 00:42:59,224 [ERROR]   Erreur article #71: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:42:59,224 [INFO] 
+  [72/249] 2024 | Karami Hamed, Sanaei Pejman, Smirnova Al...
+2026-03-11 00:42:59,224 [INFO]     Balancing mitigation strategies for viral outbreaks....
+2026-03-11 00:43:00,753 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:43:00,758 [INFO]     → formalism=OTHER | params=0 | geos=['États-Unis'] | confidence=0.20
+2026-03-11 00:43:00,759 [ERROR]   Erreur article #72: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:43:00,759 [INFO] 
+  [73/249] 2024 | Karapitta Marianna, Kasis Andreas, Styli...
+2026-03-11 00:43:00,759 [INFO]     Time-varying compartmental models with neural networks for pandemic infection fo...
+2026-03-11 00:43:02,816 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:43:02,821 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:43:02,822 [ERROR]   Erreur article #73: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:43:02,822 [INFO] 
+  [74/249] 2024 | Chatzilena Anastasia, Demiris Nikolaos, ...
+2026-03-11 00:43:02,822 [INFO]     A modeling framework for the analysis of the SARS-CoV2 transmission dynamics....
+2026-03-11 00:43:03,928 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:43:03,932 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:43:03,932 [ERROR]   Erreur article #74: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:43:03,933 [INFO] 
+  [75/249] 2024 | Ganser Iris, Buckeridge David L, Heffern...
+2026-03-11 00:43:03,933 [INFO]     Estimating the population effectiveness of interventions against COVID-19 in Fra...
+2026-03-11 00:43:06,181 [INFO]     ✓ PDF téléchargé (260 Ko)
+2026-03-11 00:43:07,955 [INFO]     → formalism=OTHER | params=1 | geos=['France', 'États-Unis'] | confidence=0.45
+2026-03-11 00:43:07,955 [ERROR]   Erreur article #75: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:43:07,955 [INFO] 
+  [76/249] 2024 | Singh Aman Kumar, Ramakrishnan Subramani...
+2026-03-11 00:43:07,955 [INFO]     Instabilities and self-organization in spatiotemporal epidemic dynamics driven b...
+2026-03-11 00:43:07,956 [INFO]     ✓ PDF téléchargé (3920 Ko)
+2026-03-11 00:43:09,084 [INFO]     → formalism=SEIRS | params=1 | geos=['États-Unis'] | confidence=0.65
+2026-03-11 00:43:09,084 [ERROR]   Erreur article #76: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:43:09,084 [INFO] 
+  [77/249] 2024 | Angeli Leonardo, Caetano Constantino Per...
+2026-03-11 00:43:09,084 [INFO]     Who acquires infection from whom? A sensitivity analysis of transmission dynamic...
+2026-03-11 00:43:11,102 [INFO]     ✓ PDF téléchargé (15396 Ko)
+2026-03-11 00:44:56,305 [INFO]     → formalism=ABM | params=1 | geos=['Belgique'] | confidence=0.80
+2026-03-11 00:44:56,305 [ERROR]   Erreur article #77: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:44:56,309 [INFO] 
+  [78/249] 2024 | Saade Masoud, Ghosh Samiran, Banerjee Ma...
+2026-03-11 00:44:56,309 [INFO]     Delay epidemic models determined by latency, infection, and immunity duration....
+2026-03-11 00:44:58,311 [INFO]     ✓ PDF téléchargé (10700 Ko)
+2026-03-11 00:45:00,432 [INFO]     → formalism=SEIR | params=0 | geos=['Chine'] | confidence=0.70
+2026-03-11 00:45:00,433 [ERROR]   Erreur article #78: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:45:00,433 [INFO] 
+  [79/249] 2024 | Sumner Tom, Clark Rebecca A, Mukandavire...
+2026-03-11 00:45:00,433 [INFO]     Modelling the health and economic impacts ofM72/AS01...
+2026-03-11 00:45:02,508 [INFO]     ✓ PDF téléchargé (637 Ko)
+2026-03-11 00:45:04,435 [INFO]     → formalism=ABM | params=0 | geos=['États-Unis'] | confidence=0.55
+2026-03-11 00:45:04,436 [ERROR]   Erreur article #79: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:45:04,436 [INFO] 
+  [80/249] 2024 | Wang Si, Cao Hui...
+2026-03-11 00:45:04,436 [INFO]     The dynamics of tuberculosis transmission model with different genders....
+2026-03-11 00:45:05,887 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:45:05,888 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:45:05,889 [ERROR]   Erreur article #80: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:45:05,889 [INFO] 
+  [81/249] 2024 | Robert Alexis, Suffel Anne M, Kucharski ...
+2026-03-11 00:45:05,889 [INFO]     Long-term waning of vaccine-induced immunity to measles in England: a mathematic...
+2026-03-11 00:45:07,959 [INFO]     ✓ PDF téléchargé (53718 Ko)
+2026-03-11 00:50:31,130 [INFO]     → formalism=OTHER | params=1 | geos=['Chine', 'Royaume-Uni'] | confidence=0.60
+2026-03-11 00:50:31,133 [ERROR]   Erreur article #81: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:50:31,137 [INFO] 
+  [82/249] 2024 | Donà Maddalena, Trapman Pieter...
+2026-03-11 00:50:31,137 [INFO]     Possible counter-intuitive impact of local vaccine mandates for vaccine-preventa...
+2026-03-11 00:50:33,260 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:50:33,266 [INFO]     → formalism=SIR | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:50:33,266 [ERROR]   Erreur article #82: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:50:33,266 [INFO] 
+  [83/249] 2024 | Dimas Martins Afonso, Roberts Mick, Ten ...
+2026-03-11 00:50:33,266 [INFO]     Indirect interaction between an endemic and an invading pathogen: A case study o...
+2026-03-11 00:50:35,615 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:50:35,620 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:50:35,620 [ERROR]   Erreur article #83: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:50:35,620 [INFO] 
+  [84/249] 2024 | Liu Kaihui, Fang Shuanghui, Li Qiong, Lo...
+2026-03-11 00:50:35,620 [INFO]     Effectiveness evaluation of mosquito suppression strategies on dengue transmissi...
+2026-03-11 00:50:39,820 [INFO]     ✓ PDF téléchargé (301 Ko)
+2026-03-11 00:50:40,193 [INFO]     → formalism=OTHER | params=0 | geos=['États-Unis'] | confidence=0.35
+2026-03-11 00:50:40,193 [ERROR]   Erreur article #84: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:50:40,193 [INFO] 
+  [85/249] 2024 | Del-Águila-Mejía Javier, Morilla Fernand...
+2026-03-11 00:50:40,193 [INFO]     A system dynamics modelling and analytical framework for imported dengue outbrea...
+2026-03-11 00:50:42,582 [INFO]     ✓ PDF téléchargé (4724 Ko)
+2026-03-11 00:50:45,335 [INFO]     → formalism=SEIR | params=1 | geos=[] | confidence=0.45
+2026-03-11 00:50:45,335 [ERROR]   Erreur article #85: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:50:45,335 [INFO] 
+  [86/249] 2024 | Estep Alden S, Sanscrainte Neil D, Okech...
+2026-03-11 00:50:45,335 [INFO]     Aedes aegypti Knockdown Resistance Mutations and Dengue Virus Infection in Haiti...
+2026-03-11 00:50:47,395 [INFO]     ✓ PDF téléchargé (3346 Ko)
+2026-03-11 00:50:49,075 [INFO]     → formalism=ABM | params=0 | geos=['Brésil'] | confidence=0.55
+2026-03-11 00:50:49,076 [ERROR]   Erreur article #86: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:50:49,076 [INFO] 
+  [87/249] 2024 | Fleischmann Wim A, Cao Le Chi, Nurjadi D...
+2026-03-11 00:50:49,076 [INFO]     Addressing the rise of autochthonous vector-borne diseases in a warming Europe....
+2026-03-11 00:50:50,571 [INFO]     ✓ PDF téléchargé (3423 Ko)
+2026-03-11 00:50:51,726 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:50:51,726 [ERROR]   Erreur article #87: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:50:51,726 [INFO] 
+  [88/249] 2024 | Zhao Minghui, Ran Xin, Xing Dan, Liu Wei...
+2026-03-11 00:50:51,726 [INFO]     Population genetics of Aedes albopictus in the port cities of Hainan Island and ...
+2026-03-11 00:50:54,359 [INFO]     ✓ PDF téléchargé (2227 Ko)
+2026-03-11 00:50:55,581 [INFO]     → formalism=SIS | params=0 | geos=['Chine'] | confidence=0.55
+2026-03-11 00:50:55,584 [ERROR]   Erreur article #88: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:50:55,584 [INFO] 
+  [89/249] 2024 | Tassé Arsène Jaurès Ouemba, Tsanou Berge...
+2026-03-11 00:50:55,584 [INFO]     A metapopulation model with exit screening measure for the 2014-2016 West Africa...
+2026-03-11 00:50:57,939 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:50:57,943 [INFO]     → formalism=METAPOPULATION | params=0 | geos=['Guinée', "Afrique de l'Ouest"] | confidence=0.55
+2026-03-11 00:50:57,944 [ERROR]   Erreur article #89: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:50:57,944 [INFO] 
+  [90/249] 2024 | Zhang Xu-Sheng, Mandal Sema, Mohammed Ha...
+2026-03-11 00:50:57,944 [INFO]     Transmission dynamics and effect of control measures on the 2022 outbreak of mpo...
+2026-03-11 00:50:59,685 [INFO]     ✓ PDF téléchargé (1053 Ko)
+2026-03-11 00:51:02,971 [INFO]     → formalism=NETWORK | params=1 | geos=['Royaume-Uni'] | confidence=0.80
+2026-03-11 00:51:02,972 [ERROR]   Erreur article #90: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:02,972 [INFO] 
+  [91/249] 2024 | Zhang Yunjun, Zhou Xiaohua...
+2026-03-11 00:51:02,972 [INFO]     Supercritical and homogenous transmission of monkeypox in the capital of China....
+2026-03-11 00:51:04,189 [INFO]     ✓ PDF téléchargé (730 Ko)
+2026-03-11 00:51:06,599 [INFO]     → formalism=SEIR | params=3 | geos=['Chine', "Afrique de l'Ouest"] | confidence=0.85
+2026-03-11 00:51:06,599 [ERROR]   Erreur article #91: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:06,599 [INFO] 
+  [92/249] 2024 | Dennington Nina L, Grossman Marissa K, W...
+2026-03-11 00:51:06,600 [INFO]     Phenotypic adaptation to temperature in the mosquito vector, Aedes aegypti....
+2026-03-11 00:51:07,670 [INFO]     ✓ PDF téléchargé (481 Ko)
+2026-03-11 00:51:08,340 [INFO]     → formalism=OTHER | params=0 | geos=['Australie'] | confidence=0.35
+2026-03-11 00:51:08,340 [ERROR]   Erreur article #92: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:08,340 [INFO] 
+  [93/249] 2024 | Zhao Qiongyao, Jia Yongchao, Lu Xiaoqian...
+2026-03-11 00:51:08,340 [INFO]     Insecticide Susceptibility and KDR Mutations in Aedes Albopictus Collected from ...
+2026-03-11 00:51:09,414 [INFO]     ✓ PDF téléchargé (1403 Ko)
+2026-03-11 00:51:10,047 [INFO]     → formalism=OTHER | params=0 | geos=['Chine'] | confidence=0.35
+2026-03-11 00:51:10,047 [ERROR]   Erreur article #93: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:10,047 [INFO] 
+  [94/249] 2024 | Adams L, Prasinou A Karachaliou, Hadley ...
+2026-03-11 00:51:10,047 [INFO]     Estimating the potential number of cases prevented by infant/ toddler immunisati...
+2026-03-11 00:51:12,284 [INFO]     ✓ PDF téléchargé (2290 Ko)
+2026-03-11 00:51:13,291 [INFO]     → formalism=SIS | params=0 | geos=['Allemagne'] | confidence=0.70
+2026-03-11 00:51:13,292 [ERROR]   Erreur article #94: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:13,292 [INFO] 
+  [95/249] 2024 | Albano Giuseppina, Giorno Virginia, Torr...
+2026-03-11 00:51:13,292 [INFO]     Inference of a Susceptible-Infectious stochastic model....
+2026-03-11 00:51:15,141 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:51:15,146 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:51:15,147 [ERROR]   Erreur article #95: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:15,147 [INFO] 
+  [96/249] 2024 | Lope Dinah Jane, Demirhan Haydar...
+2026-03-11 00:51:15,147 [INFO]     JAGS model specification for spatiotemporal epidemiological modelling....
+2026-03-11 00:51:18,321 [INFO]     ✓ PDF téléchargé (865 Ko)
+2026-03-11 00:51:19,859 [INFO]     → formalism=SIS | params=0 | geos=['États-Unis'] | confidence=0.55
+2026-03-11 00:51:19,860 [ERROR]   Erreur article #96: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:19,860 [INFO] 
+  [97/249] 2024 | Lewin Antoine, O'Brien Sheila F, Seftel ...
+2026-03-11 00:51:19,860 [INFO]     Risk of introducing Zika virus in the Canadian cord blood supply: A risk analysi...
+2026-03-11 00:51:20,876 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:51:20,883 [INFO]     → formalism=OTHER | params=0 | geos=['Canada'] | confidence=0.35
+2026-03-11 00:51:20,883 [ERROR]   Erreur article #97: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:20,883 [INFO] 
+  [98/249] 2024 | Ellis John, Brown Emma, Colenutt Claire,...
+2026-03-11 00:51:20,883 [INFO]     Inferring transmission routes for foot-and-mouth disease virus within a cattle h...
+2026-03-11 00:51:23,441 [INFO]     ✓ PDF téléchargé (249 Ko)
+2026-03-11 00:51:24,416 [INFO]     → formalism=OTHER | params=0 | geos=['Italie'] | confidence=0.35
+2026-03-11 00:51:24,416 [ERROR]   Erreur article #98: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:24,417 [INFO] 
+  [99/249] 2024 | Clancy Damian, Stewart John J H...
+2026-03-11 00:51:24,417 [INFO]     Extinction in host-vector infection models and the role of heterogeneity....
+2026-03-11 00:51:26,616 [INFO]     ✓ PDF téléchargé (834 Ko)
+2026-03-11 00:51:28,193 [INFO]     → formalism=SIS | params=1 | geos=['Royaume-Uni'] | confidence=0.65
+2026-03-11 00:51:28,194 [ERROR]   Erreur article #99: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:51:28,194 [INFO] 
+  [100/249] 2024 | Chen Jiangzhuo, Bhattacharya Parantapa, ...
+2026-03-11 00:51:28,194 [INFO]     Role of heterogeneity: National scale data-driven agent-based modeling for the U...
+2026-03-11 00:51:30,304 [INFO]     ✓ PDF téléchargé (15167 Ko)
+2026-03-11 00:52:29,281 [INFO]     → formalism=ABM | params=1 | geos=[] | confidence=0.45
+2026-03-11 00:52:29,281 [ERROR]   Erreur article #100: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:52:29,285 [INFO] 
+  [101/249] 2024 | Houben R M A C, Newton J R, van Maanen C...
+2026-03-11 00:52:29,285 [INFO]     Untangling the stranglehold through mathematical modelling of Streptococcus equi...
+2026-03-11 00:52:32,458 [INFO]     ✓ PDF téléchargé (1231 Ko)
+2026-03-11 00:52:34,844 [INFO]     → formalism=BAYESIAN | params=1 | geos=['Royaume-Uni', 'Suède'] | confidence=0.80
+2026-03-11 00:52:34,844 [ERROR]   Erreur article #101: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:52:34,844 [INFO] 
+  [102/249] 2024 | Jung YeonJin, Qian Chenhao, Barnett-Neef...
+2026-03-11 00:52:34,844 [INFO]     Developing an Agent-Based Model that Predicts Listeria spp. Transmission to Asse...
+2026-03-11 00:52:37,063 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:52:37,070 [INFO]     → formalism=ABM | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:52:37,070 [ERROR]   Erreur article #102: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:52:37,070 [INFO] 
+  [103/249] 2024 | Lei Hao, Zhang Nan, Xiao Shenglan, Zhuan...
+2026-03-11 00:52:37,071 [INFO]     Relative Role of Age Groups and Indoor Environments in Influenza Transmission Un...
+2026-03-11 00:52:38,312 [INFO]     ✓ PDF téléchargé (4187 Ko)
+2026-03-11 00:52:39,415 [INFO]     → formalism=OTHER | params=1 | geos=['Chine'] | confidence=0.45
+2026-03-11 00:52:39,416 [ERROR]   Erreur article #103: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:52:39,416 [INFO] 
+  [104/249] 2024 | Banks Christopher J, Colman Ewan, Wood A...
+2026-03-11 00:52:39,416 [INFO]     Modelling plausible scenarios for the Omicron SARS-CoV-2 variant from early-stag...
+2026-03-11 00:52:41,876 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:52:41,882 [INFO]     → formalism=ABM | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:52:41,883 [ERROR]   Erreur article #104: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:52:41,883 [INFO] 
+  [105/249] 2024 | Lemaitre Joseph C, Loo Sara L, Kaminsky ...
+2026-03-11 00:52:41,883 [INFO]     flepiMoP: The evolution of a flexible infectious disease modeling pipeline durin...
+2026-03-11 00:52:44,356 [INFO]     ✓ PDF téléchargé (2398 Ko)
+2026-03-11 00:52:45,546 [INFO]     → formalism=OTHER | params=0 | geos=['Kenya', 'Éthiopie'] | confidence=0.50
+2026-03-11 00:52:45,546 [ERROR]   Erreur article #105: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:52:45,546 [INFO] 
+  [106/249] 2024 | Das Praachi, Igoe Morganne, Lacy Alexand...
+2026-03-11 00:52:45,546 [INFO]     Modeling county level COVID-19 transmission in the greater St. Louis area: Chall...
+2026-03-11 00:52:47,818 [INFO]     ✓ PDF téléchargé (1948 Ko)
+2026-03-11 00:52:49,268 [INFO]     → formalism=OTHER | params=0 | geos=['États-Unis'] | confidence=0.35
+2026-03-11 00:52:49,269 [ERROR]   Erreur article #106: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:52:49,269 [INFO] 
+  [107/249] 2024 | De Gaetano Alessandro, Barrat Alain, Pao...
+2026-03-11 00:52:49,269 [INFO]     Modeling the interplay between disease spread, behaviors, and disease perception...
+2026-03-11 00:52:51,200 [INFO]     ✓ PDF téléchargé (3347 Ko)
+2026-03-11 00:52:52,834 [INFO]     → formalism=STOCHASTIC_SIR | params=0 | geos=['Royaume-Uni', 'Italie'] | confidence=0.70
+2026-03-11 00:52:52,835 [ERROR]   Erreur article #107: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:52:52,835 [INFO] 
+  [108/249] 2023 | Buch David A, Johndrow James E, Dunson D...
+2026-03-11 00:52:52,835 [INFO]     Explaining transmission rate variations and forecasting epidemic spread in multi...
+2026-03-11 00:52:54,066 [INFO]     ✓ PDF téléchargé (1407 Ko)
+2026-03-11 00:52:55,760 [INFO]     → formalism=SIR | params=4 | geos=['Chine', 'États-Unis'] | confidence=0.85
+2026-03-11 00:52:55,760 [ERROR]   Erreur article #108: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:52:55,760 [INFO] 
+  [109/249] 2023 | Alamri Faten S, Boone Edward L, Ghanam R...
+2026-03-11 00:52:55,760 [INFO]     Monitoring COVID-19 pandemic in Saudi Arabia using SEIRD model parameters with M...
+2026-03-11 00:52:58,171 [INFO]     ✓ PDF téléchargé (1293 Ko)
+2026-03-11 00:53:00,704 [INFO]     → formalism=SEIRD | params=0 | geos=['États-Unis'] | confidence=0.55
+2026-03-11 00:53:00,704 [ERROR]   Erreur article #109: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:00,704 [INFO] 
+  [110/249] 2023 | Saade Masoud, Ghosh Samiran, Banerjee Ma...
+2026-03-11 00:53:00,704 [INFO]     An epidemic model with time delays determined by the infectivity and disease dur...
+2026-03-11 00:53:02,369 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:53:02,374 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:53:02,374 [ERROR]   Erreur article #110: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:02,374 [INFO] 
+  [111/249] 2023 | Wang Haoyu, Qiu Xihe, Yang Jinghan, Li Q...
+2026-03-11 00:53:02,374 [INFO]     Neural-SEIR: A flexible data-driven framework for precise prediction of epidemic...
+2026-03-11 00:53:04,189 [INFO]     ✓ PDF téléchargé (1309 Ko)
+2026-03-11 00:53:08,019 [INFO]     → formalism=ABM | params=0 | geos=[] | confidence=0.50
+2026-03-11 00:53:08,020 [ERROR]   Erreur article #111: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:08,020 [INFO] 
+  [112/249] 2023 | Amemiya Yuri, Li Tianwen, Nishiura Hiros...
+2026-03-11 00:53:08,020 [INFO]     Age-dependent final size equation to anticipate mortality impact of COVID-19 in ...
+2026-03-11 00:53:12,592 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:53:12,598 [INFO]     → formalism=OTHER | params=0 | geos=['Chine'] | confidence=0.35
+2026-03-11 00:53:12,599 [ERROR]   Erreur article #112: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:12,599 [INFO] 
+  [113/249] 2023 | Luong Ngoc-Du Martin, Guillier Laurent, ...
+2026-03-11 00:53:12,599 [INFO]     An agent-based model to simulate SARS-CoV-2 contamination of surfaces and meat c...
+2026-03-11 00:53:14,444 [INFO]     ✓ PDF téléchargé (6798 Ko)
+2026-03-11 00:53:15,641 [INFO]     → formalism=ABM | params=1 | geos=['États-Unis'] | confidence=0.65
+2026-03-11 00:53:15,641 [ERROR]   Erreur article #113: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:15,641 [INFO] 
+  [114/249] 2023 | Lv Zimeng, Liu Xinyu, Ding Yuting...
+2026-03-11 00:53:15,641 [INFO]     Dynamic behavior analysis of an SVIR epidemic model with two time delays associa...
+2026-03-11 00:53:17,614 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:53:17,619 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:53:17,619 [ERROR]   Erreur article #114: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:17,619 [INFO] 
+  [115/249] 2023 | Fuderer Stefanie, Kuttler Christina, Hoe...
+2026-03-11 00:53:17,619 [INFO]     Data suggested hospitalization as critical indicator of the severity of the COVI...
+2026-03-11 00:53:21,200 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:53:21,205 [INFO]     → formalism=SEIR | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:53:21,205 [ERROR]   Erreur article #115: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:21,205 [INFO] 
+  [116/249] 2023 | Lu Junyi, Meyer Sebastian...
+2026-03-11 00:53:21,205 [INFO]     A zero-inflated endemic-epidemic model with an application to measles time serie...
+2026-03-11 00:53:23,154 [INFO]     ✓ PDF téléchargé (3119 Ko)
+2026-03-11 00:53:24,122 [INFO]     → formalism=OTHER | params=1 | geos=['Chine', 'Allemagne'] | confidence=0.45
+2026-03-11 00:53:24,123 [ERROR]   Erreur article #116: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:24,123 [INFO] 
+  [117/249] 2023 | Olivera Mesa Daniela, Winskill Peter, Gh...
+2026-03-11 00:53:24,123 [INFO]     The societal cost of vaccine refusal: A modelling study using measles vaccinatio...
+2026-03-11 00:53:26,527 [INFO]     ✓ PDF téléchargé (1148 Ko)
+2026-03-11 00:53:33,077 [INFO]     → formalism=SEIR | params=0 | geos=['Ghana', 'Éthiopie'] | confidence=0.55
+2026-03-11 00:53:33,077 [ERROR]   Erreur article #117: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:33,077 [INFO] 
+  [118/249] 2023 | Danquah Baaba A, Chirove Faraimunashe, B...
+2026-03-11 00:53:33,077 [INFO]     Controlling malaria in a population accessing counterfeit antimalarial drugs....
+2026-03-11 00:53:34,716 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:53:34,720 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:53:34,721 [ERROR]   Erreur article #118: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:34,721 [INFO] 
+  [119/249] 2023 | Mfangnia Charlène N T, Tonnang Henri E Z...
+2026-03-11 00:53:34,721 [INFO]     Mathematical modelling of the interactive dynamics of wild and...
+2026-03-11 00:53:36,560 [INFO]     ✓ PDF téléchargé (1669 Ko)
+2026-03-11 00:53:38,216 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.30
+2026-03-11 00:53:38,216 [ERROR]   Erreur article #119: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:38,216 [INFO] 
+  [120/249] 2023 | Msosa Chimwemwe, Abdalrahman Tamer, Fran...
+2026-03-11 00:53:38,216 [INFO]     An analytical model describing the mechanics of erythrocyte membrane wrapping du...
+2026-03-11 00:53:38,220 [INFO]     ✓ PDF téléchargé (1088 Ko)
+2026-03-11 00:53:39,725 [INFO]     → formalism=OTHER | params=0 | geos=['Afrique du Sud', 'Royaume-Uni'] | confidence=0.35
+2026-03-11 00:53:39,726 [ERROR]   Erreur article #120: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:39,726 [INFO] 
+  [121/249] 2023 | Lai Hao, Li Rui, Li Zengbin, Zhang Baomi...
+2026-03-11 00:53:39,726 [INFO]     Modelling the impact of treatment adherence on the transmission of HIV drug resi...
+2026-03-11 00:53:40,967 [INFO]     ✓ PDF téléchargé (502 Ko)
+2026-03-11 00:53:42,660 [INFO]     → formalism=OTHER | params=1 | geos=['États-Unis'] | confidence=0.45
+2026-03-11 00:53:42,661 [ERROR]   Erreur article #121: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:42,661 [INFO] 
+  [122/249] 2023 | Bragazzi Nicola Luigi, Han Qing, Iyaniwu...
+2026-03-11 00:53:42,661 [INFO]     Adaptive changes in sexual behavior in the high-risk population in response to h...
+2026-03-11 00:53:44,141 [INFO]     ✓ PDF téléchargé (4977 Ko)
+2026-03-11 00:53:50,729 [INFO]     → formalism=SEIR | params=0 | geos=['Nigeria', 'Éthiopie'] | confidence=0.55
+2026-03-11 00:53:50,729 [ERROR]   Erreur article #122: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:50,730 [INFO] 
+  [123/249] 2023 | Addai Emmanuel, Ngungu Mercy, Omoloye Mu...
+2026-03-11 00:53:50,730 [INFO]     Modelling the impact of vaccination and environmental transmission on the dynami...
+2026-03-11 00:53:52,273 [INFO]     ✓ PDF téléchargé (369 Ko)
+2026-03-11 00:53:55,576 [INFO]     → formalism=OTHER | params=0 | geos=['Nigeria', 'États-Unis'] | confidence=0.35
+2026-03-11 00:53:55,577 [ERROR]   Erreur article #123: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:53:55,577 [INFO] 
+  [124/249] 2023 | Betti Matthew I, Farrell Lauren, Heffern...
+2026-03-11 00:53:55,577 [INFO]     A pair formation model with recovery: Application to mpox....
+2026-03-11 00:53:57,862 [INFO]     ✓ PDF téléchargé (3724 Ko)
+2026-03-11 00:54:02,206 [INFO]     → formalism=SIR | params=2 | geos=[] | confidence=0.70
+2026-03-11 00:54:02,206 [ERROR]   Erreur article #124: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:02,207 [INFO] 
+  [125/249] 2023 | Vázquez-Peña María Guadalupe, Vargas-De-...
+2026-03-11 00:54:02,207 [INFO]     Analysis and Bayesian estimation of a model for Chikungunya dynamics with relaps...
+2026-03-11 00:54:04,004 [INFO]     ✓ PDF téléchargé (4114 Ko)
+2026-03-11 00:54:10,282 [INFO]     → formalism=OTHER | params=1 | geos=['Chine', 'Mexique'] | confidence=0.45
+2026-03-11 00:54:10,282 [ERROR]   Erreur article #125: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:10,282 [INFO] 
+  [126/249] 2023 | Xue Tingting, Zhang Long, Fan Xiaolin...
+2026-03-11 00:54:10,282 [INFO]     Dynamic modeling and analysis of Hepatitis B epidemic with general incidence....
+2026-03-11 00:54:12,089 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:54:12,094 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:54:12,095 [ERROR]   Erreur article #126: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:12,095 [INFO] 
+  [127/249] 2023 | Yosyingyong Pensiri, Viriyapong Ratchada...
+2026-03-11 00:54:12,095 [INFO]     Global dynamics of multiple delays within-host model for a hepatitis B virus inf...
+2026-03-11 00:54:13,835 [INFO]     ✓ PDF téléchargé (3608 Ko)
+2026-03-11 00:54:15,312 [INFO]     → formalism=OTHER | params=0 | geos=['Cameroun'] | confidence=0.35
+2026-03-11 00:54:15,313 [ERROR]   Erreur article #127: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:15,313 [INFO] 
+  [128/249] 2023 | Violaris Ioannis G, Lampros Theodoros, K...
+2026-03-11 00:54:15,313 [INFO]     Modelling the COVID-19 pandemic: Focusing on the case of Greece....
+2026-03-11 00:54:18,440 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:54:18,447 [INFO]     → formalism=SEIR | params=0 | geos=['Allemagne', 'Italie'] | confidence=0.55
+2026-03-11 00:54:18,447 [ERROR]   Erreur article #128: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:18,447 [INFO] 
+  [129/249] 2023 | Torku Thomas, Khaliq Abdul, Rihan Fathal...
+2026-03-11 00:54:18,447 [INFO]     SEINN: A deep learning algorithm for the stochastic epidemic model....
+2026-03-11 00:54:24,166 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:54:24,172 [INFO]     → formalism=OTHER | params=0 | geos=['États-Unis'] | confidence=0.20
+2026-03-11 00:54:24,173 [ERROR]   Erreur article #129: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:24,173 [INFO] 
+  [130/249] 2023 | Beaunée G, Deslandes F, Vergu E...
+2026-03-11 00:54:24,173 [INFO]     Inferring ASF transmission in domestic pigs and wild boars using a paired model ...
+2026-03-11 00:54:26,637 [INFO]     ✓ PDF téléchargé (831 Ko)
+2026-03-11 00:54:27,828 [INFO]     → formalism=ABM | params=0 | geos=['France'] | confidence=0.55
+2026-03-11 00:54:27,828 [ERROR]   Erreur article #130: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:27,828 [INFO] 
+  [131/249] 2023 | Gressani Oswaldo, Faes Christel, Hens Ni...
+2026-03-11 00:54:27,828 [INFO]     An approximate Bayesian approach for estimation of the instantaneous reproductio...
+2026-03-11 00:54:29,504 [INFO]     ✓ PDF téléchargé (3755 Ko)
+2026-03-11 00:54:30,940 [INFO]     → formalism=RENEWAL_EQUATION | params=1 | geos=['Canada'] | confidence=0.80
+2026-03-11 00:54:30,941 [ERROR]   Erreur article #131: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:30,941 [INFO] 
+  [132/249] 2023 | Pickles Michael, Gregson Simon, Moorhous...
+2026-03-11 00:54:30,941 [INFO]     Strengthening the HIV prevention cascade to maximise epidemiological impact in e...
+2026-03-11 00:54:32,368 [INFO]     ✓ PDF téléchargé (37 Ko)
+2026-03-11 00:54:32,531 [INFO]     → formalism=OTHER | params=0 | geos=['États-Unis', 'Australie'] | confidence=0.35
+2026-03-11 00:54:32,531 [ERROR]   Erreur article #132: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:32,531 [INFO] 
+  [133/249] 2023 | Milwid Rachael M, Li Michael, Fazil Aami...
+2026-03-11 00:54:32,531 [INFO]     Exploring the dynamics of the 2022 mpox outbreak in Canada....
+2026-03-11 00:54:33,708 [INFO]     ✓ PDF téléchargé (3128 Ko)
+2026-03-11 00:54:37,332 [INFO]     → formalism=SEIR | params=2 | geos=['Canada'] | confidence=0.75
+2026-03-11 00:54:37,332 [ERROR]   Erreur article #133: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:37,332 [INFO] 
+  [134/249] 2023 | Guilder James, Ryder David, Taylor Nick ...
+2026-03-11 00:54:37,332 [INFO]     The aquaculture disease network model (AquaNet-Mod): A simulation model to evalu...
+2026-03-11 00:54:39,332 [INFO]     ✓ PDF téléchargé (4626 Ko)
+2026-03-11 00:54:41,345 [INFO]     → formalism=NETWORK | params=0 | geos=['Chine', 'Royaume-Uni'] | confidence=0.55
+2026-03-11 00:54:41,346 [ERROR]   Erreur article #134: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:41,346 [INFO] 
+  [135/249] 2023 | Davies Kale, Lenhart Suzanne, Day Judy, ...
+2026-03-11 00:54:41,346 [INFO]     Extensions of mean-field approximations for environmentally-transmitted pathogen...
+2026-03-11 00:54:42,810 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:54:42,815 [INFO]     → formalism=NETWORK | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:54:42,816 [ERROR]   Erreur article #135: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:42,816 [INFO] 
+  [136/249] 2023 | Benhamou Wakinyan, Lion Sébastien, Choqu...
+2026-03-11 00:54:42,816 [INFO]     Phenotypic evolution of SARS-CoV-2: a statistical inference approach....
+2026-03-11 00:54:44,555 [INFO]     ✓ PDF téléchargé (4910 Ko)
+2026-03-11 00:54:48,792 [INFO]     → formalism=ABM | params=0 | geos=['Chine', 'France'] | confidence=0.55
+2026-03-11 00:54:48,792 [ERROR]   Erreur article #136: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:48,792 [INFO] 
+  [137/249] 2023 | León Ugo Avila-Ponce de, Pérez Angel G C...
+2026-03-11 00:54:48,792 [INFO]     Modeling the SARS-CoV-2 Omicron variant dynamics in the United States with boost...
+2026-03-11 00:54:50,490 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:54:50,494 [INFO]     → formalism=OTHER | params=0 | geos=['États-Unis'] | confidence=0.20
+2026-03-11 00:54:50,494 [ERROR]   Erreur article #137: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:50,494 [INFO] 
+  [138/249] 2022 | Barrios-Rivera Edwin, Bastidas-Santacruz...
+2026-03-11 00:54:50,494 [INFO]     A synthesized model of tuberculosis transmission featuring treatment abandonment...
+2026-03-11 00:54:52,405 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:54:52,409 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:54:52,410 [ERROR]   Erreur article #138: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:52,410 [INFO] 
+  [139/249] 2022 | Xu Ao, Wen Ze-Xuan, Wang Yue, Wang Wei-B...
+2026-03-11 00:54:52,410 [INFO]     Prediction of different interventions on the burden of drug-resistant tuberculos...
+2026-03-11 00:54:54,314 [INFO]     ✓ PDF téléchargé (8810 Ko)
+2026-03-11 00:54:57,222 [INFO]     → formalism=OTHER | params=0 | geos=['Chine'] | confidence=0.35
+2026-03-11 00:54:57,222 [ERROR]   Erreur article #139: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:57,222 [INFO] 
+  [140/249] 2022 | Hajji Miled El, Albargi Amer Hassan...
+2026-03-11 00:54:57,222 [INFO]     A mathematical investigation of an "SVEIR" epidemic model for the measles transm...
+2026-03-11 00:54:58,890 [INFO]     ✓ PDF téléchargé (2660 Ko)
+2026-03-11 00:54:59,668 [INFO]     → formalism=ABM | params=0 | geos=['Brésil'] | confidence=0.55
+2026-03-11 00:54:59,669 [ERROR]   Erreur article #140: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:54:59,669 [INFO] 
+  [141/249] 2022 | Pokharel Anjana, Adhikari Khagendra, Gau...
+2026-03-11 00:54:59,669 [INFO]     Modeling transmission dynamics of measles in Nepal and its control with monitore...
+2026-03-11 00:55:02,373 [INFO]     ✓ PDF téléchargé (2366 Ko)
+2026-03-11 00:55:04,041 [INFO]     → formalism=NETWORK | params=0 | geos=['États-Unis'] | confidence=0.55
+2026-03-11 00:55:04,041 [ERROR]   Erreur article #141: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:04,041 [INFO] 
+  [142/249] 2022 | Shi Yangyang, Zhao Hongyong, Zhang Xuebi...
+2026-03-11 00:55:04,041 [INFO]     Dynamics of a multi-strain malaria model with diffusion in a periodic environmen...
+2026-03-11 00:55:05,441 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:55:05,443 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:55:05,443 [ERROR]   Erreur article #142: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:05,444 [INFO] 
+  [143/249] 2022 | Johnson Leigh F, Meyer-Rath Gesine, Dorr...
+2026-03-11 00:55:05,444 [INFO]     The Effect of HIV Programs in South Africa on National HIV Incidence Trends, 200...
+2026-03-11 00:55:08,788 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:55:08,796 [INFO]     → formalism=OTHER | params=0 | geos=['Afrique du Sud'] | confidence=0.35
+2026-03-11 00:55:08,797 [ERROR]   Erreur article #143: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:08,797 [INFO] 
+  [144/249] 2022 | Flountzi Eleni, Lim Aaron G, Vickerman P...
+2026-03-11 00:55:08,797 [INFO]     Modeling the impact of interventions during an outbreak of HIV infection among p...
+2026-03-11 00:55:12,137 [INFO]     ✓ PDF téléchargé (1072 Ko)
+2026-03-11 00:55:13,642 [INFO]     → formalism=SIS | params=0 | geos=['Royaume-Uni', 'États-Unis'] | confidence=0.70
+2026-03-11 00:55:13,642 [ERROR]   Erreur article #144: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:13,643 [INFO] 
+  [145/249] 2022 | Liu Zhiping, Jin Zhen, Yang Junyuan, Zha...
+2026-03-11 00:55:13,643 [INFO]     The backward bifurcation of an age-structured cholera transmission model with sa...
+2026-03-11 00:55:15,379 [INFO]     ✓ PDF téléchargé (1368 Ko)
+2026-03-11 00:55:19,327 [INFO]     → formalism=SEIR | params=0 | geos=['Chine'] | confidence=0.70
+2026-03-11 00:55:19,328 [ERROR]   Erreur article #145: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:19,328 [INFO] 
+  [146/249] 2022 | Endo Akira, Murayama Hiroaki, Abbott Sam...
+2026-03-11 00:55:19,328 [INFO]     Heavy-tailed sexual contact networks and monkeypox epidemiology in the global ou...
+2026-03-11 00:55:20,805 [INFO]     ✓ PDF téléchargé (871 Ko)
+2026-03-11 00:55:21,327 [INFO]     → formalism=OTHER | params=0 | geos=['Nigeria', 'Royaume-Uni'] | confidence=0.35
+2026-03-11 00:55:21,327 [ERROR]   Erreur article #146: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:21,328 [INFO] 
+  [147/249] 2022 | Meiksin Avery...
+2026-03-11 00:55:21,328 [INFO]     Using the SEIR model to constrain the role of contaminated fomites in spreading ...
+2026-03-11 00:55:23,365 [INFO]     ✓ PDF téléchargé (2050 Ko)
+2026-03-11 00:55:24,081 [INFO]     → formalism=SEIR | params=0 | geos=['Chine', 'Royaume-Uni'] | confidence=0.55
+2026-03-11 00:55:24,082 [ERROR]   Erreur article #147: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:24,082 [INFO] 
+  [148/249] 2022 | Feng Lin, Chen Ziren, Jr Harold A Lay, F...
+2026-03-11 00:55:24,082 [INFO]     Data driven time-varying SEIR-LSTM/GRU algorithms to track the spread of COVID-1...
+2026-03-11 00:55:26,127 [INFO]     ✓ PDF téléchargé (4103 Ko)
+2026-03-11 00:55:28,069 [INFO]     → formalism=SEIR | params=0 | geos=['Chine'] | confidence=0.55
+2026-03-11 00:55:28,069 [ERROR]   Erreur article #148: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:28,069 [INFO] 
+  [149/249] 2022 | Zerenner T, Di Lauro F, Dashti M, Bertho...
+2026-03-11 00:55:28,069 [INFO]     Probabilistic predictions of SIS epidemics on networks based on population-level...
+2026-03-11 00:55:30,837 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:55:30,845 [INFO]     → formalism=SIS | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:55:30,845 [ERROR]   Erreur article #149: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:30,845 [INFO] 
+  [150/249] 2022 | Tuncer Necibe, Timsina Archana, Nuno Mir...
+2026-03-11 00:55:30,845 [INFO]     Parameter identifiability and optimal control of an SARS-CoV-2 model early in th...
+2026-03-11 00:55:31,867 [INFO]     ✓ PDF téléchargé (5874 Ko)
+2026-03-11 00:55:33,065 [INFO]     → formalism=SIR | params=2 | geos=['Espagne', 'États-Unis'] | confidence=0.75
+2026-03-11 00:55:33,065 [ERROR]   Erreur article #150: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:33,065 [INFO] 
+  [151/249] 2022 | Dankwa Emmanuelle A, Lambert Sébastien, ...
+2026-03-11 00:55:33,065 [INFO]     Stochastic modelling of African swine fever in wild boar and domestic pigs: Epid...
+2026-03-11 00:55:35,452 [INFO]     ✓ PDF téléchargé (5637 Ko)
+2026-03-11 00:55:36,705 [INFO]     → formalism=OTHER | params=0 | geos=['Italie', 'Espagne'] | confidence=0.35
+2026-03-11 00:55:36,706 [ERROR]   Erreur article #151: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:36,706 [INFO] 
+  [152/249] 2021 | Yang Yichi, Asai Yusuke, Nishiura Hirosh...
+2026-03-11 00:55:36,706 [INFO]     A method for estimating the transmissibility of influenza using serial cross-sec...
+2026-03-11 00:55:38,926 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:55:38,933 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:55:38,934 [ERROR]   Erreur article #152: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:38,934 [INFO] 
+  [153/249] 2021 | de Boer Pieter T, Nagy Lisa, Dolk Frankl...
+2026-03-11 00:55:38,934 [INFO]     Cost-Effectiveness of Pediatric Influenza Vaccination in The Netherlands....
+2026-03-11 00:55:40,875 [INFO]     ✓ PDF téléchargé (409 Ko)
+2026-03-11 00:55:42,224 [INFO]     → formalism=OTHER | params=0 | geos=['Royaume-Uni', 'Allemagne'] | confidence=0.35
+2026-03-11 00:55:42,224 [ERROR]   Erreur article #153: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:42,224 [INFO] 
+  [154/249] 2021 | Castry Mathieu, Cousien Anthony, Supervi...
+2026-03-11 00:55:42,224 [INFO]     Impact of test-and-treat and risk reduction strategies on HCV transmission among...
+2026-03-11 00:55:45,382 [INFO]     ✓ PDF téléchargé (767 Ko)
+2026-03-11 00:55:47,359 [INFO]     → formalism=SIS | params=0 | geos=['France'] | confidence=0.55
+2026-03-11 00:55:47,359 [ERROR]   Erreur article #154: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:47,359 [INFO] 
+  [155/249] 2021 | Booton Ross D, Ong Jason J, Lee Amy, Liu...
+2026-03-11 00:55:47,359 [INFO]     Modelling the impact of an HIV testing intervention on HIV transmission among me...
+2026-03-11 00:55:48,555 [INFO]     ✓ PDF téléchargé (989 Ko)
+2026-03-11 00:55:49,542 [INFO]     → formalism=OTHER | params=0 | geos=['Chine'] | confidence=0.35
+2026-03-11 00:55:49,543 [ERROR]   Erreur article #155: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:49,543 [INFO] 
+  [156/249] 2021 | Lanièce Delaunay Charlotte, Godin Arnaud...
+2026-03-11 00:55:49,543 [INFO]     Can hepatitis C elimination targets be sustained among people who inject drugs p...
+2026-03-11 00:55:52,242 [INFO]     ✓ PDF téléchargé (428 Ko)
+2026-03-11 00:55:53,903 [INFO]     → formalism=SIS | params=0 | geos=['Canada', 'Australie'] | confidence=0.55
+2026-03-11 00:55:53,903 [ERROR]   Erreur article #156: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:53,903 [INFO] 
+  [157/249] 2021 | Che Eric, Numfor Eric, Lenhart Suzanne, ...
+2026-03-11 00:55:53,903 [INFO]     Mathematical modeling of the influence of cultural practices on cholera infectio...
+2026-03-11 00:55:55,928 [INFO]     ✓ PDF téléchargé (1388 Ko)
+2026-03-11 00:55:59,370 [INFO]     → formalism=OTHER | params=1 | geos=['Cameroun'] | confidence=0.60
+2026-03-11 00:55:59,371 [ERROR]   Erreur article #157: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:55:59,371 [INFO] 
+  [158/249] 2021 | Botelho Christopher, Dzevela Kong Jude, ...
+2026-03-11 00:55:59,371 [INFO]     A mathematical model for Vibrio-phage interactions....
+2026-03-11 00:56:01,155 [INFO]     ✓ PDF téléchargé (1917 Ko)
+2026-03-11 00:56:02,822 [INFO]     → formalism=METAPOPULATION | params=0 | geos=['Suède', 'États-Unis'] | confidence=0.70
+2026-03-11 00:56:02,823 [ERROR]   Erreur article #158: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:02,823 [INFO] 
+  [159/249] 2021 | Lu Min, Shu Yaqin, Huang Jicai, Ruan Shi...
+2026-03-11 00:56:02,823 [INFO]     Modelling homosexual and heterosexual transmissions of hepatitis B virus in Chin...
+2026-03-11 00:56:03,919 [INFO]     ✓ PDF téléchargé (8192 Ko)
+2026-03-11 00:56:20,242 [INFO]     → formalism=OTHER | params=2 | geos=['Thaïlande', 'Inde'] | confidence=0.55
+2026-03-11 00:56:20,243 [ERROR]   Erreur article #159: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:20,243 [INFO] 
+  [160/249] 2021 | Azizi Asma, Dewar Jeremy, Qu Zhuolin, Hy...
+2026-03-11 00:56:20,243 [INFO]     Using an agent-based sexual-network model to analyze the impact of mitigation ef...
+2026-03-11 00:56:22,517 [INFO]     ✓ PDF téléchargé (2338 Ko)
+2026-03-11 00:56:25,956 [INFO]     → formalism=NETWORK | params=0 | geos=['États-Unis'] | confidence=0.55
+2026-03-11 00:56:25,957 [ERROR]   Erreur article #160: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:25,957 [INFO] 
+  [161/249] 2021 | Chanchaidechachai Thanicha, de Jong Mart...
+2026-03-11 00:56:25,957 [INFO]     Spatial model of foot-and-mouth disease outbreak in an endemic area of Thailand....
+2026-03-11 00:56:28,229 [INFO]     ✓ PDF téléchargé (3200 Ko)
+2026-03-11 00:56:29,033 [INFO]     → formalism=SEIR | params=0 | geos=['Thaïlande', 'États-Unis'] | confidence=0.70
+2026-03-11 00:56:29,033 [ERROR]   Erreur article #161: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:29,033 [INFO] 
+  [162/249] 2020 | Brugger Jon, Althaus Christian L...
+2026-03-11 00:56:29,033 [INFO]     Transmission of and susceptibility to seasonal influenza in Switzerland from 200...
+2026-03-11 00:56:30,847 [INFO]     ✓ PDF téléchargé (2878 Ko)
+2026-03-11 00:56:32,183 [INFO]     → formalism=OTHER | params=0 | geos=['Chine', 'États-Unis'] | confidence=0.50
+2026-03-11 00:56:32,183 [ERROR]   Erreur article #162: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:32,183 [INFO] 
+  [163/249] 2020 | Yan Ada W C, Zhou Jie, Beauchemin Cather...
+2026-03-11 00:56:32,183 [INFO]     Quantifying mechanistic traits of influenza viral dynamics using in vitro data....
+2026-03-11 00:56:34,637 [INFO]     ✓ PDF téléchargé (2251 Ko)
+2026-03-11 00:56:36,165 [INFO]     → formalism=ABM | params=1 | geos=['États-Unis'] | confidence=0.65
+2026-03-11 00:56:36,165 [ERROR]   Erreur article #163: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:36,166 [INFO] 
+  [164/249] 2020 | Li Dong Mei, Chai Bing, Liu Wei Hua, Wen...
+2026-03-11 00:56:36,166 [INFO]     Qualitative analysis of a class of SISM epidemic model influenced by media publi...
+2026-03-11 00:56:37,911 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:56:37,915 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:56:37,915 [ERROR]   Erreur article #164: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:37,915 [INFO] 
+  [165/249] 2020 | Fakhruddin Muhammad, Suandi Dani, Sumiat...
+2026-03-11 00:56:37,915 [INFO]     Investigation of a measles transmission with vaccination: a case study in Jakart...
+2026-03-11 00:56:39,347 [INFO]     ✓ PDF téléchargé (13612 Ko)
+2026-03-11 00:56:40,943 [INFO]     → formalism=SEIR | params=0 | geos=['Ghana', 'Indonésie'] | confidence=0.55
+2026-03-11 00:56:40,944 [ERROR]   Erreur article #165: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:40,944 [INFO] 
+  [166/249] 2020 | Linton Natalie Marie, Keita Mory, Moitin...
+2026-03-11 00:56:40,944 [INFO]     Impact of mass vaccination campaigns on measles transmission during an outbreak ...
+2026-03-11 00:56:44,261 [INFO]     ✓ PDF téléchargé (1413 Ko)
+2026-03-11 00:56:45,685 [INFO]     → formalism=SEIR | params=1 | geos=['Guinée', 'Thaïlande'] | confidence=0.65
+2026-03-11 00:56:45,685 [ERROR]   Erreur article #166: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:45,685 [INFO] 
+  [167/249] 2020 | Sequeira João, Louçã Jorge, Mendes Antón...
+2026-03-11 00:56:45,685 [INFO]     Transition from endemic behavior to eradication of malaria due to combined drug ...
+2026-03-11 00:56:45,689 [INFO]     ✓ PDF téléchargé (684 Ko)
+2026-03-11 00:56:48,576 [INFO]     → formalism=ABM | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:56:48,577 [ERROR]   Erreur article #167: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:48,577 [INFO] 
+  [168/249] 2020 | Xue Yuyi, Xiao Yanni...
+2026-03-11 00:56:48,577 [INFO]     Analysis of a multiscale HIV-1 model coupling within-host viral dynamics and bet...
+2026-03-11 00:56:50,634 [INFO]     ✓ PDF téléchargé (1666 Ko)
+2026-03-11 00:56:51,410 [INFO]     → formalism=OTHER | params=0 | geos=['États-Unis'] | confidence=0.50
+2026-03-11 00:56:51,410 [ERROR]   Erreur article #168: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:51,410 [INFO] 
+  [169/249] 2020 | Su Shu, Fairley Christopher K, Mao Limin...
+2026-03-11 00:56:51,410 [INFO]     Estimation of the impact of changing drug-use trend on HIV, hepatitis C and syph...
+2026-03-11 00:56:52,853 [INFO]     ✓ PDF téléchargé (2016 Ko)
+2026-03-11 00:56:55,010 [INFO]     → formalism=OTHER | params=0 | geos=['Chine', 'Australie'] | confidence=0.35
+2026-03-11 00:56:55,011 [ERROR]   Erreur article #169: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:55,011 [INFO] 
+  [170/249] 2020 | Song Chenwei, Xu Rui, Bai Ning, Tian Xia...
+2026-03-11 00:56:55,011 [INFO]     Global dynamics and optimal control of a cholera transmission model with vaccina...
+2026-03-11 00:56:56,653 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:56:56,657 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:56:56,657 [ERROR]   Erreur article #170: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:56:56,657 [INFO] 
+  [171/249] 2019 | Leonenko Vasiliy, Bobashev Georgiy...
+2026-03-11 00:56:56,657 [INFO]     Analyzing influenza outbreaks in Russia using an age-structured dynamic transmis...
+2026-03-11 00:56:59,522 [INFO]     ✓ PDF téléchargé (2097 Ko)
+2026-03-11 00:57:00,666 [INFO]     → formalism=SIR | params=0 | geos=['Chine', 'États-Unis'] | confidence=0.55
+2026-03-11 00:57:00,667 [ERROR]   Erreur article #171: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:00,667 [INFO] 
+  [172/249] 2019 | Kim Soyoung, Jung Eunok...
+2026-03-11 00:57:00,667 [INFO]     Prioritization of vaccine strategy using an age-dependent mathematical model for...
+2026-03-11 00:57:03,513 [INFO]     ✓ PDF téléchargé (825 Ko)
+2026-03-11 00:57:04,407 [INFO]     → formalism=OTHER | params=0 | geos=['Chine', 'Royaume-Uni'] | confidence=0.35
+2026-03-11 00:57:04,408 [ERROR]   Erreur article #172: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:04,408 [INFO] 
+  [173/249] 2019 | Safan Muntaser...
+2026-03-11 00:57:04,408 [INFO]     Mathematical analysis of an SIR respiratory infection model with sex and gender ...
+2026-03-11 00:57:06,073 [INFO]     ✓ PDF téléchargé (2105 Ko)
+2026-03-11 00:57:08,065 [INFO]     → formalism=SIR | params=2 | geos=[] | confidence=0.55
+2026-03-11 00:57:08,066 [ERROR]   Erreur article #173: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:08,066 [INFO] 
+  [174/249] 2019 | Backer J A, Wallinga J, Meijer A, Donker...
+2026-03-11 00:57:08,066 [INFO]     The impact of influenza vaccination on infection, hospitalisation and mortality ...
+2026-03-11 00:57:10,373 [INFO]     ✓ PDF téléchargé (2129 Ko)
+2026-03-11 00:57:11,673 [INFO]     → formalism=OTHER | params=0 | geos=['Pays-Bas'] | confidence=0.35
+2026-03-11 00:57:11,674 [ERROR]   Erreur article #174: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:11,674 [INFO] 
+  [175/249] 2019 | Miranda Gisele H B, Baetens Jan M, Bossu...
+2026-03-11 00:57:11,674 [INFO]     Real-time prediction of influenza outbreaks in Belgium....
+2026-03-11 00:57:13,242 [INFO]     ✓ PDF téléchargé (13020 Ko)
+2026-03-11 00:57:14,485 [INFO]     → formalism=SIRD | params=0 | geos=['Belgique'] | confidence=0.55
+2026-03-11 00:57:14,485 [ERROR]   Erreur article #175: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:14,485 [INFO] 
+  [176/249] 2019 | Backer J A, van Boven M, van der Hoek W,...
+2026-03-11 00:57:14,485 [INFO]     Vaccinating children against influenza increases variability in epidemic size....
+2026-03-11 00:57:16,456 [INFO]     ✓ PDF téléchargé (2096 Ko)
+2026-03-11 00:57:20,698 [INFO]     → formalism=RENEWAL_EQUATION | params=0 | geos=['Allemagne'] | confidence=0.70
+2026-03-11 00:57:20,698 [ERROR]   Erreur article #176: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:20,698 [INFO] 
+  [177/249] 2019 | Cui Jing'an, Zhang Ya'nan, Feng Zhi Lan,...
+2026-03-11 00:57:20,698 [INFO]     Influence of asymptomatic infections for the effectiveness of facemasks during p...
+2026-03-11 00:57:22,250 [INFO]     ✓ PDF téléchargé (694 Ko)
+2026-03-11 00:57:23,029 [INFO]     → formalism=OTHER | params=0 | geos=['Royaume-Uni'] | confidence=0.35
+2026-03-11 00:57:23,030 [ERROR]   Erreur article #177: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:23,030 [INFO] 
+  [178/249] 2019 | Roberts M G, Hickson R I, McCaw J M, Tal...
+2026-03-11 00:57:23,030 [INFO]     A simple influenza model with complicated dynamics....
+2026-03-11 00:57:25,736 [INFO]     ✓ PDF téléchargé (2849 Ko)
+2026-03-11 00:57:28,521 [INFO]     → formalism=SIR | params=1 | geos=['États-Unis'] | confidence=0.65
+2026-03-11 00:57:28,522 [ERROR]   Erreur article #178: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:28,522 [INFO] 
+  [179/249] 2019 | Harris Rebecca C, Sumner Tom, Knight Gwe...
+2026-03-11 00:57:28,522 [INFO]     Age-targeted tuberculosis vaccination in China and implications for vaccine deve...
+2026-03-11 00:57:29,935 [INFO]     ✓ PDF téléchargé (1519 Ko)
+2026-03-11 00:57:31,040 [INFO]     → formalism=OTHER | params=0 | geos=['Chine'] | confidence=0.35
+2026-03-11 00:57:31,040 [ERROR]   Erreur article #179: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:31,040 [INFO] 
+  [180/249] 2019 | Xu Rui, Yang Junyuan, Tian Xiaohong, Lin...
+2026-03-11 00:57:31,040 [INFO]     Global dynamics of a tuberculosis model with fast and slow progression and age-d...
+2026-03-11 00:57:32,078 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:57:32,082 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:57:32,082 [ERROR]   Erreur article #180: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:32,082 [INFO] 
+  [181/249] 2019 | Nkamba Leontine Nkague, Manga Thomas Tim...
+2026-03-11 00:57:32,082 [INFO]     Mathematical model to assess vaccination and effective contact rate impact in th...
+2026-03-11 00:57:33,517 [INFO]     ✓ PDF téléchargé (2880 Ko)
+2026-03-11 00:57:35,950 [INFO]     → formalism=SEIR | params=0 | geos=['Nigeria', 'Chine'] | confidence=0.55
+2026-03-11 00:57:35,950 [ERROR]   Erreur article #181: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:35,950 [INFO] 
+  [182/249] 2019 | Treibert Sarah, Brunner Helmut, Ehrhardt...
+2026-03-11 00:57:35,950 [INFO]     Compartment models for vaccine effectiveness and non-specific effects for Tuberc...
+2026-03-11 00:57:37,699 [INFO]     ✓ PDF téléchargé (1305 Ko)
+2026-03-11 00:57:39,076 [INFO]     → formalism=OTHER | params=0 | geos=['Inde', 'Chine'] | confidence=0.35
+2026-03-11 00:57:39,076 [ERROR]   Erreur article #182: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:39,076 [INFO] 
+  [183/249] 2019 | Wang Zi Zi, Guo Zhi Ming, Smith Hal...
+2026-03-11 00:57:39,076 [INFO]     A mathematical model of oncolytic virotherapy with time delay....
+2026-03-11 00:57:40,685 [INFO]     ✓ PDF téléchargé (7606 Ko)
+2026-03-11 00:57:54,116 [INFO]     → formalism=ABM | params=1 | geos=['Canada'] | confidence=0.65
+2026-03-11 00:57:54,116 [ERROR]   Erreur article #183: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:57:54,116 [INFO] 
+  [184/249] 2019 | Zimmermann Marita, Frey Kurt, Hagedorn B...
+2026-03-11 00:57:54,116 [INFO]     Optimization of frequency and targeting of measles supplemental immunization act...
+2026-03-11 00:57:56,455 [INFO]     ✓ PDF téléchargé (4115 Ko)
+2026-03-11 00:58:00,879 [INFO]     → formalism=SIS | params=1 | geos=['Nigeria', 'Inde'] | confidence=0.65
+2026-03-11 00:58:00,879 [ERROR]   Erreur article #184: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:00,879 [INFO] 
+  [185/249] 2019 | Nwankwo Ann, Okuonghae Daniel...
+2026-03-11 00:58:00,879 [INFO]     Mathematical assessment of the impact of different microclimate conditions on ma...
+2026-03-11 00:58:02,594 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:58:02,598 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 00:58:02,599 [ERROR]   Erreur article #185: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:02,599 [INFO] 
+  [186/249] 2019 | Okuneye Kamaldeen, Eikenberry Steffen E,...
+2026-03-11 00:58:02,599 [INFO]     Weather-driven malaria transmission model with gonotrophic and sporogonic cycles...
+2026-03-11 00:58:03,724 [INFO]     ✓ PDF téléchargé (3737 Ko)
+2026-03-11 00:58:05,203 [INFO]     → formalism=SIS | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:58:05,203 [ERROR]   Erreur article #186: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:05,203 [INFO] 
+  [187/249] 2019 | Ding Qian, Liu Jian, Guo Zhi Ming...
+2026-03-11 00:58:05,203 [INFO]     Dynamics of a malaria infection model with time delay....
+2026-03-11 00:58:07,103 [INFO]     ✓ PDF téléchargé (163 Ko)
+2026-03-11 00:58:08,218 [INFO]     → formalism=NETWORK | params=1 | geos=['Chine'] | confidence=0.65
+2026-03-11 00:58:08,219 [ERROR]   Erreur article #187: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:08,219 [INFO] 
+  [188/249] 2019 | Ratchford Conrad, Wang Jin...
+2026-03-11 00:58:08,219 [INFO]     Multi-scale modeling of cholera dynamics in a spatially heterogeneous environmen...
+2026-03-11 00:58:09,767 [INFO]     ✓ PDF téléchargé (749 Ko)
+2026-03-11 00:58:11,280 [INFO]     → formalism=METAPOPULATION | params=1 | geos=['États-Unis'] | confidence=0.65
+2026-03-11 00:58:11,281 [ERROR]   Erreur article #188: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:11,281 [INFO] 
+  [189/249] 2019 | Phelps Matthew D, Simonsen Lone, Jensen ...
+2026-03-11 00:58:11,281 [INFO]     Individual and household exposures associated with cholera transmission in case-...
+2026-03-11 00:58:12,736 [INFO]     ✓ PDF téléchargé (835 Ko)
+2026-03-11 00:58:13,604 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 00:58:13,604 [ERROR]   Erreur article #189: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:13,604 [INFO] 
+  [190/249] 2019 | Khan Tahir, Jung Ii Hyo, Zaman Gul...
+2026-03-11 00:58:13,604 [INFO]     A stochastic model for the transmission dynamics of hepatitis B virus....
+2026-03-11 00:58:14,681 [INFO]     ✓ PDF téléchargé (2262 Ko)
+2026-03-11 00:58:16,504 [INFO]     → formalism=OTHER | params=0 | geos=['Chine', 'Royaume-Uni'] | confidence=0.35
+2026-03-11 00:58:16,504 [ERROR]   Erreur article #190: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:16,504 [INFO] 
+  [191/249] 2019 | Zhang Tai Lei, Li Hui, Xie Na, Fu Wen Hu...
+2026-03-11 00:58:16,504 [INFO]     Mathematical analysis and simulation of a Hepatitis B model with time delay: A c...
+2026-03-11 00:58:18,738 [INFO]     ✓ PDF téléchargé (2654 Ko)
+2026-03-11 00:58:24,218 [INFO]     → formalism=OTHER | params=0 | geos=['Chine'] | confidence=0.35
+2026-03-11 00:58:24,219 [ERROR]   Erreur article #191: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:24,219 [INFO] 
+  [192/249] 2018 | Leung Ka Yin, Trapman Pieter, Britton To...
+2026-03-11 00:58:24,219 [INFO]     Who is the infector? Epidemic models with symptomatic and asymptomatic cases....
+2026-03-11 00:58:26,151 [INFO]     ✓ PDF téléchargé (3416 Ko)
+2026-03-11 00:58:27,118 [INFO]     → formalism=SEIR | params=1 | geos=['États-Unis'] | confidence=0.65
+2026-03-11 00:58:27,119 [ERROR]   Erreur article #192: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:27,119 [INFO] 
+  [193/249] 2018 | Yaari Rami, Dattner Itai, Huppert Amit...
+2026-03-11 00:58:27,119 [INFO]     A two-stage approach for estimating the parameters of an age-group epidemic mode...
+2026-03-11 00:58:27,122 [INFO]     ✓ PDF téléchargé (1152 Ko)
+2026-03-11 00:58:29,309 [INFO]     → formalism=NETWORK | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:58:29,310 [ERROR]   Erreur article #193: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:29,310 [INFO] 
+  [194/249] 2018 | Fu Han, Lin Hsien-Ho, Hallett Timothy B,...
+2026-03-11 00:58:29,310 [INFO]     Modelling the effect of discontinuing universal Bacillus Calmette-Guérin vaccina...
+2026-03-11 00:58:32,396 [INFO]     ✓ PDF téléchargé (1200 Ko)
+2026-03-11 00:58:33,183 [INFO]     → formalism=OTHER | params=0 | geos=['États-Unis', 'Australie'] | confidence=0.35
+2026-03-11 00:58:33,184 [ERROR]   Erreur article #194: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:33,184 [INFO] 
+  [195/249] 2018 | Ciaravino G, García-Saenz A, Cabras S, A...
+2026-03-11 00:58:33,184 [INFO]     Assessing the variability in transmission of bovine tuberculosis within Spanish ...
+2026-03-11 00:58:36,288 [INFO]     ✓ PDF téléchargé (1418 Ko)
+2026-03-11 00:58:37,354 [INFO]     → formalism=OTHER | params=0 | geos=['Espagne'] | confidence=0.35
+2026-03-11 00:58:37,354 [ERROR]   Erreur article #195: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:37,354 [INFO] 
+  [196/249] 2018 | Bakary Traoré, Boureima Sangaré, Sado Tr...
+2026-03-11 00:58:37,354 [INFO]     A mathematical model of malaria transmission in a periodic environment....
+2026-03-11 00:58:38,746 [INFO]     ✓ PDF téléchargé (8478 Ko)
+2026-03-11 00:58:45,183 [INFO]     → formalism=SIR | params=1 | geos=['Éthiopie'] | confidence=0.65
+2026-03-11 00:58:45,183 [ERROR]   Erreur article #196: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:45,184 [INFO] 
+  [197/249] 2018 | Shcherbacheva Anna, Haario Heikki, Kille...
+2026-03-11 00:58:45,184 [INFO]     Modeling host-seeking behavior of African malaria vector mosquitoes in the prese...
+2026-03-11 00:58:47,348 [INFO]     ✓ PDF téléchargé (862 Ko)
+2026-03-11 00:58:49,064 [INFO]     → formalism=BAYESIAN | params=0 | geos=['Ghana'] | confidence=0.55
+2026-03-11 00:58:49,065 [ERROR]   Erreur article #197: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:49,065 [INFO] 
+  [198/249] 2018 | Yakob Laith, Lloyd Alun L, Kao Rowland R...
+2026-03-11 00:58:49,065 [INFO]     Plasmodium knowlesi invasion following spread by infected mosquitoes, macaques a...
+2026-03-11 00:58:51,442 [INFO]     ✓ PDF téléchargé (1457 Ko)
+2026-03-11 00:58:52,360 [INFO]     → formalism=OTHER | params=0 | geos=['États-Unis', 'Brésil'] | confidence=0.35
+2026-03-11 00:58:52,361 [ERROR]   Erreur article #198: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:52,361 [INFO] 
+  [199/249] 2018 | Berge Tsanou, Bowong Samuel, Lubuma Jean...
+2026-03-11 00:58:52,361 [INFO]     Modeling ebola virus disease transmissions with reservoir in a complex virus lif...
+2026-03-11 00:58:54,498 [INFO]     ✓ PDF téléchargé (2364 Ko)
+2026-03-11 00:58:55,938 [INFO]     → formalism=OTHER | params=0 | geos=['Italie', 'Espagne'] | confidence=0.20
+2026-03-11 00:58:55,938 [ERROR]   Erreur article #199: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:55,939 [INFO] 
+  [200/249] 2018 | Zahid Mondal Hasan, Kribs Christopher M...
+2026-03-11 00:58:55,939 [INFO]     Ebola: Impact of hospital's admission policy in an overwhelmed scenario....
+2026-03-11 00:58:57,791 [INFO]     ✓ PDF téléchargé (1162 Ko)
+2026-03-11 00:58:58,728 [INFO]     → formalism=SIS | params=0 | geos=['Kenya', 'Afrique du Sud'] | confidence=0.55
+2026-03-11 00:58:58,728 [ERROR]   Erreur article #200: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:58:58,728 [INFO] 
+  [201/249] 2018 | Khan Tahir, Zaman Gul, Chohan Muhammad I...
+2026-03-11 00:58:58,729 [INFO]     The transmission dynamic of different hepatitis B-infected individuals with the ...
+2026-03-11 00:59:00,147 [INFO]     ✓ PDF téléchargé (627 Ko)
+2026-03-11 00:59:04,817 [INFO]     → formalism=SIS | params=0 | geos=['Éthiopie'] | confidence=0.55
+2026-03-11 00:59:04,817 [ERROR]   Erreur article #201: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:04,817 [INFO] 
+  [202/249] 2017 | Gerlier L, Lamotte M, Grenèche S, Lenne ...
+2026-03-11 00:59:04,817 [INFO]     Assessment of Public Health and Economic Impact of Intranasal Live-Attenuated In...
+2026-03-11 00:59:07,109 [INFO]     ✓ PDF téléchargé (1135 Ko)
+2026-03-11 00:59:08,343 [INFO]     → formalism=OTHER | params=0 | geos=['France', 'États-Unis'] | confidence=0.35
+2026-03-11 00:59:08,343 [ERROR]   Erreur article #202: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:08,343 [INFO] 
+  [203/249] 2017 | Tang Yilei, Xiao Dongmei, Zhang Weinian,...
+2026-03-11 00:59:08,343 [INFO]     Dynamics of epidemic models with asymptomatic infection and seasonal succession....
+2026-03-11 00:59:10,386 [INFO]     ✓ PDF téléchargé (2398 Ko)
+2026-03-11 00:59:16,663 [INFO]     → formalism=ABM | params=0 | geos=['Chine'] | confidence=0.70
+2026-03-11 00:59:16,663 [ERROR]   Erreur article #203: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:16,663 [INFO] 
+  [204/249] 2017 | Kim Kiyeon, Omori Ryosuke, Ito Kimihito...
+2026-03-11 00:59:16,663 [INFO]     Inferring epidemiological dynamics of infectious diseases using Tajima's D stati...
+2026-03-11 00:59:18,990 [INFO]     ✓ PDF téléchargé (2588 Ko)
+2026-03-11 00:59:20,473 [INFO]     → formalism=OTHER | params=1 | geos=[] | confidence=0.25
+2026-03-11 00:59:20,474 [ERROR]   Erreur article #204: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:20,474 [INFO] 
+  [205/249] 2017 | Kim Soyoung, Lee Jonggul, Jung Eunok...
+2026-03-11 00:59:20,474 [INFO]     Mathematical model of transmission dynamics and optimal control strategies for 2...
+2026-03-11 00:59:22,779 [INFO]     ✓ PDF téléchargé (1169 Ko)
+2026-03-11 00:59:24,121 [INFO]     → formalism=SEIR | params=0 | geos=['Espagne', 'États-Unis'] | confidence=0.55
+2026-03-11 00:59:24,121 [ERROR]   Erreur article #205: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:24,121 [INFO] 
+  [206/249] 2017 | Liu Siyu, Li Yong, Bi Yingjie, Huang Qin...
+2026-03-11 00:59:24,121 [INFO]     Mixed vaccination strategy for the control of tuberculosis: A case study in Chin...
+2026-03-11 00:59:26,874 [INFO]     ✓ PDF téléchargé (548 Ko)
+2026-03-11 00:59:28,236 [INFO]     → formalism=ABM | params=1 | geos=['Chine', 'États-Unis'] | confidence=0.80
+2026-03-11 00:59:28,236 [ERROR]   Erreur article #206: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:28,236 [INFO] 
+  [207/249] 2017 | Ren Shanjing...
+2026-03-11 00:59:28,236 [INFO]     Global stability in a tuberculosis model of imperfect treatment with age-depende...
+2026-03-11 00:59:31,583 [INFO]     ✓ PDF téléchargé (1061 Ko)
+2026-03-11 00:59:33,704 [INFO]     → formalism=SIRS | params=0 | geos=['Chine'] | confidence=0.55
+2026-03-11 00:59:33,704 [ERROR]   Erreur article #207: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:33,704 [INFO] 
+  [208/249] 2017 | Nishiura Hiroshi, Mizumoto Kenji, Asai Y...
+2026-03-11 00:59:33,704 [INFO]     Assessing the transmission dynamics of measles in Japan, 2016....
+2026-03-11 00:59:35,065 [INFO]     ✓ PDF téléchargé (1150 Ko)
+2026-03-11 00:59:36,259 [INFO]     → formalism=SIR | params=2 | geos=['États-Unis', 'Mexique'] | confidence=0.75
+2026-03-11 00:59:36,259 [ERROR]   Erreur article #208: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:36,260 [INFO] 
+  [209/249] 2017 | Mohammed-Awel Jemal, Numfor Eric...
+2026-03-11 00:59:36,260 [INFO]     Optimal insecticide-treated bed-net coverage and malaria treatment in a malaria-...
+2026-03-11 00:59:37,627 [INFO]     ✓ PDF téléchargé (8800 Ko)
+2026-03-11 00:59:39,734 [INFO]     → formalism=OTHER | params=1 | geos=['Inde', 'Chine'] | confidence=0.45
+2026-03-11 00:59:39,734 [ERROR]   Erreur article #209: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:39,734 [INFO] 
+  [210/249] 2017 | Cui Qianqian, Qiu Zhipeng, Ding Ling...
+2026-03-11 00:59:39,735 [INFO]     An SIR epidemic model with vaccination in a patchy environment....
+2026-03-11 00:59:43,357 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 00:59:43,360 [INFO]     → formalism=SIR | params=0 | geos=[] | confidence=0.35
+2026-03-11 00:59:43,361 [ERROR]   Erreur article #210: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:43,361 [INFO] 
+  [211/249] 2017 | Cremin Ide, McKinnon Lyle, Kimani Joshua...
+2026-03-11 00:59:43,361 [INFO]     PrEP for key populations in combination HIV prevention in Nairobi: a mathematica...
+2026-03-11 00:59:45,715 [INFO]     ✓ PDF téléchargé (1597 Ko)
+2026-03-11 00:59:47,262 [INFO]     → formalism=OTHER | params=0 | geos=['Canada', 'Afrique subsaharienne'] | confidence=0.35
+2026-03-11 00:59:47,263 [ERROR]   Erreur article #211: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:47,263 [INFO] 
+  [212/249] 2017 | Yamazaki Kazuo, Wang Xueying...
+2026-03-11 00:59:47,263 [INFO]     Global stability and uniform persistence of the reaction-convection-diffusion ch...
+2026-03-11 00:59:48,988 [INFO]     ✓ PDF téléchargé (749 Ko)
+2026-03-11 00:59:50,511 [INFO]     → formalism=METAPOPULATION | params=1 | geos=['États-Unis'] | confidence=0.65
+2026-03-11 00:59:50,512 [ERROR]   Erreur article #212: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:50,512 [INFO] 
+  [213/249] 2017 | Khan Tahir, Zaman Gul, Chohan M Ikhlaq...
+2026-03-11 00:59:50,512 [INFO]     The transmission dynamic and optimal control of acute and chronic hepatitis B....
+2026-03-11 00:59:52,173 [INFO]     ✓ PDF téléchargé (5629 Ko)
+2026-03-11 00:59:58,583 [INFO]     → formalism=OTHER | params=2 | geos=[] | confidence=0.35
+2026-03-11 00:59:58,583 [ERROR]   Erreur article #213: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 00:59:58,584 [INFO] 
+  [214/249] 2016 | Bürger Raimund, Chowell Gerardo, Mulet P...
+2026-03-11 00:59:58,584 [INFO]     Modelling the spatial-temporal progression of the 2009 A/H1N1 influenza pandemic...
+2026-03-11 01:00:01,076 [INFO]     ✓ PDF téléchargé (4682 Ko)
+2026-03-11 01:00:07,022 [INFO]     → formalism=SEIR | params=2 | geos=['États-Unis'] | confidence=0.75
+2026-03-11 01:00:07,022 [ERROR]   Erreur article #214: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:07,023 [INFO] 
+  [215/249] 2016 | Jabbari Azizeh, Castillo-Chavez Carlos, ...
+2026-03-11 01:00:07,023 [INFO]     A two-strain TB model with multiple latent stages....
+2026-03-11 01:00:07,026 [INFO]     ✓ PDF téléchargé (1301 Ko)
+2026-03-11 01:00:08,232 [INFO]     → formalism=SEIR | params=1 | geos=['États-Unis'] | confidence=0.65
+2026-03-11 01:00:08,233 [ERROR]   Erreur article #215: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:08,233 [INFO] 
+  [216/249] 2016 | Adams Ben...
+2026-03-11 01:00:08,233 [INFO]     Household demographic determinants of Ebola epidemic risk....
+2026-03-11 01:00:11,211 [INFO]     ✓ PDF téléchargé (1240 Ko)
+2026-03-11 01:00:12,922 [INFO]     → formalism=SIR | params=1 | geos=['Royaume-Uni'] | confidence=0.65
+2026-03-11 01:00:12,922 [ERROR]   Erreur article #216: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:12,922 [INFO] 
+  [217/249] 2016 | Sánchez-González G...
+2026-03-11 01:00:12,922 [INFO]     The cost-effectiveness of treating triple coinfection with HIV, tuberculosis and...
+2026-03-11 01:00:14,592 [INFO]     ✓ PDF téléchargé (1372 Ko)
+2026-03-11 01:00:18,582 [INFO]     → formalism=OTHER | params=1 | geos=['Philippines'] | confidence=0.45
+2026-03-11 01:00:18,582 [ERROR]   Erreur article #217: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:18,582 [INFO] 
+  [218/249] 2016 | Wu Yue, Wood James, Khandaker Gulam, Wad...
+2026-03-11 01:00:18,582 [INFO]     Informing rubella vaccination strategies in East Java, Indonesia through transmi...
+2026-03-11 01:00:22,271 [INFO]     ✓ PDF téléchargé (582 Ko)
+2026-03-11 01:00:23,009 [INFO]     → formalism=OTHER | params=0 | geos=['Indonésie', 'Inde'] | confidence=0.35
+2026-03-11 01:00:23,009 [ERROR]   Erreur article #218: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:23,009 [INFO] 
+  [219/249] 2016 | Ngonghala Calistus N, Mohammed-Awel Jema...
+2026-03-11 01:00:23,009 [INFO]     Interplay between insecticide-treated bed-nets and mosquito demography: implicat...
+2026-03-11 01:00:25,652 [INFO]     ✓ PDF téléchargé (2059 Ko)
+2026-03-11 01:00:27,596 [INFO]     → formalism=SIS | params=0 | geos=['Burkina Faso', 'Afrique subsaharienne'] | confidence=0.55
+2026-03-11 01:00:27,596 [ERROR]   Erreur article #219: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:27,596 [INFO] 
+  [220/249] 2016 | Ruktanonchai Nick W, Smith David L, De L...
+2026-03-11 01:00:27,596 [INFO]     Parasite sources and sinks in a patched Ross-Macdonald malaria model with human ...
+2026-03-11 01:00:27,600 [INFO]     ✓ PDF téléchargé (308 Ko)
+2026-03-11 01:00:28,517 [INFO]     → formalism=NETWORK | params=1 | geos=[] | confidence=0.45
+2026-03-11 01:00:28,518 [ERROR]   Erreur article #220: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:28,518 [INFO] 
+  [221/249] 2016 | Frasso Gianluca, Lambert Philippe...
+2026-03-11 01:00:28,518 [INFO]     Bayesian inference in an extended SEIR model with nonparametric disease transmis...
+2026-03-11 01:00:30,157 [INFO]     ✓ PDF téléchargé (1171 Ko)
+2026-03-11 01:00:31,335 [INFO]     → formalism=SEIR | params=1 | geos=[] | confidence=0.60
+2026-03-11 01:00:31,336 [ERROR]   Erreur article #221: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:31,336 [INFO] 
+  [222/249] 2016 | McGillen Jessica B, Anderson Sarah-Jane,...
+2026-03-11 01:00:31,336 [INFO]     Optimum resource allocation to reduce HIV incidence across sub-Saharan Africa: a...
+2026-03-11 01:00:33,536 [INFO]     ✓ PDF téléchargé (1913 Ko)
+2026-03-11 01:00:35,904 [INFO]     → formalism=OTHER | params=1 | geos=['Afrique subsaharienne'] | confidence=0.45
+2026-03-11 01:00:35,905 [ERROR]   Erreur article #222: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:35,905 [INFO] 
+  [223/249] 2016 | Manyombe Martin Luther Mann, Mbang Josep...
+2026-03-11 01:00:35,905 [INFO]     Global dynamics of a vaccination model for infectious diseases with asymptomatic...
+2026-03-11 01:00:38,553 [INFO]     ✓ PDF téléchargé (2139 Ko)
+2026-03-11 01:00:39,890 [INFO]     → formalism=OTHER | params=1 | geos=['Chine', 'États-Unis'] | confidence=0.45
+2026-03-11 01:00:39,890 [ERROR]   Erreur article #223: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:39,890 [INFO] 
+  [224/249] 2015 | Goeyvaerts Nele, Willem Lander, Van Kerc...
+2026-03-11 01:00:39,890 [INFO]     Estimating dynamic transmission model parameters for seasonal influenza by fitti...
+2026-03-11 01:00:42,299 [INFO]     ✓ PDF téléchargé (943 Ko)
+2026-03-11 01:00:44,316 [INFO]     → formalism=SEIRS | params=1 | geos=['Afrique du Sud'] | confidence=0.80
+2026-03-11 01:00:44,316 [ERROR]   Erreur article #224: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:44,316 [INFO] 
+  [225/249] 2015 | Liu Zhifei, Fang Chi-Tai...
+2026-03-11 01:00:44,316 [INFO]     A modeling study of human infections with avian influenza A H7N9 virus in mainla...
+2026-03-11 01:00:46,029 [INFO]     ✓ PDF téléchargé (1233 Ko)
+2026-03-11 01:00:47,803 [INFO]     → formalism=ABM | params=0 | geos=['Chine', 'France'] | confidence=0.55
+2026-03-11 01:00:47,803 [ERROR]   Erreur article #225: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:47,803 [INFO] 
+  [226/249] 2015 | Sega L, Maxin D, Eaton L, Latham A, Moos...
+2026-03-11 01:00:47,803 [INFO]     The effect of risk-taking behaviour in epidemic models....
+2026-03-11 01:00:49,409 [INFO]     ✓ PDF téléchargé (2861 Ko)
+2026-03-11 01:00:51,851 [INFO]     → formalism=SEIR | params=2 | geos=[] | confidence=0.55
+2026-03-11 01:00:51,852 [ERROR]   Erreur article #226: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:51,852 [INFO] 
+  [227/249] 2015 | Littlewood Kavi J, Ouwens Mario J N M, S...
+2026-03-11 01:00:51,852 [INFO]     Cost-effectiveness of routine varicella vaccination using the measles, mumps, ru...
+2026-03-11 01:00:54,321 [INFO]     ✓ PDF téléchargé (3689 Ko)
+2026-03-11 01:00:56,366 [INFO]     → formalism=OTHER | params=0 | geos=['France', 'Royaume-Uni'] | confidence=0.35
+2026-03-11 01:00:56,367 [ERROR]   Erreur article #227: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:00:56,367 [INFO] 
+  [228/249] 2015 | White Michael T, Verity Robert, Churcher...
+2026-03-11 01:00:56,367 [INFO]     Vaccine approaches to malaria control and elimination: Insights from mathematica...
+2026-03-11 01:00:59,134 [INFO]     ✓ PDF téléchargé (8478 Ko)
+2026-03-11 01:01:05,616 [INFO]     → formalism=SIR | params=1 | geos=['Éthiopie'] | confidence=0.65
+2026-03-11 01:01:05,617 [ERROR]   Erreur article #228: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:05,617 [INFO] 
+  [229/249] 2015 | Penkler Gerald, du Toit Francois, Adams ...
+2026-03-11 01:01:05,617 [INFO]     Construction and validation of a detailed kinetic model of glycolysis in Plasmod...
+2026-03-11 01:01:09,340 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-11 01:01:09,345 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.00
+2026-03-11 01:01:09,345 [ERROR]   Erreur article #229: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:09,345 [INFO] 
+  [230/249] 2015 | Ivorra Benjamin, Ngom Diène, Ramos Ángel...
+2026-03-11 01:01:09,346 [INFO]     Be-CoDiS: A Mathematical Model to Predict the Risk of Human Diseases Spread Betw...
+2026-03-11 01:01:09,350 [INFO]     ✓ PDF téléchargé (484 Ko)
+2026-03-11 01:01:10,934 [INFO]     → formalism=ABM | params=3 | geos=['Guinée', 'Royaume-Uni'] | confidence=0.85
+2026-03-11 01:01:10,934 [ERROR]   Erreur article #230: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:10,934 [INFO] 
+  [231/249] 2015 | Althaus C L, Low N, Musa E O, Shuaib F, ...
+2026-03-11 01:01:10,934 [INFO]     Ebola virus disease outbreak in Nigeria: Transmission dynamics and rapid control...
+2026-03-11 01:01:13,205 [INFO]     ✓ PDF téléchargé (8790 Ko)
+2026-03-11 01:01:15,310 [INFO]     → formalism=SEIR | params=0 | geos=['Nigeria', 'Royaume-Uni'] | confidence=0.70
+2026-03-11 01:01:15,310 [ERROR]   Erreur article #231: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:15,310 [INFO] 
+  [232/249] 2015 | Browne Cameron, Gulbudak Hayriye, Webb G...
+2026-03-11 01:01:15,310 [INFO]     Modeling contact tracing in outbreaks with application to Ebola....
+2026-03-11 01:01:15,318 [INFO]     ✓ PDF téléchargé (1630 Ko)
+2026-03-11 01:01:17,038 [INFO]     → formalism=SEIR | params=2 | geos=["Afrique de l'Ouest"] | confidence=0.75
+2026-03-11 01:01:17,038 [ERROR]   Erreur article #232: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:17,038 [INFO] 
+  [233/249] 2015 | Shuai Zhisheng, van den Driessche P...
+2026-03-11 01:01:17,038 [INFO]     Modelling and control of cholera on networks with a common water source....
+2026-03-11 01:01:18,285 [INFO]     ✓ PDF téléchargé (2219 Ko)
+2026-03-11 01:01:21,697 [INFO]     → formalism=SIR | params=3 | geos=['Nigeria', 'Thaïlande'] | confidence=0.85
+2026-03-11 01:01:21,698 [ERROR]   Erreur article #233: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:21,698 [INFO] 
+  [234/249] 2015 | Lahodny G E, Gautam R, Ivanek R...
+2026-03-11 01:01:21,698 [INFO]     Estimating the probability of an extinction or major outbreak for an environment...
+2026-03-11 01:01:22,895 [INFO]     ✓ PDF téléchargé (2006 Ko)
+2026-03-11 01:01:25,399 [INFO]     → formalism=SIR | params=1 | geos=['Royaume-Uni', 'Italie'] | confidence=0.65
+2026-03-11 01:01:25,400 [ERROR]   Erreur article #234: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:25,400 [INFO] 
+  [235/249] 2015 | Rossi Gianluigi, De Leo Giulio A, Pongol...
+2026-03-11 01:01:25,400 [INFO]     Epidemiological modelling for the assessment of bovine tuberculosis surveillance...
+2026-03-11 01:01:27,913 [INFO]     ✓ PDF téléchargé (1819 Ko)
+2026-03-11 01:01:29,096 [INFO]     → formalism=OTHER | params=1 | geos=['Italie'] | confidence=0.45
+2026-03-11 01:01:29,096 [ERROR]   Erreur article #235: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:29,097 [INFO] 
+  [236/249] 2014 | Pawelek Kasia A, Oeldorf-Hirsch Anne, Ro...
+2026-03-11 01:01:29,097 [INFO]     Modeling the impact of twitter on influenza epidemics....
+2026-03-11 01:01:31,495 [INFO]     ✓ PDF téléchargé (3592 Ko)
+2026-03-11 01:01:35,201 [INFO]     → formalism=SEIR | params=0 | geos=[] | confidence=0.50
+2026-03-11 01:01:35,201 [ERROR]   Erreur article #236: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:35,201 [INFO] 
+  [237/249] 2014 | Trauer James M, Denholm Justin T, McBryd...
+2026-03-11 01:01:35,201 [INFO]     Construction of a mathematical model for tuberculosis transmission in highly end...
+2026-03-11 01:01:37,948 [INFO]     ✓ PDF téléchargé (3028 Ko)
+2026-03-11 01:01:42,703 [INFO]     → formalism=SIS | params=0 | geos=['Inde', 'États-Unis'] | confidence=0.55
+2026-03-11 01:01:42,703 [ERROR]   Erreur article #237: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:42,703 [INFO] 
+  [238/249] 2014 | Zhao Xue-Song, Wang Zheng-Ting, Wu Zhi-Y...
+2026-03-11 01:01:42,703 [INFO]     Differentiation of Crohn's disease from intestinal tuberculosis by clinical and ...
+2026-03-11 01:01:43,994 [INFO]     ✓ PDF téléchargé (3859 Ko)
+2026-03-11 01:01:44,319 [INFO]     → formalism=OTHER | params=0 | geos=[] | confidence=0.15
+2026-03-11 01:01:44,319 [ERROR]   Erreur article #238: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:44,319 [INFO] 
+  [239/249] 2014 | Bacaër Nicolas, Ait Dads El Hadi...
+2026-03-11 01:01:44,319 [INFO]     On the probability of extinction in a periodic environment....
+2026-03-11 01:01:46,652 [INFO]     ✓ PDF téléchargé (1257 Ko)
+2026-03-11 01:01:52,135 [INFO]     → formalism=METAPOPULATION | params=0 | geos=['États-Unis'] | confidence=0.70
+2026-03-11 01:01:52,135 [ERROR]   Erreur article #239: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:52,135 [INFO] 
+  [240/249] 2014 | Yang Jianxin, Qiu Zhipeng, Li Xue-Zhi...
+2026-03-11 01:01:52,135 [INFO]     Global stability of an age-structured cholera model....
+2026-03-11 01:01:54,023 [INFO]     ✓ PDF téléchargé (411 Ko)
+2026-03-11 01:01:55,194 [INFO]     → formalism=SIR | params=4 | geos=['France', 'Italie'] | confidence=0.85
+2026-03-11 01:01:55,194 [ERROR]   Erreur article #240: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:55,194 [INFO] 
+  [241/249] 2013 | Tan Xuhui, Yuan Lingling, Zhou Jingjing,...
+2026-03-11 01:01:55,194 [INFO]     Modeling the initial transmission dynamics of influenza A H1N1 in Guangdong Prov...
+2026-03-11 01:01:57,916 [INFO]     ✓ PDF téléchargé (534 Ko)
+2026-03-11 01:01:58,423 [INFO]     → formalism=OTHER | params=1 | geos=['Chine', 'Italie'] | confidence=0.45
+2026-03-11 01:01:58,423 [ERROR]   Erreur article #241: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:01:58,423 [INFO] 
+  [242/249] 2013 | Dureau Joseph, Kalogeropoulos Konstantin...
+2026-03-11 01:01:58,423 [INFO]     Capturing the time-varying drivers of an epidemic using stochastic dynamical sys...
+2026-03-11 01:01:59,553 [INFO]     ✓ PDF téléchargé (3429 Ko)
+2026-03-11 01:02:00,653 [INFO]     → formalism=STOCHASTIC_SIR | params=0 | geos=['États-Unis'] | confidence=0.55
+2026-03-11 01:02:00,653 [ERROR]   Erreur article #242: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:02:00,654 [INFO] 
+  [243/249] 2013 | Saenz Roberto A, Bonhoeffer Sebastian...
+2026-03-11 01:02:00,654 [INFO]     Nested model reveals potential amplification of an HIV epidemic due to drug resi...
+2026-03-11 01:02:02,830 [INFO]     ✓ PDF téléchargé (2173 Ko)
+2026-03-11 01:02:03,935 [INFO]     → formalism=OTHER | params=1 | geos=['Chine', 'États-Unis'] | confidence=0.45
+2026-03-11 01:02:03,935 [ERROR]   Erreur article #243: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:02:03,935 [INFO] 
+  [244/249] 2012 | Taylor Michael, Taylor Timothy J, Kiss I...
+2026-03-11 01:02:03,935 [INFO]     Epidemic threshold and control in a dynamic network....
+2026-03-11 01:02:05,497 [INFO]     ✓ PDF téléchargé (3337 Ko)
+2026-03-11 01:02:09,812 [INFO]     → formalism=SIS | params=4 | geos=[] | confidence=0.65
+2026-03-11 01:02:09,813 [ERROR]   Erreur article #244: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:02:09,813 [INFO] 
+  [245/249] 2009 | McBryde Emma S...
+2026-03-11 01:02:09,813 [INFO]     Network structure can play a role in vaccination thresholds and herd immunity: a...
+2026-03-11 01:02:11,326 [INFO]     ✓ PDF téléchargé (1419 Ko)
+2026-03-11 01:02:12,893 [INFO]     → formalism=ABM | params=1 | geos=['États-Unis'] | confidence=0.80
+2026-03-11 01:02:12,893 [ERROR]   Erreur article #245: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:02:12,893 [INFO] 
+  [246/249] 2009 | Ezanno Pauline, Lesnoff Matthieu...
+2026-03-11 01:02:12,893 [INFO]     A metapopulation model for the spread and persistence of contagious bovine pleur...
+2026-03-11 01:02:14,606 [INFO]     ✓ PDF téléchargé (1904 Ko)
+2026-03-11 01:02:16,905 [INFO]     → formalism=METAPOPULATION | params=0 | geos=['États-Unis', 'Australie'] | confidence=0.55
+2026-03-11 01:02:16,905 [ERROR]   Erreur article #246: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:02:16,906 [INFO] 
+  [247/249] 2007 | Vynnycky Emilia, Trindall Amy, Mangtani ...
+2026-03-11 01:02:16,906 [INFO]     Estimates of the reproduction numbers of Spanish influenza using morbidity data....
+2026-03-11 01:02:19,111 [INFO]     ✓ PDF téléchargé (3296 Ko)
+2026-03-11 01:02:25,867 [INFO]     → formalism=SEIR | params=5 | geos=['Canada'] | confidence=0.85
+2026-03-11 01:02:25,868 [ERROR]   Erreur article #247: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:02:25,868 [INFO] 
+  [248/249] 2006 | Lekone Phenyo E, Finkenstädt Bärbel F...
+2026-03-11 01:02:25,868 [INFO]     Statistical inference in a stochastic epidemic SEIR model with control intervent...
+2026-03-11 01:02:27,103 [INFO]     ✓ PDF téléchargé (4978 Ko)
+2026-03-11 01:02:28,601 [INFO]     → formalism=SEIR | params=3 | geos=['Nigeria', 'Kenya'] | confidence=0.85
+2026-03-11 01:02:28,602 [ERROR]   Erreur article #248: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:02:28,602 [INFO] 
+  [249/249] 2000 | Cancré N, Tall A, Rogier C, Faye J, Sarr...
+2026-03-11 01:02:28,602 [INFO]     Bayesian analysis of an epidemiologic model of Plasmodium falciparum malaria inf...
+2026-03-11 01:02:29,860 [INFO]     ✓ PDF téléchargé (782 Ko)
+2026-03-11 01:02:31,680 [INFO]     → formalism=ABM | params=1 | geos=['Sénégal', 'France'] | confidence=0.65
+2026-03-11 01:02:31,681 [ERROR]   Erreur article #249: current transaction is aborted, commands ignored until end of transaction block
+
+2026-03-11 01:02:31,681 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-11 01:02:31,681 [INFO]   RAPPORT FINAL — PDF Extractor
+2026-03-11 01:02:31,681 [INFO] ════════════════════════════════════════════════════════════
+2026-03-11 01:02:31,681 [INFO]   Articles traités      : 249
+2026-03-11 01:02:31,681 [INFO]   PDFs téléchargés      : 170
+2026-03-11 01:02:31,681 [INFO]   Texte extrait OK      : 249
+2026-03-11 01:02:31,681 [INFO]   Modèles créés         : 6
+2026-03-11 01:02:31,681 [INFO]   Avec paramètres (β,γ) : 71
+2026-03-11 01:02:31,681 [INFO]   Avec géographie       : 174
+2026-03-11 01:02:31,681 [INFO]   Avec code GitHub      : 35
+2026-03-11 01:02:31,681 [INFO]   Ignorés               : 0
+2026-03-11 01:02:31,681 [INFO]   Erreurs               : 243
+2026-03-11 01:02:31,682 [INFO] ════════════════════════════════════════════════════════════
+2026-03-11 01:02:31,682 [INFO] 
+  ✅ Prochaine étape : validation manuelle
+2026-03-11 01:02:31,682 [INFO]      python3 pipeline_runner.py stats
+2026-03-11 01:02:31,682 [INFO]      python3 pipeline_runner.py export

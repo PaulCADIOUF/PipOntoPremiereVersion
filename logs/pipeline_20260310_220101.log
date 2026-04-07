@@ -1,0 +1,33 @@
+2026-03-10 22:01:01,924 [INFO] Connexion à PostgreSQL...
+2026-03-10 22:01:01,952 [INFO] Base connectée — 1633 DOIs existants
+2026-03-10 22:01:01,952 [INFO] Clé API NCBI détectée — vitesse maximale (10 req/s)
+2026-03-10 22:01:01,952 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-10 22:01:01,952 [INFO]   PIPOnto Pipeline PubMed — PRODUCTION
+2026-03-10 22:01:01,952 [INFO]   1 requêtes à traiter
+2026-03-10 22:01:01,952 [INFO] ════════════════════════════════════════════════════════════
+
+2026-03-10 22:01:01,952 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 22:01:01,952 [INFO]   Traitement : COVID-19 [COVID19]
+2026-03-10 22:01:01,952 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 22:01:01,953 [INFO]   disease_id PostgreSQL : 1
+2026-03-10 22:01:02,813 [INFO]   ESearch : +300 PMIDs (offset=0, total=1428)
+2026-03-10 22:01:02,934 [INFO]   300 PMIDs trouvés — 91 nouveaux
+2026-03-10 22:01:02,934 [INFO]   EFetch lot 1 : 91 articles...
+2026-03-10 22:01:06,804 [INFO]   90 articles parsés
+2026-03-10 22:01:06,810 [INFO]   38 articles pertinents (score ≥ 0.25)
+2026-03-10 22:01:06,828 [INFO]   ✓ 20 articles insérés...
+2026-03-10 22:01:06,843 [INFO]   ✅ COVID19 terminé — insérés=38, doublons=0, score_bas=52, erreurs=0
+2026-03-10 22:01:06,843 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-10 22:01:06,844 [INFO]   RAPPORT FINAL — Pipeline PubMed PIPOnto
+2026-03-10 22:01:06,844 [INFO] ════════════════════════════════════════════════════════════
+2026-03-10 22:01:06,844 [INFO]   Articles récupérés    : 90
+2026-03-10 22:01:06,844 [INFO]   Articles pertinents   : 38
+2026-03-10 22:01:06,844 [INFO]   Articles insérés en BD: 38
+2026-03-10 22:01:06,844 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 22:01:06,844 [INFO]   ✅ COVID19                        insérés= 38  doublons=  0  bas= 52  err=0
+2026-03-10 22:01:06,844 [INFO] ════════════════════════════════════════════════════════════
+
+2026-03-10 22:01:06,844 [INFO]   Statistiques exportées : /home/pacadi/piponto/data/pipeline_stats_20260310_220106.csv

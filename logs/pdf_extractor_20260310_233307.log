@@ -1,0 +1,34 @@
+2026-03-10 23:33:07,211 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-10 23:33:07,211 [INFO]   PDF Extractor — DRY RUN
+2026-03-10 23:33:07,211 [INFO] ════════════════════════════════════════════════════════════
+2026-03-10 23:33:07,215 [INFO]   1 articles à traiter
+2026-03-10 23:33:07,216 [INFO] 
+  [1/1] 2026 | Palomares Alfonso Diz-Lois, de Blasio Bi...
+2026-03-10 23:33:07,216 [INFO]     Combining an agent-based model with Gaussian process emulation to model the emer...
+2026-03-10 23:33:09,378 [INFO]     ⚠️  PDF non téléchargeable — extraction depuis abstract
+2026-03-10 23:33:09,399 [INFO]     → formalism=ABM | params=0 | geos=['Afrique du Sud'] | confidence=0.55
+2026-03-10 23:33:09,400 [INFO]     [DRY RUN] Would insert: ABM_COVID19_Palomares_2026
+2026-03-10 23:33:09,400 [INFO]     name=ABM Diz-Lois 2026 — COVID19 — Afrique du Sud
+2026-03-10 23:33:09,400 [INFO]     formalism=ABM, type=DETERMINISTIC
+2026-03-10 23:33:09,400 [INFO]     params=[]
+2026-03-10 23:33:09,400 [INFO]     geos=['Afrique du Sud']
+2026-03-10 23:33:09,400 [INFO]     confidence=0.55
+2026-03-10 23:33:09,901 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-10 23:33:09,901 [INFO]   RAPPORT FINAL — PDF Extractor
+2026-03-10 23:33:09,901 [INFO] ════════════════════════════════════════════════════════════
+2026-03-10 23:33:09,901 [INFO]   Articles traités      : 1
+2026-03-10 23:33:09,901 [INFO]   PDFs téléchargés      : 0
+2026-03-10 23:33:09,901 [INFO]   Texte extrait OK      : 1
+2026-03-10 23:33:09,901 [INFO]   Modèles créés         : 1
+2026-03-10 23:33:09,901 [INFO]   Avec paramètres (β,γ) : 0
+2026-03-10 23:33:09,901 [INFO]   Avec géographie       : 1
+2026-03-10 23:33:09,901 [INFO]   Avec code GitHub      : 0
+2026-03-10 23:33:09,901 [INFO]   Ignorés               : 0
+2026-03-10 23:33:09,901 [INFO]   Erreurs               : 0
+2026-03-10 23:33:09,901 [INFO] ════════════════════════════════════════════════════════════
+2026-03-10 23:33:09,901 [INFO] 
+  ✅ Prochaine étape : validation manuelle
+2026-03-10 23:33:09,901 [INFO]      python3 pipeline_runner.py stats
+2026-03-10 23:33:09,901 [INFO]      python3 pipeline_runner.py export

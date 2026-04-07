@@ -1,0 +1,319 @@
+2026-03-10 21:46:24,264 [INFO] Connexion à PostgreSQL...
+2026-03-10 21:46:24,290 [INFO] Base connectée — 189 DOIs existants
+2026-03-10 21:46:24,290 [INFO] Clé API NCBI détectée — vitesse maximale (10 req/s)
+2026-03-10 21:46:24,290 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-10 21:46:24,290 [INFO]   PIPOnto Pipeline PubMed — PRODUCTION
+2026-03-10 21:46:24,290 [INFO]   19 requêtes à traiter
+2026-03-10 21:46:24,290 [INFO] ════════════════════════════════════════════════════════════
+
+2026-03-10 21:46:24,290 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:46:24,290 [INFO]   Traitement : COVID-19 [COVID19]
+2026-03-10 21:46:24,290 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:46:24,291 [INFO]   disease_id PostgreSQL : 1
+2026-03-10 21:46:25,084 [INFO]   ESearch : +300 PMIDs (offset=0, total=1428)
+2026-03-10 21:46:25,204 [INFO]   300 PMIDs trouvés — 109 nouveaux
+2026-03-10 21:46:25,204 [INFO]   EFetch lot 1 : 100 articles...
+2026-03-10 21:46:28,318 [INFO]   EFetch lot 2 : 9 articles...
+2026-03-10 21:46:29,665 [INFO]   108 articles parsés
+2026-03-10 21:46:29,673 [INFO]   0 articles pertinents (score ≥ 0.3)
+2026-03-10 21:46:29,674 [INFO]   ✅ COVID19 terminé — insérés=0, doublons=0, score_bas=108, erreurs=0
+2026-03-10 21:46:29,674 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:46:29,674 [INFO]   Traitement : Seasonal Influenza [SeasonalInfluenza]
+2026-03-10 21:46:29,674 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:46:29,675 [INFO]   disease_id PostgreSQL : 2
+2026-03-10 21:46:30,461 [INFO]   ESearch : +200 PMIDs (offset=0, total=307)
+2026-03-10 21:46:30,582 [INFO]   200 PMIDs trouvés — 198 nouveaux
+2026-03-10 21:46:30,582 [INFO]   EFetch lot 1 : 100 articles...
+2026-03-10 21:46:35,850 [INFO]   EFetch lot 2 : 98 articles...
+2026-03-10 21:46:39,950 [INFO]   198 articles parsés
+2026-03-10 21:46:39,962 [INFO]   169 articles pertinents (score ≥ 0.3)
+2026-03-10 21:46:39,982 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:46:39,996 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:46:40,009 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:46:40,024 [INFO]   ✓ 80 articles insérés...
+2026-03-10 21:46:40,040 [INFO]   ✓ 100 articles insérés...
+2026-03-10 21:46:40,056 [INFO]   ✓ 120 articles insérés...
+2026-03-10 21:46:40,072 [INFO]   ✓ 140 articles insérés...
+2026-03-10 21:46:40,087 [INFO]   ✓ 160 articles insérés...
+2026-03-10 21:46:40,093 [INFO]   ✅ SeasonalInfluenza terminé — insérés=169, doublons=0, score_bas=29, erreurs=0
+2026-03-10 21:46:40,094 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:46:40,095 [INFO]   Traitement : Pandemic Influenza [PandemicInfluenza]
+2026-03-10 21:46:40,095 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:46:40,095 [WARNING]   ⚠️  disease_id non trouvé pour PandemicInfluenza — articles insérés sans lien disease
+2026-03-10 21:46:40,723 [INFO]   ESearch : +124 PMIDs (offset=0, total=124)
+2026-03-10 21:46:40,723 [INFO]   124 PMIDs trouvés — 88 nouveaux
+2026-03-10 21:46:40,723 [INFO]   EFetch lot 1 : 88 articles...
+2026-03-10 21:46:45,107 [INFO]   88 articles parsés
+2026-03-10 21:46:45,113 [INFO]   56 articles pertinents (score ≥ 0.3)
+2026-03-10 21:46:45,130 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:46:45,144 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:46:45,153 [INFO]   ✅ PandemicInfluenza terminé — insérés=56, doublons=0, score_bas=32, erreurs=0
+2026-03-10 21:46:45,154 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:46:45,154 [INFO]   Traitement : Tuberculosis [Tuberculosis]
+2026-03-10 21:46:45,154 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:46:45,155 [INFO]   disease_id PostgreSQL : 4
+2026-03-10 21:46:45,904 [INFO]   ESearch : +200 PMIDs (offset=0, total=253)
+2026-03-10 21:46:46,024 [INFO]   200 PMIDs trouvés — 196 nouveaux
+2026-03-10 21:46:46,024 [INFO]   EFetch lot 1 : 100 articles...
+2026-03-10 21:46:50,701 [INFO]   EFetch lot 2 : 96 articles...
+2026-03-10 21:46:55,105 [INFO]   196 articles parsés
+2026-03-10 21:46:55,118 [INFO]   159 articles pertinents (score ≥ 0.3)
+2026-03-10 21:46:55,137 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:46:55,158 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:46:55,176 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:46:55,193 [INFO]   ✓ 80 articles insérés...
+2026-03-10 21:46:55,210 [INFO]   ✓ 100 articles insérés...
+2026-03-10 21:46:55,223 [INFO]   ✓ 120 articles insérés...
+2026-03-10 21:46:55,237 [INFO]   ✓ 140 articles insérés...
+2026-03-10 21:46:55,250 [INFO]   ✅ Tuberculosis terminé — insérés=159, doublons=0, score_bas=37, erreurs=0
+2026-03-10 21:46:55,252 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:46:55,252 [INFO]   Traitement : Measles [Measles]
+2026-03-10 21:46:55,252 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:46:55,252 [INFO]   disease_id PostgreSQL : 5
+2026-03-10 21:46:55,898 [INFO]   ESearch : +150 PMIDs (offset=0, total=165)
+2026-03-10 21:46:56,019 [INFO]   150 PMIDs trouvés — 147 nouveaux
+2026-03-10 21:46:56,019 [INFO]   EFetch lot 1 : 100 articles...
+2026-03-10 21:46:59,809 [INFO]   EFetch lot 2 : 47 articles...
+2026-03-10 21:47:01,416 [INFO]   147 articles parsés
+2026-03-10 21:47:01,425 [INFO]   115 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:01,443 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:47:01,457 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:47:01,471 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:47:01,485 [INFO]   ✓ 80 articles insérés...
+2026-03-10 21:47:01,499 [INFO]   ✓ 100 articles insérés...
+2026-03-10 21:47:01,508 [INFO]   ✅ Measles terminé — insérés=115, doublons=0, score_bas=32, erreurs=0
+2026-03-10 21:47:01,509 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:01,509 [INFO]   Traitement : Malaria [Malaria]
+2026-03-10 21:47:01,509 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:01,510 [INFO]   disease_id PostgreSQL : 6
+2026-03-10 21:47:02,153 [INFO]   ESearch : +200 PMIDs (offset=0, total=303)
+2026-03-10 21:47:02,274 [INFO]   200 PMIDs trouvés — 194 nouveaux
+2026-03-10 21:47:02,274 [INFO]   EFetch lot 1 : 100 articles...
+2026-03-10 21:47:07,506 [INFO]   EFetch lot 2 : 94 articles...
+2026-03-10 21:47:11,686 [INFO]   194 articles parsés
+2026-03-10 21:47:11,700 [INFO]   157 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:11,715 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:47:11,731 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:47:11,746 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:47:11,758 [INFO]   ✓ 80 articles insérés...
+2026-03-10 21:47:11,771 [INFO]   ✓ 100 articles insérés...
+2026-03-10 21:47:11,786 [INFO]   ✓ 120 articles insérés...
+2026-03-10 21:47:11,802 [INFO]   ✓ 140 articles insérés...
+2026-03-10 21:47:11,819 [INFO]   ✅ Malaria terminé — insérés=157, doublons=0, score_bas=37, erreurs=0
+2026-03-10 21:47:11,820 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:11,820 [INFO]   Traitement : Dengue fever [Dengue]
+2026-03-10 21:47:11,820 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:11,820 [INFO]   disease_id PostgreSQL : 7
+2026-03-10 21:47:12,649 [INFO]   ESearch : +150 PMIDs (offset=0, total=612)
+2026-03-10 21:47:12,770 [INFO]   150 PMIDs trouvés — 147 nouveaux
+2026-03-10 21:47:12,770 [INFO]   EFetch lot 1 : 100 articles...
+2026-03-10 21:47:17,539 [INFO]   EFetch lot 2 : 47 articles...
+2026-03-10 21:47:20,778 [INFO]   147 articles parsés
+2026-03-10 21:47:20,789 [INFO]   72 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:20,807 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:47:20,824 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:47:20,840 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:47:20,852 [INFO]   ✅ Dengue terminé — insérés=72, doublons=0, score_bas=75, erreurs=0
+2026-03-10 21:47:20,853 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:20,853 [INFO]   Traitement : Ebola virus disease [Ebola]
+2026-03-10 21:47:20,853 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:20,854 [INFO]   disease_id PostgreSQL : 12
+2026-03-10 21:47:21,483 [INFO]   ESearch : +90 PMIDs (offset=0, total=90)
+2026-03-10 21:47:21,483 [INFO]   90 PMIDs trouvés — 78 nouveaux
+2026-03-10 21:47:21,483 [INFO]   EFetch lot 1 : 78 articles...
+2026-03-10 21:47:24,783 [INFO]   78 articles parsés
+2026-03-10 21:47:24,788 [INFO]   59 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:24,807 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:47:24,823 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:47:24,838 [INFO]   ✅ Ebola terminé — insérés=59, doublons=0, score_bas=19, erreurs=0
+2026-03-10 21:47:24,838 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:24,838 [INFO]   Traitement : HIV/AIDS [HIV]
+2026-03-10 21:47:24,838 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:24,839 [INFO]   disease_id PostgreSQL : 13
+2026-03-10 21:47:25,598 [INFO]   ESearch : +200 PMIDs (offset=0, total=256)
+2026-03-10 21:47:25,718 [INFO]   200 PMIDs trouvés — 168 nouveaux
+2026-03-10 21:47:25,718 [INFO]   EFetch lot 1 : 100 articles...
+2026-03-10 21:47:30,644 [INFO]   EFetch lot 2 : 68 articles...
+2026-03-10 21:47:36,256 [INFO]   168 articles parsés
+2026-03-10 21:47:36,269 [INFO]   156 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:36,290 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:47:36,307 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:47:36,324 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:47:36,341 [INFO]   ✓ 80 articles insérés...
+2026-03-10 21:47:36,356 [INFO]   ✓ 100 articles insérés...
+2026-03-10 21:47:36,373 [INFO]   ✓ 120 articles insérés...
+2026-03-10 21:47:36,389 [INFO]   ✓ 140 articles insérés...
+2026-03-10 21:47:36,402 [INFO]   ✅ HIV terminé — insérés=156, doublons=0, score_bas=12, erreurs=0
+2026-03-10 21:47:36,404 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:36,404 [INFO]   Traitement : Cholera [Cholera]
+2026-03-10 21:47:36,404 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:36,404 [INFO]   disease_id PostgreSQL : 10
+2026-03-10 21:47:36,970 [INFO]   ESearch : +74 PMIDs (offset=0, total=74)
+2026-03-10 21:47:36,970 [INFO]   74 PMIDs trouvés — 74 nouveaux
+2026-03-10 21:47:36,970 [INFO]   EFetch lot 1 : 74 articles...
+2026-03-10 21:47:39,933 [INFO]   73 articles parsés
+2026-03-10 21:47:39,939 [INFO]   63 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:39,957 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:47:39,970 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:47:39,983 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:47:39,986 [INFO]   ✅ Cholera terminé — insérés=63, doublons=0, score_bas=10, erreurs=0
+2026-03-10 21:47:39,987 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:39,987 [INFO]   Traitement : Mpox (Monkeypox) [Mpox]
+2026-03-10 21:47:39,987 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:39,987 [INFO]   disease_id PostgreSQL : 24
+2026-03-10 21:47:40,662 [INFO]   ESearch : +35 PMIDs (offset=0, total=35)
+2026-03-10 21:47:40,662 [INFO]   35 PMIDs trouvés — 33 nouveaux
+2026-03-10 21:47:40,662 [INFO]   EFetch lot 1 : 33 articles...
+2026-03-10 21:47:42,991 [INFO]   33 articles parsés
+2026-03-10 21:47:42,993 [INFO]   27 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:43,013 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:47:43,019 [INFO]   ✅ Mpox terminé — insérés=27, doublons=0, score_bas=6, erreurs=0
+2026-03-10 21:47:43,019 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:43,020 [INFO]   Traitement : Chikungunya [Chikungunya]
+2026-03-10 21:47:43,020 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:43,020 [INFO]   disease_id PostgreSQL : 8
+2026-03-10 21:47:43,723 [INFO]   ESearch : +80 PMIDs (offset=0, total=331)
+2026-03-10 21:47:43,844 [INFO]   80 PMIDs trouvés — 68 nouveaux
+2026-03-10 21:47:43,844 [INFO]   EFetch lot 1 : 68 articles...
+2026-03-10 21:47:48,956 [INFO]   68 articles parsés
+2026-03-10 21:47:48,960 [INFO]   20 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:48,980 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:47:48,980 [INFO]   ✅ Chikungunya terminé — insérés=20, doublons=0, score_bas=48, erreurs=0
+2026-03-10 21:47:48,981 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:48,981 [INFO]   Traitement : Meningococcal meningitis [MeningococcalMeningitis]
+2026-03-10 21:47:48,981 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:48,982 [WARNING]   ⚠️  disease_id non trouvé pour MeningococcalMeningitis — articles insérés sans lien disease
+2026-03-10 21:47:50,333 [INFO]   ESearch : +19 PMIDs (offset=0, total=19)
+2026-03-10 21:47:50,333 [INFO]   19 PMIDs trouvés — 19 nouveaux
+2026-03-10 21:47:50,333 [INFO]   EFetch lot 1 : 19 articles...
+2026-03-10 21:47:52,203 [INFO]   19 articles parsés
+2026-03-10 21:47:52,205 [INFO]   10 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:52,218 [INFO]   ✅ MeningococcalMeningitis terminé — insérés=10, doublons=0, score_bas=9, erreurs=0
+2026-03-10 21:47:52,218 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:52,218 [INFO]   Traitement : Malaria West Africa [MalariaWestAfrica]
+2026-03-10 21:47:52,218 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:52,219 [WARNING]   ⚠️  disease_id non trouvé pour MalariaWestAfrica — articles insérés sans lien disease
+2026-03-10 21:47:52,848 [INFO]   ESearch : +30 PMIDs (offset=0, total=30)
+2026-03-10 21:47:52,848 [INFO]   30 PMIDs trouvés — 10 nouveaux
+2026-03-10 21:47:52,848 [INFO]   EFetch lot 1 : 10 articles...
+2026-03-10 21:47:54,070 [INFO]   10 articles parsés
+2026-03-10 21:47:54,071 [INFO]   5 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:54,080 [INFO]   ✅ MalariaWestAfrica terminé — insérés=5, doublons=0, score_bas=5, erreurs=0
+2026-03-10 21:47:54,080 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:54,080 [INFO]   Traitement : Hepatitis B [HepatitisBVirus]
+2026-03-10 21:47:54,080 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:54,081 [WARNING]   ⚠️  disease_id non trouvé pour HepatitisBVirus — articles insérés sans lien disease
+2026-03-10 21:47:55,043 [INFO]   ESearch : +75 PMIDs (offset=0, total=75)
+2026-03-10 21:47:55,043 [INFO]   75 PMIDs trouvés — 74 nouveaux
+2026-03-10 21:47:55,043 [INFO]   EFetch lot 1 : 74 articles...
+2026-03-10 21:47:57,951 [INFO]   74 articles parsés
+2026-03-10 21:47:57,956 [INFO]   64 articles pertinents (score ≥ 0.3)
+2026-03-10 21:47:57,974 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:47:57,990 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:47:58,009 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:47:58,014 [INFO]   ✅ HepatitisBVirus terminé — insérés=64, doublons=0, score_bas=10, erreurs=0
+2026-03-10 21:47:58,014 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:47:58,014 [INFO]   Traitement : Generic SEIR/SIR models [GenericSEIR]
+2026-03-10 21:47:58,014 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:47:58,014 [WARNING]   ⚠️  disease_id non trouvé pour GenericSEIR — articles insérés sans lien disease
+2026-03-10 21:47:58,709 [INFO]   ESearch : +150 PMIDs (offset=0, total=336)
+2026-03-10 21:47:58,829 [INFO]   150 PMIDs trouvés — 110 nouveaux
+2026-03-10 21:47:58,829 [INFO]   EFetch lot 1 : 100 articles...
+2026-03-10 21:48:04,115 [INFO]   EFetch lot 2 : 10 articles...
+2026-03-10 21:48:05,337 [INFO]   110 articles parsés
+2026-03-10 21:48:05,345 [INFO]   102 articles pertinents (score ≥ 0.3)
+2026-03-10 21:48:05,361 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:48:05,377 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:48:05,392 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:48:05,408 [INFO]   ✓ 80 articles insérés...
+2026-03-10 21:48:05,423 [INFO]   ✓ 100 articles insérés...
+2026-03-10 21:48:05,425 [INFO]   ✅ GenericSEIR terminé — insérés=102, doublons=0, score_bas=8, erreurs=0
+2026-03-10 21:48:05,426 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:48:05,426 [INFO]   Traitement : Stochastic epidemic models [StochasticModels]
+2026-03-10 21:48:05,426 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:48:05,426 [WARNING]   ⚠️  disease_id non trouvé pour StochasticModels — articles insérés sans lien disease
+2026-03-10 21:48:06,042 [INFO]   ESearch : +100 PMIDs (offset=0, total=362)
+2026-03-10 21:48:06,163 [INFO]   100 PMIDs trouvés — 76 nouveaux
+2026-03-10 21:48:06,163 [INFO]   EFetch lot 1 : 76 articles...
+2026-03-10 21:48:10,041 [INFO]   76 articles parsés
+2026-03-10 21:48:10,045 [INFO]   73 articles pertinents (score ≥ 0.3)
+2026-03-10 21:48:10,066 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:48:10,081 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:48:10,096 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:48:10,104 [INFO]   ✅ StochasticModels terminé — insérés=73, doublons=0, score_bas=3, erreurs=0
+2026-03-10 21:48:10,105 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:48:10,105 [INFO]   Traitement : Agent-based epidemic models [ABMModels]
+2026-03-10 21:48:10,105 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:48:10,106 [WARNING]   ⚠️  disease_id non trouvé pour ABMModels — articles insérés sans lien disease
+2026-03-10 21:48:10,760 [INFO]   ESearch : +100 PMIDs (offset=0, total=258)
+2026-03-10 21:48:10,881 [INFO]   100 PMIDs trouvés — 88 nouveaux
+2026-03-10 21:48:10,881 [INFO]   EFetch lot 1 : 88 articles...
+2026-03-10 21:48:15,890 [INFO]   88 articles parsés
+2026-03-10 21:48:15,896 [INFO]   75 articles pertinents (score ≥ 0.3)
+2026-03-10 21:48:15,914 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:48:15,931 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:48:15,944 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:48:15,955 [INFO]   ✅ ABMModels terminé — insérés=75, doublons=0, score_bas=13, erreurs=0
+2026-03-10 21:48:15,956 [INFO] 
+────────────────────────────────────────────────────────────
+2026-03-10 21:48:15,956 [INFO]   Traitement : Spatial/metapopulation models [SpatialMetapopulation]
+2026-03-10 21:48:15,956 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:48:15,956 [WARNING]   ⚠️  disease_id non trouvé pour SpatialMetapopulation — articles insérés sans lien disease
+2026-03-10 21:48:16,855 [INFO]   ESearch : +100 PMIDs (offset=0, total=108)
+2026-03-10 21:48:16,975 [INFO]   100 PMIDs trouvés — 80 nouveaux
+2026-03-10 21:48:16,976 [INFO]   EFetch lot 1 : 80 articles...
+2026-03-10 21:48:22,130 [INFO]   80 articles parsés
+2026-03-10 21:48:22,135 [INFO]   78 articles pertinents (score ≥ 0.3)
+2026-03-10 21:48:22,151 [INFO]   ✓ 20 articles insérés...
+2026-03-10 21:48:22,165 [INFO]   ✓ 40 articles insérés...
+2026-03-10 21:48:22,178 [INFO]   ✓ 60 articles insérés...
+2026-03-10 21:48:22,191 [INFO]   ✅ SpatialMetapopulation terminé — insérés=78, doublons=0, score_bas=2, erreurs=0
+2026-03-10 21:48:22,191 [INFO] 
+════════════════════════════════════════════════════════════
+2026-03-10 21:48:22,191 [INFO]   RAPPORT FINAL — Pipeline PubMed PIPOnto
+2026-03-10 21:48:22,192 [INFO] ════════════════════════════════════════════════════════════
+2026-03-10 21:48:22,192 [INFO]   Articles récupérés    : 1955
+2026-03-10 21:48:22,192 [INFO]   Articles pertinents   : 1460
+2026-03-10 21:48:22,192 [INFO]   Articles insérés en BD: 1460
+2026-03-10 21:48:22,192 [INFO] ────────────────────────────────────────────────────────────
+2026-03-10 21:48:22,192 [INFO]   ✅ COVID19                        insérés=  0  doublons=  0  bas=108  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ SeasonalInfluenza              insérés=169  doublons=  0  bas= 29  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ PandemicInfluenza              insérés= 56  doublons=  0  bas= 32  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ Tuberculosis                   insérés=159  doublons=  0  bas= 37  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ Measles                        insérés=115  doublons=  0  bas= 32  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ Malaria                        insérés=157  doublons=  0  bas= 37  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ Dengue                         insérés= 72  doublons=  0  bas= 75  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ Ebola                          insérés= 59  doublons=  0  bas= 19  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ HIV                            insérés=156  doublons=  0  bas= 12  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ Cholera                        insérés= 63  doublons=  0  bas= 10  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ Mpox                           insérés= 27  doublons=  0  bas=  6  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ Chikungunya                    insérés= 20  doublons=  0  bas= 48  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ MeningococcalMeningitis        insérés= 10  doublons=  0  bas=  9  err=0
+2026-03-10 21:48:22,192 [INFO]   ✅ MalariaWestAfrica              insérés=  5  doublons=  0  bas=  5  err=0
+2026-03-10 21:48:22,193 [INFO]   ✅ HepatitisBVirus                insérés= 64  doublons=  0  bas= 10  err=0
+2026-03-10 21:48:22,193 [INFO]   ✅ GenericSEIR                    insérés=102  doublons=  0  bas=  8  err=0
+2026-03-10 21:48:22,193 [INFO]   ✅ StochasticModels               insérés= 73  doublons=  0  bas=  3  err=0
+2026-03-10 21:48:22,193 [INFO]   ✅ ABMModels                      insérés= 75  doublons=  0  bas= 13  err=0
+2026-03-10 21:48:22,193 [INFO]   ✅ SpatialMetapopulation          insérés= 78  doublons=  0  bas=  2  err=0
+2026-03-10 21:48:22,193 [INFO] ════════════════════════════════════════════════════════════
+
+2026-03-10 21:48:22,193 [INFO]   Statistiques exportées : /home/pacadi/piponto/data/pipeline_stats_20260310_214822.csv
