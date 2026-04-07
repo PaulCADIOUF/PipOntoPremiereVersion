@@ -1,0 +1,2 @@
+disease_key,query_total,fetched,relevant,inserted,skipped_dup,skipped_low,errors
+COVID19,1428,299,191,191,0,108,0

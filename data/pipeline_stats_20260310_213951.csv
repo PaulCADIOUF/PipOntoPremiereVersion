@@ -1,0 +1,4 @@
+disease_key,query_total,fetched,relevant,inserted,skipped_dup,skipped_low,errors
+COVID19,1428,299,191,0,0,108,0
+SeasonalInfluenza,307,200,171,0,0,29,0
+PandemicInfluenza,124,124,88,0,0,36,0
