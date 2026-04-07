@@ -1,0 +1,1091 @@
+<?xml version="1.0"?>
+<!--
+    MODULE 5 : Ontologie de l'Expérimentation
+    Ontologie : PIPOnto — http://www.pacadi.org/these/piponto/
+    Auteur     : Paul Cheikh Anta DIOUF
+
+    CHOIX DE CONCEPTION DOCUMENTÉS :
+
+      [M5-D1] Experiment regroupe plusieurs SimulationRun (M4) sous un protocole :
+              - Experiment = cadre épistémique (hypothèses, variables, protocole)
+              - Simulation (M4) = cadre technique (modèle, plateforme, configuration)
+              - SimulationRun (M4) = exécution individuelle
+              Un Experiment orchestre une ou plusieurs Simulation(s) et en collecte
+              les SimulationRun pour analyse. Distinction épistémique/technique fondamentale
+              pour la rigueur scientifique et la publication.
+
+      [M5-D2] Plans d'expériences couverts :
+              - Analyse de sensibilité (One-At-a-Time, Morris, Sobol)
+              - Plan factoriel (complet, fractionné)
+              - Latin Hypercube Sampling (LHS) — standard pour les ABM
+              - Monte Carlo — répétitions stochastiques
+              Ces plans correspondent directement aux GAMABatchExperiment (M4).
+
+      [M5-D3] Comparaison de scénarios formalisée :
+              ScenarioComparison lie un Experiment à plusieurs SimulationScenario (M4)
+              avec des métriques de comparaison définies. Base de la plateforme pour
+              répondre à "compare scénario vaccination vs confinement pour COVID-19".
+
+      [M5-D4] Validation et calibration :
+              - ModelValidation : évaluation de la correspondance modèle/données réelles
+              - ModelCalibration : ajustement des paramètres pour reproduire des données
+              Indispensable pour la crédibilité scientifique des simulations.
+
+      [M5-D5] Reproductibilité via traçabilité inspirée PROV-O :
+              ExperimentProvenance trace qui a fait quoi, quand, avec quels outils.
+              Prépare l'alignement M7 (Interopérabilité) avec PROV-O.
+
+      [M5-D6] Imports : M0 + M1 + M2 + M3 + M4.
+-->
+<rdf:RDF xmlns="http://www.pacadi.org/these/piponto/module5#"
+     xml:base="http://www.pacadi.org/these/piponto/module5"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:m2="http://www.pacadi.org/these/piponto/module2#"
+     xmlns:m4="http://www.pacadi.org/these/piponto/module4#"
+     xmlns:m5="http://www.pacadi.org/these/piponto/module5#"
+     xmlns:m8="http://www.pacadi.org/these/piponto/module8#">
+
+    <owl:Ontology rdf:about="http://www.pacadi.org/these/piponto/module5">
+        <owl:versionIRI rdf:resource="http://www.pacadi.org/these/piponto/module5"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module0"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module1"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module2"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module3"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module4"/>
+        <rdfs:label>PIPOnto - Module 5 : Ontologie de l'Expérimentation</rdfs:label>
+        <rdfs:comment>Module décrivant le cadre épistémique de l'expérimentation par simulation :
+        protocoles, hypothèses, plans d'expériences, comparaison de scénarios,
+        validation/calibration de modèles et traçabilité pour la reproductibilité.</rdfs:comment>
+    </owl:Ontology>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- ─── Propriétés de l'Experiment ─── -->
+
+
+    <!-- module5#followsProtocol -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#followsProtocol">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalProtocol"/>
+        <rdfs:comment>Un experiment suit un protocole expérimental définissant la méthode,
+        les variables, les contrôles et les critères d'évaluation.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#hasHypothesis -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasHypothesis">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalHypothesis"/>
+        <rdfs:comment>Hypothèse(s) scientifique(s) que l'experiment cherche à tester.
+        Ex: "La vaccination de 60% de la population réduit le pic d'infection de plus de 50%".</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#usesPlan -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#usesPlan">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalDesign"/>
+        <rdfs:comment>[M5-D2] Plan d'expériences utilisé pour structurer les runs
+        (analyse de sensibilité, factoriel, LHS, Monte Carlo...).
+        Détermine le nombre et la configuration des SimulationRun à lancer.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#includesSimulation -->
+    <!-- [M5-D1] Lien Experiment → Simulation(M4) -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#includesSimulation">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:comment>[M5-D1] Un experiment orchestre une ou plusieurs Simulation(s) (M4).
+        Chaque Simulation peut elle-même produire N SimulationRun.
+        Distinction épistémique/technique : l'Experiment pose la question scientifique,
+        la Simulation (M4) fournit le dispositif technique pour y répondre.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#hasIndependentVariable -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasIndependentVariable">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalProtocol"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#IndependentVariable"/>
+        <rdfs:comment>Variable contrôlée par l'expérimentateur (paramètre varié entre les runs).
+        Ex: taux de vaccination, β, taille de la population. Correspond aux paramètres
+        variés dans un GAMABatchExperiment (M4).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#hasDependentVariable -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasDependentVariable">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalProtocol"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#DependentVariable"/>
+        <rdfs:comment>Variable mesurée/observée dans les résultats (M6) pour évaluer l'effet
+        des variables indépendantes. Ex: pic d'infection, taille finale de l'épidémie, R effectif.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#hasControlVariable -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasControlVariable">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalProtocol"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ControlVariable"/>
+        <rdfs:comment>Variable maintenue constante entre les runs pour isoler l'effet
+        des variables indépendantes (ex: taille de la population, durée de simulation).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#comparesScenarios -->
+    <!-- [M5-D3] -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#comparesScenarios">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ScenarioComparison">
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationScenario"/>
+        <rdfs:comment>[M5-D3] Une comparaison de scénarios met en relation plusieurs
+        SimulationScenario (M4) pour évaluer l'impact différentiel des interventions.
+        Ex: BaselineScenario vs InterventionScenario(vaccination 60%) pour COVID-19 à Montréal.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#hasBaselineScenario -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasBaselineScenario">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module5#comparesScenarios"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ScenarioComparison"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#BaselineScenario"/>
+        <rdfs:comment>Scénario de référence (sans intervention) contre lequel les autres
+        scénarios sont comparés. Exactement un BaselineScenario par ScenarioComparison.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#producesComparison -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#producesComparison">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ScenarioComparison"/>
+        <rdfs:comment>Un experiment de comparaison produit une ScenarioComparison
+        qui sera structurée en résultats comparatifs dans M6.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés de validation/calibration [M5-D4] ─── -->
+
+
+    <!-- module5#validatesModel -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#validatesModel">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelValidation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>[M5-D4] Une procédure de validation évalue la correspondance entre
+        les sorties du modèle (M4) et des données réelles de référence.
+        Produit un ValidationResult quantifiant cette correspondance (M6).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#calibratesModel -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#calibratesModel">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelCalibration"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>[M5-D4] Une procédure de calibration ajuste les paramètres du modèle (M2)
+        pour minimiser l'écart entre sorties simulées et données observées.
+        Produit un ensemble de paramètres calibrés (CalibrationResult dans M6).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#usesReferenceData -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#usesReferenceData">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ValidationCalibrationProcess"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ReferenceDataset"/>
+        <rdfs:comment>Données réelles utilisées pour la validation/calibration
+        (données épidémiologiques observées : cas confirmés, hospitalisations, décès).
+        Ces données contextuelles sont intégrées via la plateforme (données démographiques, sanitaires).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#appliesMetric -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#appliesMetric">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ValidationCalibrationProcess"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#FitnessMetric"/>
+        <rdfs:comment>Métrique de qualité d'ajustement entre données simulées et observées
+        (RMSE, MAE, log-vraisemblance, AIC...). Quantifie la qualité de la calibration/validation.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés de traçabilité [M5-D5] ─── -->
+
+
+    <!-- module5#hasProvenance -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasProvenance">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentProvenance"/>
+        <rdfs:comment>[M5-D5] Traçabilité de l'experiment : qui l'a réalisé, quand, avec quels
+        outils et versions. Inspiré de PROV-O (wasGeneratedBy, wasAssociatedWith, used).
+        Prépare l'alignement M7 avec PROV-O pour la publication internationale.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#wasPerformedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#wasPerformedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#Researcher"/>
+        <rdfs:comment>Chercheur ayant réalisé l'experiment (PROV-O : wasAssociatedWith).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#usedPlatform -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#usedPlatform">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationPlatform"/>
+        <rdfs:comment>Plateforme de simulation utilisée pour cet experiment (PROV-O : used).
+        Avec hasPlatformVersion (M4) : assure la reproductibilité complète.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#usedModel -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#usedModel">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>Modèle utilisé dans cet experiment (PROV-O : used).
+        Avec hasModelID (M2) : traçabilité complète modèle ↔ experiment ↔ résultats.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#producesExperimentResult -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#producesExperimentResult">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentResult"/>
+        <rdfs:comment>Un experiment produit des résultats expérimentaux qui seront structurés
+        et interprétés dans M6 (Results). Lien M5 → M6.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module5#hasParameterRange -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasParameterRange">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#IndependentVariable"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ParameterRange"/>
+        <rdfs:comment>Plage de valeurs explorée pour une variable indépendante dans le plan
+        d'expériences (min, max, pas ou distribution d'échantillonnage).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- module5#hasHypothesisStatement -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasHypothesisStatement">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalHypothesis"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Énoncé textuel de l'hypothèse scientifique en langage naturel.
+        Ex: "Une couverture vaccinale ≥ 70% suffit à atteindre l'immunité collective pour COVID-19".</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module5#isHypothesisConfirmed -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#isHypothesisConfirmed">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalHypothesis"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment>Résultat de l'évaluation de l'hypothèse après l'experiment.
+        Vrai si confirmée, faux si réfutée. Null si l'experiment n'est pas encore terminé.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module5#hasNumberOfSamples -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasNumberOfSamples">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalDesign"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Nombre de points d'échantillonnage du plan d'expériences
+        (nombre de configurations de paramètres à tester). Détermine le nombre total
+        de SimulationRun générés par le GAMABatchExperiment (M4).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module5#hasConfidenceLevel -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasConfidenceLevel">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentResult"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Niveau de confiance statistique des résultats expérimentaux (ex: 0.95 = 95%).
+        Calculé à partir des distributions des SimulationRun stochastiques.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module5#hasParameterMin -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasParameterMin">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ParameterRange"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Valeur minimale de la plage d'exploration d'un paramètre.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module5#hasParameterMax -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasParameterMax">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ParameterRange"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Valeur maximale de la plage d'exploration d'un paramètre.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module5#hasParameterStep -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasParameterStep">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ParameterRange"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Pas d'incrémentation entre valeurs successives (pour plans factoriels discrets).
+        Dans GAMA batch : paramètre step: du bloc parameter.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module5#hasPerformedOn -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasPerformedOn">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentProvenance"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment>Date et heure d'exécution de l'experiment (PROV-O : generatedAtTime).
+        Indispensable pour la traçabilité et la reproductibilité.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module5#hasFitnessValue -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasFitnessValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#FitnessMetric"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Valeur numérique de la métrique de qualité d'ajustement calculée
+        lors de la validation/calibration (ex: RMSE = 12.3, R² = 0.94).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         CLASSE RACINE : Experiment [M5-D1]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#Experiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:comment>[M5-D1] Cadre épistémique structurant une démarche scientifique par simulation.
+        Un Experiment pose une question scientifique (hypothèses), définit la méthode (protocole),
+        orchestre les Simulation(s) (M4) et produit des résultats interprétables (M6).
+        Distinction fondamentale avec Simulation (M4) = dispositif technique :
+        l'Experiment est le POURQUOI, la Simulation est le COMMENT.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Sous-types d'experiments -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#SensitivityAnalysisExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:comment>Experiment analysant l'influence de chaque paramètre sur les résultats.
+        Répond à "quels paramètres influencent le plus le pic d'infection ?".
+        Typiquement 100–10000 SimulationRun selon la méthode (OAT, Morris, Sobol).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ScenarioComparisonExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:comment>[M5-D3] Experiment comparant plusieurs scénarios d'intervention.
+        Répond à "quelle intervention (vaccination, confinement, distanciation) est la plus efficace ?".
+        Cœur de la plateforme pour les requêtes NLP de type "compare les interventions pour COVID-19".</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ModelValidationExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:comment>[M5-D4] Experiment évaluant la correspondance entre les sorties du modèle
+        et des données épidémiologiques réelles. Prérequis à la publication scientifique.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ModelCalibrationExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:comment>[M5-D4] Experiment ajustant les paramètres du modèle pour reproduire
+        des données observées. Précède généralement la validation et les prédictions.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#MonteCarloExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:comment>Experiment de répétitions stochastiques pour estimer la variabilité
+        et les intervalles de confiance. N runs identiques avec graines différentes.
+        Quantifie l'incertitude inhérente aux modèles stochastiques et ABM.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         PROTOCOLE EXPÉRIMENTAL
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ExperimentalProtocol">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Document formel décrivant la méthode expérimentale :
+        variables indépendantes/dépendantes/contrôle, critères d'évaluation, nombre de répétitions.
+        Garantit la reproductibilité et la transparence scientifique.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module5#ExperimentalHypothesis -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ExperimentalHypothesis">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Assertion scientifique testable formulée avant l'experiment.
+        Peut être confirmée ou réfutée par les résultats (isHypothesisConfirmed).
+        Ex: "H1 : R₀ > 2.5 conduit à une épidémie explosive dans les 30 jours".</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ─── Variables expérimentales ─── -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ExperimentalVariable">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Variable jouant un rôle dans le protocole expérimental
+        (indépendante, dépendante ou contrôle).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#IndependentVariable">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalVariable"/>
+        <rdfs:comment>Variable manipulée par l'expérimentateur. Correspond à un ModelParameter (M2)
+        dont la valeur est variée selon le plan d'expériences. Ex: β, taux de vaccination, R₀.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#DependentVariable">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalVariable"/>
+        <rdfs:comment>Variable mesurée dans les résultats pour évaluer l'effet des variables
+        indépendantes. Correspond à un AggregatedMetricOutput (M4) ou une métrique M6.
+        Ex: pic d'infection, taille finale, durée de l'épidémie.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ControlVariable">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalVariable"/>
+        <rdfs:comment>Variable maintenue constante pour isoler les effets. Correspond à un
+        FixedParameter (M2) ou une InitialCondition fixée (M4).</rdfs:comment>
+    </owl:Class>
+
+    <!-- module5#ParameterRange -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ParameterRange">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Plage d'exploration [min, max, step] d'une variable indépendante.
+        Dans GAMA batch : parameter "nom" var: param min: X max: Y step: Z.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         PLANS D'EXPÉRIENCES [M5-D2]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ExperimentalDesign">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>[M5-D2] Méthode structurant le choix des configurations de paramètres
+        à explorer dans l'espace des paramètres. Détermine le nombre et la distribution
+        des SimulationRun à exécuter. Correspond au type d'experiment dans GAMABatchExperiment.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#OneAtATimeDesign">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalDesign"/>
+        <rdfs:comment>Plan OAT (One-At-a-Time) : varie un paramètre à la fois, les autres fixes.
+        Simple mais ne capture pas les interactions entre paramètres.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#FullFactorialDesign">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalDesign"/>
+        <rdfs:comment>Plan factoriel complet : toutes les combinaisons de valeurs de paramètres.
+        Capture toutes les interactions mais coûteux (N^k runs pour k paramètres, N valeurs chacun).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#LatinHypercubeDesign">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalDesign"/>
+        <rdfs:comment>LHS (Latin Hypercube Sampling) : échantillonnage quasi-aléatoire couvrant
+        uniformément l'espace des paramètres. Standard pour les ABM épidémiologiques.
+        Bon compromis efficacité/couverture (N runs pour k paramètres).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#MorrisDesign">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalDesign"/>
+        <rdfs:comment>Méthode de Morris (Elementary Effects) : screening efficace pour identifier
+        les paramètres influents avant une analyse de sensibilité complète.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#SobolDesign">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalDesign"/>
+        <rdfs:comment>Analyse de sensibilité globale de Sobol : indices de sensibilité du premier
+        ordre et totaux. Standard pour quantifier l'influence relative de chaque paramètre.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#MonteCarloDesign">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentalDesign"/>
+        <rdfs:comment>Répétitions Monte Carlo : N runs avec graines aléatoires différentes,
+        même configuration de paramètres. Quantifie la variabilité stochastique intrinsèque.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         COMPARAISON DE SCÉNARIOS [M5-D3]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ScenarioComparison">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:comment>[M5-D3] Processus comparant les résultats de plusieurs SimulationScenario (M4).
+        Cœur de la plateforme pour répondre aux requêtes NLP de type :
+        "compare vaccination vs confinement pour COVID-19 à Montréal".
+        Produit un résultat comparatif structuré dans M6.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         VALIDATION ET CALIBRATION [M5-D4]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ValidationCalibrationProcess">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:comment>[M5-D4] Classe abstraite parente de ModelValidation et ModelCalibration.
+        Tout deux utilisent des données de référence réelles et des métriques de qualité.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ModelValidation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ValidationCalibrationProcess"/>
+        <rdfs:comment>Évaluation de la crédibilité du modèle : ses sorties reproduisent-elles
+        qualitativement et quantitativement des données épidémiologiques observées ?
+        Types : face validity, empirical validity, cross-validation.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ModelCalibration">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ValidationCalibrationProcess"/>
+        <rdfs:comment>Optimisation des paramètres pour minimiser l'écart modèle/données.
+        Méthodes : moindres carrés, maximum de vraisemblance, ABC (Approximate Bayesian Computation).
+        Produit un ensemble de paramètres calibrés utilisables pour les prédictions.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ReferenceDataset">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Données épidémiologiques réelles servant de référence pour validation/calibration.
+        Ex: séries temporelles de cas COVID-19 au Sénégal ou au Québec.
+        Source : OMS, MSAS, INSPQ, données hospitalières...</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#FitnessMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Métrique quantifiant la qualité d'ajustement entre données simulées et observées.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#RMSEMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#FitnessMetric"/>
+        <rdfs:comment>Root Mean Square Error : erreur quadratique moyenne entre courbes simulée et observée.
+        Métrique la plus courante pour calibrer les modèles compartimentaux.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#LogLikelihoodMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#FitnessMetric"/>
+        <rdfs:comment>Log-vraisemblance : métrique probabiliste adaptée aux modèles stochastiques.
+        Base de l'inférence bayésienne (ABC) pour la calibration.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#R2Metric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#FitnessMetric"/>
+        <rdfs:comment>Coefficient de détermination R² : proportion de variance expliquée.
+        Valeur entre 0 et 1 ; R² ≥ 0.9 indique une bonne adéquation.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         RÉSULTATS EXPÉRIMENTAUX
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ExperimentResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Résultat agrégé d'un Experiment : conclusions scientifiques, intervalles
+        de confiance, classements de scénarios, paramètres calibrés.
+        Pré-structure les données pour M6 (Results) qui les présente à l'utilisateur.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         TRAÇABILITÉ / PROVENANCE [M5-D5]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ExperimentProvenance">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>[M5-D5] Métadonnées de traçabilité d'un experiment, inspirées de PROV-O.
+        Capture : auteur (wasPerformedBy), date (hasPerformedOn), outils (usedPlatform, usedModel).
+        Prépare l'alignement M7 avec PROV-O pour la publication internationale et la
+        soumission aux revues exigeant la reproductibilité computationnelle.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#Researcher">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:comment>Chercheur ayant conçu et/ou exécuté l'experiment.
+        PROV-O : prov:Agent ayant wasAssociatedWith l'experiment.</rdfs:comment>
+    </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // EXTENSION M5 — VERSION 2.0
+    // [M5-EXT-1] ModelComparisonExperiment — comparer plusieurs modèles de la bibliothèque
+    // [M5-EXT-2] InterModelComparison — résultat structuré d'une comparaison inter-modèles
+    // [M5-EXT-3] ModelRanking — classement des candidats après comparaison
+    // [M5-EXT-4] ComparisonCriterion — critères de comparaison (précision, vitesse, robustesse)
+    // [M5-EXT-5] Ponts M5→M2, M5→M4, M5→M8
+    // [M5-EXT-6] ABox — expériences de comparaison pour les cas d'usage principaux
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M5-EXT-1] ModelComparisonExperiment
+         Comparer plusieurs modèles de la bibliothèque M2 sur le même problème
+         Différent de ScenarioComparisonExperiment (qui compare des scénarios d'un même modèle)
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ModelComparisonExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:label xml:lang="fr">Expérience de comparaison inter-modèles</rdfs:label>
+        <rdfs:label xml:lang="en">Inter-Model Comparison Experiment</rdfs:label>
+        <rdfs:comment>[M5-EXT-1] Expérience qui compare plusieurs modèles de la bibliothèque M2
+        sur le même problème (même maladie, même géographie, même population).
+        Différent de ScenarioComparisonExperiment qui compare des scénarios d'un seul modèle.
+        Exemple : Cauchemez 2011 vs Covasim 2021 vs Roux 2020 sur COVID-19 Paris écoliers.
+        Produit un InterModelComparison et un ModelRanking.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#CrossValidationExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:label xml:lang="fr">Expérience de validation croisée</rdfs:label>
+        <rdfs:comment>[M5-EXT-1] Valide un modèle sur des données non vues lors de la calibration.
+        Ex: calibrer sur données 2020, valider sur données 2021.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#PopulationTransferabilityExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:label xml:lang="fr">Expérience de transférabilité populationnelle</rdfs:label>
+        <rdfs:comment>[M5-EXT-1] Teste si un modèle calibré sur une population (générale) reste
+        valide pour une sous-population (écoliers, âgés).
+        Contribution scientifique directe : justifie l'adaptation des paramètres par contexte.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#GeographicTransferabilityExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:label xml:lang="fr">Expérience de transférabilité géographique</rdfs:label>
+        <rdfs:comment>[M5-EXT-1] Teste si un modèle calibré sur un territoire reste valide
+        sur un autre territoire (ex: modèle UK → France → Sénégal).
+        Mesure la nécessité de recalibration locale.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M5-EXT-2] InterModelComparison
+         Le résultat structuré d'une comparaison entre modèles candidats
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#InterModelComparison">
+        <rdfs:label xml:lang="fr">Comparaison inter-modèles</rdfs:label>
+        <rdfs:label xml:lang="en">Inter-Model Comparison</rdfs:label>
+        <rdfs:comment>[M5-EXT-2] Résultat structuré d'une comparaison entre plusieurs modèles
+        de la bibliothèque M2 sur le même contexte (maladie + géo + population).
+        Contient : modèles comparés, critères utilisés, scores obtenus, modèle recommandé.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M5-EXT-3] ModelRanking
+         Classement final des modèles candidats après comparaison
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ModelRanking">
+        <rdfs:label xml:lang="fr">Classement des modèles</rdfs:label>
+        <rdfs:label xml:lang="en">Model Ranking</rdfs:label>
+        <rdfs:comment>[M5-EXT-3] Classement ordonné des modèles candidats produit après
+        une ModelComparisonExperiment. Chaque entrée associe un modèle M2 à un score
+        composite et un rang. Sert d'entrée pour la sélection finale dans M4.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry">
+        <rdfs:label xml:lang="fr">Entrée de classement</rdfs:label>
+        <rdfs:comment>Une ligne du classement : modèle M2 + rang + score composite + recommandation.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M5-EXT-4] ComparisonCriterion
+         Critères utilisés pour comparer les modèles candidats
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ComparisonCriterion">
+        <rdfs:label xml:lang="fr">Critère de comparaison</rdfs:label>
+        <rdfs:label xml:lang="en">Comparison Criterion</rdfs:label>
+        <rdfs:comment>[M5-EXT-4] Dimension selon laquelle les modèles sont évalués et comparés.
+        Les critères sont pondérés selon le contexte de la simulation.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#PredictiveAccuracyCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ComparisonCriterion"/>
+        <rdfs:label xml:lang="fr">Précision prédictive</rdfs:label>
+        <rdfs:comment>Écart entre courbe simulée et données observées.
+        Mesuré par RMSE, R², MAE. Critère principal pour la sélection.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ComputationalCostCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ComparisonCriterion"/>
+        <rdfs:label xml:lang="fr">Coût computationnel</rdfs:label>
+        <rdfs:comment>Temps d'exécution et ressources mémoire.
+        ODE : millisecondes. ABM : minutes à heures selon N agents.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#PopulationFitCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ComparisonCriterion"/>
+        <rdfs:label xml:lang="fr">Adéquation populationnelle</rdfs:label>
+        <rdfs:comment>Degré de spécificité du modèle pour la population cible.
+        Ex: modèle conçu spécifiquement pour écoliers > modèle général adapté.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#GeographicFitCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ComparisonCriterion"/>
+        <rdfs:label xml:lang="fr">Adéquation géographique</rdfs:label>
+        <rdfs:comment>Degré de validation du modèle sur le territoire demandé.
+        Ex: modèle validé France > modèle validé UK > modèle mondial générique.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#RobustnessCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ComparisonCriterion"/>
+        <rdfs:label xml:lang="fr">Robustesse</rdfs:label>
+        <rdfs:comment>Stabilité des résultats face aux variations de paramètres.
+        Mesurée par analyse de sensibilité (Sobol, Morris).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ReproducibilityCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module5#ComparisonCriterion"/>
+        <rdfs:label xml:lang="fr">Reproductibilité</rdfs:label>
+        <rdfs:comment>Disponibilité du code source, documentation, données de calibration.
+        Ex: modèle GitHub open source > modèle décrit dans article sans code.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M5-EXT-5] NOUVELLES PROPRIÉTÉS — Ponts M5→M2, M5→M4, M5→M8
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Pont M5→M2 : expérience compare des modèles de la bibliothèque -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#comparesModels">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelComparisonExperiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:label xml:lang="fr">compare les modèles</rdfs:label>
+        <rdfs:comment>[M5-EXT-5] Pont M5→M2. Liste les modèles de la bibliothèque
+        inclus dans cette expérience de comparaison.
+        Ex: Exp_Compare_COVID_Paris → {Cauchemez, Covasim, Roux}</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#recommendsModel">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#InterModelComparison"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:label xml:lang="fr">recommande le modèle</rdfs:label>
+        <rdfs:comment>Modèle M2 recommandé comme meilleur candidat à l'issue de la comparaison.
+        Alimente directement le hasSelectedModel de M4 ModelAssembly.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Pont M5→M4 : expérience porte sur des simulations composites -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#comparesSimulations">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelComparisonExperiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#CompositeSimulation"/>
+        <rdfs:label xml:lang="fr">compare les simulations</rdfs:label>
+        <rdfs:comment>[M5-EXT-5] Pont M5→M4. Simulations composites comparées dans l'expérience.
+        Chaque simulation correspond à un modèle candidat différent sur le même contexte.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#producesRanking">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelComparisonExperiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRanking"/>
+        <rdfs:label xml:lang="fr">produit le classement</rdfs:label>
+        <rdfs:comment>Classement des modèles candidats produit à l'issue de l'expérience.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#producesInterModelComparison">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelComparisonExperiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#InterModelComparison"/>
+        <rdfs:label xml:lang="fr">produit la comparaison inter-modèles</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- Pont M5→M8 : contexte de l'expérience -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasExperimentGeography">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label xml:lang="fr">se déroule dans le contexte géographique</rdfs:label>
+        <rdfs:comment>[M5-EXT-5] Pont M5→M8. Territoire sur lequel porte l'expérience.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasExperimentPopulation">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">porte sur la population</rdfs:label>
+        <rdfs:comment>[M5-EXT-5] Pont M5→M8. Population cible de l'expérience de comparaison.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Lien expérience → critères de comparaison -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#usesCriterion">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelComparisonExperiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ComparisonCriterion"/>
+        <rdfs:label xml:lang="fr">utilise le critère</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- Lien entrée de classement → modèle M2 -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#ranksModel">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:label xml:lang="fr">classe le modèle</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasRankingEntry">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRanking"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:label xml:lang="fr">contient l'entrée de classement</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- Propriétés de données pour ModelRankingEntry -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasRank">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label xml:lang="fr">rang dans le classement</rdfs:label>
+        <rdfs:comment>Position dans le classement. 1 = meilleur modèle pour ce contexte.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasCompositeScore">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">score composite</rdfs:label>
+        <rdfs:comment>Score agrégé pondérant tous les critères de comparaison. Entre 0 et 1.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#isRecommended">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:label xml:lang="fr">modèle recommandé</rdfs:label>
+        <rdfs:comment>true pour le modèle retenu comme meilleur candidat.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasAccuracyScore">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">score de précision prédictive</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasPopulationFitScore">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">score d'adéquation populationnelle</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasGeoFitScore">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">score d'adéquation géographique</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasExecutionTimeSeconds">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">temps d'exécution (secondes)</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <!-- Pondération d'un critère dans l'expérience -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasCriterionWeight">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module5#ComparisonCriterion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">poids du critère</rdfs:label>
+        <rdfs:comment>Importance relative de ce critère dans le score composite. Somme = 1.0.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M5-EXT-6] ABOX — EXPÉRIENCES DE COMPARAISON
+         Cas d'usage : COVID-19 Paris écoliers + Paludisme Thiès
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ── Critères de comparaison (individus) ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Criterion_Accuracy">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#PredictiveAccuracyCriterion"/>
+        <rdfs:label xml:lang="fr">Précision prédictive (RMSE / R²)</rdfs:label>
+        <m5:hasCriterionWeight rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.40</m5:hasCriterionWeight>
+        <rdfs:comment>Poids 40% — critère principal. Mesuré par R² sur données réelles.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Criterion_PopFit">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#PopulationFitCriterion"/>
+        <rdfs:label xml:lang="fr">Adéquation populationnelle</rdfs:label>
+        <m5:hasCriterionWeight rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.25</m5:hasCriterionWeight>
+        <rdfs:comment>Poids 25% — modèle conçu spécifiquement pour la population cible.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Criterion_GeoFit">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#GeographicFitCriterion"/>
+        <rdfs:label xml:lang="fr">Adéquation géographique</rdfs:label>
+        <m5:hasCriterionWeight rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.20</m5:hasCriterionWeight>
+        <rdfs:comment>Poids 20% — modèle validé sur le territoire demandé.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Criterion_Reproducibility">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#ReproducibilityCriterion"/>
+        <rdfs:label xml:lang="fr">Reproductibilité (code disponible)</rdfs:label>
+        <m5:hasCriterionWeight rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.15</m5:hasCriterionWeight>
+        <rdfs:comment>Poids 15% — code source accessible sur GitHub ou dépôt institutionnel.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── CAS 1 : Comparaison COVID-19 Paris Écoliers ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Exp_Compare_COVID_Paris_Ecoliers">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelComparisonExperiment"/>
+        <rdfs:label xml:lang="fr">Comparaison modèles COVID-19 Paris Écoliers</rdfs:label>
+        <m5:comparesModels rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_School_Cauchemez_2011"/>
+        <m5:comparesModels rdf:resource="http://www.pacadi.org/these/piponto/module2#ABM_COVID_Urban_Kerr_2021"/>
+        <m5:comparesModels rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_COVID_France_Roux_2020"/>
+        <m5:comparesSimulations rdf:resource="http://www.pacadi.org/these/piponto/module4#Sim_COVID_Paris_Ecoliers"/>
+        <m5:usesCriterion rdf:resource="http://www.pacadi.org/these/piponto/module5#Criterion_Accuracy"/>
+        <m5:usesCriterion rdf:resource="http://www.pacadi.org/these/piponto/module5#Criterion_PopFit"/>
+        <m5:usesCriterion rdf:resource="http://www.pacadi.org/these/piponto/module5#Criterion_GeoFit"/>
+        <m5:usesCriterion rdf:resource="http://www.pacadi.org/these/piponto/module5#Criterion_Reproducibility"/>
+        <m5:hasExperimentGeography rdf:resource="http://www.pacadi.org/these/piponto/module8#Paris"/>
+        <m5:hasExperimentPopulation rdf:resource="http://www.pacadi.org/these/piponto/module8#SchoolChildren_Paris"/>
+        <m5:producesRanking rdf:resource="http://www.pacadi.org/these/piponto/module5#Ranking_COVID_Paris_Ecoliers"/>
+        <m5:producesInterModelComparison rdf:resource="http://www.pacadi.org/these/piponto/module5#Comparison_COVID_Paris_Ecoliers"/>
+        <rdfs:comment>Expérience comparant 3 modèles candidats sur COVID-19 Paris écoliers.
+        Critères pondérés : précision 40%, adéquation pop 25%, géo 20%, reproductibilité 15%.
+        Déclenché automatiquement par le pipeline NLP quand plusieurs candidats ont score similaire.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Entrées du classement -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Entry_Cauchemez_COVID_Paris">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:label xml:lang="fr">Classement Cauchemez 2011 — COVID Paris Écoliers</rdfs:label>
+        <m5:ranksModel rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_School_Cauchemez_2011"/>
+        <m5:hasRank rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</m5:hasRank>
+        <m5:hasCompositeScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.89</m5:hasCompositeScore>
+        <m5:hasAccuracyScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.85</m5:hasAccuracyScore>
+        <m5:hasPopulationFitScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.00</m5:hasPopulationFitScore>
+        <m5:hasGeoFitScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.80</m5:hasGeoFitScore>
+        <m5:hasExecutionTimeSeconds rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.12</m5:hasExecutionTimeSeconds>
+        <m5:isRecommended rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</m5:isRecommended>
+        <rdfs:comment>Rang 1. Meilleure adéquation populationnelle (conçu spécifiquement pour écoliers).
+        ODE très rapide (0.12s). Léger déficit géo (validé USA, pas France).</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Entry_Covasim_COVID_Paris">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:label xml:lang="fr">Classement Covasim 2021 — COVID Paris Écoliers</rdfs:label>
+        <m5:ranksModel rdf:resource="http://www.pacadi.org/these/piponto/module2#ABM_COVID_Urban_Kerr_2021"/>
+        <m5:hasRank rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</m5:hasRank>
+        <m5:hasCompositeScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.86</m5:hasCompositeScore>
+        <m5:hasAccuracyScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.92</m5:hasAccuracyScore>
+        <m5:hasPopulationFitScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.85</m5:hasPopulationFitScore>
+        <m5:hasGeoFitScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.90</m5:hasGeoFitScore>
+        <m5:hasExecutionTimeSeconds rdf:datatype="http://www.w3.org/2001/XMLSchema#double">847.0</m5:hasExecutionTimeSeconds>
+        <m5:isRecommended rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m5:isRecommended>
+        <rdfs:comment>Rang 2. Meilleure précision et adéquation géo (ABM urbain mondial).
+        Pénalisé par coût computationnel élevé (847s pour 100 runs ABM).</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Entry_Roux_COVID_Paris">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRankingEntry"/>
+        <rdfs:label xml:lang="fr">Classement Roux 2020 — COVID Paris Écoliers</rdfs:label>
+        <m5:ranksModel rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_COVID_France_Roux_2020"/>
+        <m5:hasRank rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</m5:hasRank>
+        <m5:hasCompositeScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.76</m5:hasCompositeScore>
+        <m5:hasAccuracyScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.82</m5:hasAccuracyScore>
+        <m5:hasPopulationFitScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.50</m5:hasPopulationFitScore>
+        <m5:hasGeoFitScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.00</m5:hasGeoFitScore>
+        <m5:hasExecutionTimeSeconds rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.08</m5:hasExecutionTimeSeconds>
+        <m5:isRecommended rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m5:isRecommended>
+        <rdfs:comment>Rang 3. Meilleure adéquation géo (validé France). Pénalisé car
+        conçu pour population générale, pas spécifiquement pour écoliers.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Classement final -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Ranking_COVID_Paris_Ecoliers">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelRanking"/>
+        <rdfs:label xml:lang="fr">Classement modèles COVID-19 Paris Écoliers</rdfs:label>
+        <m5:hasRankingEntry rdf:resource="http://www.pacadi.org/these/piponto/module5#Entry_Cauchemez_COVID_Paris"/>
+        <m5:hasRankingEntry rdf:resource="http://www.pacadi.org/these/piponto/module5#Entry_Covasim_COVID_Paris"/>
+        <m5:hasRankingEntry rdf:resource="http://www.pacadi.org/these/piponto/module5#Entry_Roux_COVID_Paris"/>
+        <rdfs:comment>Classement final : Cauchemez(0.89) > Covasim(0.86) > Roux(0.76).
+        Cauchemez recommandé : meilleure adéquation écoliers + ODE rapide.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Résultat comparaison -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Comparison_COVID_Paris_Ecoliers">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#InterModelComparison"/>
+        <rdfs:label xml:lang="fr">Comparaison inter-modèles COVID-19 Paris Écoliers</rdfs:label>
+        <m5:recommendsModel rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_School_Cauchemez_2011"/>
+        <rdfs:comment>Résultat : SEIR Cauchemez 2011 recommandé pour COVID-19 Paris écoliers.
+        Score composite : 0.89. Raison principale : adéquation populationnelle maximale (1.0).</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── CAS 2 : Transférabilité géographique COVID-19 (UK → France) ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module5#Exp_GeoTransfer_Ferguson_UKtoFR">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module5#GeographicTransferabilityExperiment"/>
+        <rdfs:label xml:lang="fr">Transférabilité Ferguson 2020 : UK → France</rdfs:label>
+        <m5:comparesModels rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_COVID_Ferguson_2020"/>
+        <m5:hasExperimentGeography rdf:resource="http://www.pacadi.org/these/piponto/module8#France"/>
+        <m5:usesReferenceData rdf:resource="http://www.pacadi.org/these/piponto/module8#SantePubliqueFrance"/>
+        <rdfs:comment>Teste si le modèle Ferguson 2020 (calibré UK) reste valide sur données France.
+        Hypothèse : recalibration beta nécessaire (confinement différent FR vs UK).
+        Justifie scientifiquement l'étape de calibration locale dans le pipeline.</rdfs:comment>
+    </owl:NamedIndividual>
+
+</rdf:RDF>
+
+<!-- Généré manuellement — PIPOnto Module 5 v1.0 -->
+<!-- Choix M5-D1 à M5-D6 documentés inline dans les rdfs:comment -->

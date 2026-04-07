@@ -1,0 +1,602 @@
+<?xml version="1.0"?>
+<!--
+    MODULE 1 : Systèmes Complexes (ComplexSystem)
+    Ontologie : PIPOnto — http://www.pacadi.org/these/piponto/
+    Version corrigée — corrections de cohérence appliquées :
+      [C1] ArtificialAgent, BiologicalAgent : CollectiveAgent → IndividualAgent
+      [C2] Norm, Role : découplés de Organization → subClassOf Attribute (M0)
+      [C3] populationOf : hasPart → partOf (direction corrigée)
+      [C4] hasEnvironment : hasPart → isSurroundedBy (env. externe, non partie)
+      [C5] hasInteraction : hasPart → hasProcess (interaction = processus, non partie)
+      [C6] interactsWith : déclaré owl:SymmetricProperty (relation non directionnelle)
+      [C7] containsAgent : domain/range ajoutés, redondance avec hasAgent documentée
+      [C8] hasGroup, hasInstitution, hasMember, hasNorm : domain/range ajoutés
+      [C9] Classes orphelines ancrées dans M0 : AgentPopulation, Organization,
+           Resource, SubSystem, SystemBoundary
+-->
+<rdf:RDF xmlns="http://www.pacadi.org/these/piponto/module1#"
+     xml:base="http://www.pacadi.org/these/piponto/module1"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+    <owl:Ontology rdf:about="http://www.pacadi.org/these/piponto/module1">
+        <owl:versionIRI rdf:resource="http://www.pacadi.org/these/piponto/module1"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module0"/>
+        <rdfs:label>PIPOnto - Module 1 : Systèmes Complexes</rdfs:label>
+        <rdfs:comment>Module décrivant les systèmes complexes réels : agents, populations,
+        environnements, interactions, propriétés émergentes et organisations sociales.</rdfs:comment>
+    </owl:Ontology>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- module1#belongsToPopulation -->
+    <!-- Agent → AgentPopulation (sous-propriété de partOf : correct) -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#belongsToPopulation">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#partOf"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentPopulation"/>
+        <rdfs:comment>Un agent appartient à une population d'agents (relation partie-tout).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#containsAgent -->
+    <!-- [C7] domain/range ajoutés pour le raisonnement automatique -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#containsAgent">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentPopulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:comment>Une population contient des agents (inverse de belongsToPopulation).
+        Distinct de hasAgent (domain: ComplexSystem) qui exprime la composition du système.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#containsResource -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#containsResource">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Environment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#Resource"/>
+        <rdfs:comment>Un environnement contient des ressources accessibles aux agents.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#emergesFrom -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#emergesFrom">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#EmergentProperty"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Interaction"/>
+        <rdfs:comment>Une propriété émergente résulte d'un ensemble d'interactions locales.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#exhibits -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#exhibits">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasQuality"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#EmergentProperty"/>
+        <rdfs:comment>Un système complexe exhibe des propriétés émergentes non réductibles à ses composants.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasAgent -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasAgent">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:comment>Un système complexe est composé d'agents (relation de composition).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasBoundary -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasBoundary">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#SystemBoundary"/>
+        <rdfs:comment>Un système complexe possède une frontière qui le délimite de son environnement externe.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#isSurroundedBy -->
+    <!-- [C4] Remplace hasEnvironment (subPropertyOf hasPart → incorrect) -->
+    <!-- L'environnement est EXTERNE au système, séparé par la frontière. -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#isSurroundedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Environment"/>
+        <rdfs:comment>[C4] Remplace hasEnvironment. L'environnement n'est pas une partie du système
+        (ce serait contradictoire avec hasBoundary) mais son contexte externe qui l'influence.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasGroup -->
+    <!-- [C8] domain/range ajoutés -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasGroup">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#Organization"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#Group"/>
+        <rdfs:comment>[C8] Une organisation est composée de groupes d'agents.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasInstitution -->
+    <!-- [C8] domain/range ajoutés -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasInstitution">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#Institution"/>
+        <rdfs:comment>[C8] Un système complexe peut contenir des institutions.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasProcess -->
+    <!-- [C5] Nouvelle propriété pour lier un système à ses processus/interactions -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasProcess">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Interaction"/>
+        <rdfs:comment>[C5] Un système complexe est le siège de processus (interactions).
+        Remplace hasInteraction (subPropertyOf hasPart était incorrect : une interaction
+        est un processus, non une partie mérologique).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasMember -->
+    <!-- [C8] domain/range ajoutés -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasMember">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#Organization"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:comment>[C8] Une organisation a des membres (agents).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasNorm -->
+    <!-- [C8] domain/range ajoutés ; [C2] Norm découplée de Organization -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasNorm">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasQuality"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#Organization"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#Norm"/>
+        <rdfs:comment>[C8] Une organisation possède des normes (règles/contraintes).
+        subPropertyOf hasQuality car une norme est une caractéristique régulatrice, non une partie.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasOrganization -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasOrganization">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#Organization"/>
+        <rdfs:comment>Un système complexe est structuré par des organisations.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasPopulation -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasPopulation">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentPopulation"/>
+        <rdfs:comment>Un système complexe inclut une ou plusieurs populations d'agents.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasQuality -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasQuality">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasQuality"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentQuality"/>
+        <rdfs:comment>Spécialise hasQuality (M0) pour lier un agent à ses qualités propres (autonomie, réactivité...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasResource -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasResource">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#Resource"/>
+        <rdfs:comment>Un système complexe dispose de ressources.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#hasSubsystem -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#hasSubsystem">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#SubSystem"/>
+        <rdfs:comment>Un système complexe peut être décomposé en sous-systèmes (relation hiérarchique).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#influences -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#influences">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:comment>Spécialisation de influences (M0) dans le contexte des systèmes complexes.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#influencesAgent -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#influencesAgent">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:comment>Une entité (environnement, norme...) influence le comportement d'un agent.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#interactsWith -->
+    <!-- [C6] Déclaré owl:SymmetricProperty (relation non directionnelle) -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#interactsWith">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:comment>[C6] Relation symétrique entre agents. Non subPropertyOf influences
+        (qui est directionnelle) : si A interagit avec B, alors B interagit avec A.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#involves -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#involves">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasParticipant"/>
+        <rdfs:comment>Une interaction implique des participants (agents).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#locatedIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#locatedIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#locatedIn"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Environment"/>
+        <rdfs:comment>Un agent est localisé dans un environnement.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#memberOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#memberOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#partOf"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#Organization"/>
+        <rdfs:comment>Un agent est membre d'une organisation.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#participatesIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#participatesIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#participatesIn"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Interaction"/>
+        <rdfs:comment>Un agent participe à des interactions.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#playsRole -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#playsRole">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#playsRole"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#Role"/>
+        <rdfs:comment>Un agent joue un rôle au sein d'une organisation ou d'une interaction.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#populationOf -->
+    <!-- [C3] Direction corrigée : subPropertyOf partOf (non hasPart) -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#populationOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#partOf"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentPopulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:comment>[C3] Direction corrigée : une population EST PARTIE D'UN système (partOf),
+        et non l'inverse (hasPart était incorrect sémantiquement).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module1#regulates -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module1#regulates">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module1#Norm"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:comment>Une norme régule le comportement des agents (forme d'influence contraignante).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- module1#AgentPopulation -->
+    <!-- [C9] Ancré dans module0#System (un ensemble d'agents forme un système) -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#AgentPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#System"/>
+        <rdfs:comment>[C9] Un ensemble d'agents partageant des caractéristiques communes.
+        Ancré dans System (M0) car une population est elle-même un système organisé.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#AgentQuality -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#AgentQuality">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Qualité intrinsèque d'un agent (autonomie, réactivité, proactivité, socialité).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#ArtificialAgent -->
+    <!-- [C1] CollectiveAgent → IndividualAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#ArtificialAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#IndividualAgent"/>
+        <rdfs:comment>[C1] Agent artificiel (logiciel, robot...) : agent individuel, non collectif.
+        Correction : CollectiveAgent remplacé par IndividualAgent.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Autonomy -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Autonomy">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentQuality"/>
+        <rdfs:comment>Capacité d'un agent à agir de manière indépendante sans contrôle externe direct.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#BiologicalAgent -->
+    <!-- [C1] CollectiveAgent → IndividualAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#BiologicalAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#IndividualAgent"/>
+        <rdfs:comment>[C1] Agent biologique (organisme vivant, microbe...) : agent individuel, non collectif.
+        Correction : CollectiveAgent remplacé par IndividualAgent.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Communication -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Communication">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AgentInteraction"/>
+        <rdfs:comment>Interaction par échange d'informations entre agents.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Competition -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Competition">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AgentInteraction"/>
+        <rdfs:comment>Interaction où les agents s'affrontent pour des ressources ou objectifs partagés.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#ComplexSystem -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#ComplexSystem">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#System"/>
+        <rdfs:comment>Système composé d'agents hétérogènes en interaction, exhibant des propriétés émergentes
+        non réductibles à celles de ses composants.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Cooperation -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Cooperation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AgentInteraction"/>
+        <rdfs:comment>Interaction où les agents travaillent ensemble vers un objectif commun.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Coordination -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Coordination">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AgentInteraction"/>
+        <rdfs:comment>Interaction visant à synchroniser les actions d'agents interdépendants.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#EmergentProperty -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#EmergentProperty">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#SystemStateVariable"/>
+        <rdfs:comment>Propriété macro-niveau d'un système complexe non prédictible à partir des seules
+        propriétés micro-niveau des composants (ex: épidémie issue de contacts individuels).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Group -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Group">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#Organization"/>
+        <rdfs:comment>Organisation informelle d'agents partageant un objectif ou une caractéristique commune.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#HeterogeneousPopulation -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#HeterogeneousPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentPopulation"/>
+        <rdfs:comment>Population composée d'agents aux attributs distincts (types, comportements différents).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#HomogeneousPopulation -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#HomogeneousPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentPopulation"/>
+        <rdfs:comment>Population composée d'agents aux attributs identiques ou similaires.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#HumanAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#HumanAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#IndividualAgent"/>
+        <rdfs:comment>Agent humain individuel doté de capacités cognitives, sociales et décisionnelles.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Institution -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Institution">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#Organization"/>
+        <rdfs:comment>Organisation formelle structurée par des règles, normes et rôles établis.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#InstitutionalAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#InstitutionalAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#CollectiveAgent"/>
+        <rdfs:comment>Agent collectif représentant une institution (gouvernement, hôpital...).
+        Reste CollectiveAgent : une institution agit comme entité collective, non individuelle.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#InstitutionalEnvironment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#InstitutionalEnvironment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#SocialEnvironment"/>
+        <rdfs:comment>Environnement défini par des structures institutionnelles (lois, protocoles, politiques).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Norm -->
+    <!-- [C2] Découplé de Organization → subClassOf Attribute (M0) -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Norm">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[C2] Règle ou contrainte régissant le comportement des agents dans un système social.
+        Correction : n'est pas une Organization mais un Attribute (caractéristique régulatrice).
+        Liée à Organization via la propriété hasNorm.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Organization -->
+    <!-- [C9] Ancré dans module0#System -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Organization">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#System"/>
+        <rdfs:comment>[C9] Structure sociale organisant les relations entre agents (groupes, institutions, rôles).
+        Ancré dans System (M0) : une organisation est un système social structuré.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#PhysicalEnvironment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#PhysicalEnvironment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#SpatialEnvironment"/>
+        <rdfs:comment>Environnement physique et spatial dans lequel les agents sont localisés et se déplacent.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Proactivity -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Proactivity">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentQuality"/>
+        <rdfs:comment>Capacité d'un agent à initier des actions orientées vers des objectifs, sans stimuli externes.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Reactivity -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Reactivity">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentQuality"/>
+        <rdfs:comment>Capacité d'un agent à percevoir et répondre aux changements de son environnement.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Resource -->
+    <!-- [C9] Ancré dans module0#Attribute -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Resource">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[C9] Entité (énergie, information, matière) que les agents peuvent consommer,
+        produire ou partager. Ancré dans Attribute (M0) comme caractéristique de l'environnement.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#Role -->
+    <!-- [C2] Découplé de Organization → subClassOf Attribute (M0) -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Role">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[C2] Fonction ou position qu'un agent occupe dans une organisation ou interaction.
+        Correction : un rôle est joué PAR un agent DANS une organisation (Attribute),
+        il n'est pas lui-même une Organization.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#SocialAbility -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#SocialAbility">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentQuality"/>
+        <rdfs:comment>Capacité d'un agent à interagir, communiquer et coopérer avec d'autres agents.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#SocialEnvironment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#SocialEnvironment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#NetworkEnvironment"/>
+        <rdfs:comment>Environnement défini par les relations sociales et réseaux d'agents (famille, communauté...).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#SubSystem -->
+    <!-- [C9] Ancré dans module1#ComplexSystem (relation réflexive de composition) -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#SubSystem">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:comment>[C9] Sous-système d'un système complexe, lui-même complexe (composition hiérarchique).
+        Ancré dans ComplexSystem (M1) : tout sous-système est aussi un système complexe.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module1#SystemBoundary -->
+    <!-- [C9] Ancré dans module0#Attribute -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#SystemBoundary">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[C9] Délimitation spatiale ou conceptuelle entre un système complexe et son environnement externe.
+        Ancré dans Attribute (M0) : la frontière est une caractéristique structurelle du système.</rdfs:comment>
+    </owl:Class>
+
+</rdf:RDF>
+
+<!-- Généré et corrigé manuellement — PIPOnto Module 1 v2.0 -->
+<!-- Corrections C1-C9 documentées inline dans les rdfs:comment -->

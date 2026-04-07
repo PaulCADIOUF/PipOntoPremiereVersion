@@ -1,0 +1,1059 @@
+<?xml version="1.0"?>
+<!--
+    MODULE 4 : Ontologie de la Simulation
+    Ontologie : PIPOnto — http://www.pacadi.org/these/piponto/
+    Auteur     : Paul Cheikh Anta DIOUF
+
+    CHOIX DE CONCEPTION DOCUMENTÉS :
+
+      [M4-D1] Simulation peut instancier M2 (Model) OU M3 (MultiAgentSystem) :
+              - instanciates → Model (M2) pour les modèles compartimentaux/stochastiques/réseau
+              - instanciates → MultiAgentSystem (M3) pour les ABM/GAMA
+              Un seul mécanisme générique couvre tous les cas sans duplication.
+              Simulation est ancrée dans ComputationalProcess (M0) — c'est un processus.
+
+      [M4-D2] Distinction fondamentale Simulation ≠ SimulationRun :
+              - Simulation = patron d'exécution (configuration + modèle + plateforme)
+              - SimulationRun = exécution individuelle (une réalisation stochastique,
+                un scénario spécifique). Plusieurs SimulationRun peuvent dériver
+                d'une même Simulation (ex: 100 runs Monte Carlo).
+              Cette distinction est critique pour M5 (Expérimentation) où plusieurs
+              runs constituent un protocole expérimental.
+
+      [M4-D3] Abstraction multi-plateforme avec spécialisation GAMA :
+              - SimulationPlatform = classe abstraite (GAMA, NetLogo, Mesa, AnyLogic...)
+              - GAMAPlatform, NetLogoPlatform, MesaPlatform = spécialisations
+              - GAMAExperiment, GAMABatchExperiment = concepts GAMA spécifiques
+              Permet à la plateforme de gérer plusieurs moteurs de simulation.
+
+      [M4-D4] SimulationConfiguration regroupe toutes les décisions de setup :
+              conditions initiales, paramètres, durée, graine aléatoire.
+              C'est le pont entre la requête NLP (M2 métadonnées) et l'exécution réelle.
+
+      [M4-D5] SimulationTime est distinct de TemporalEntity (M0) :
+              Le temps simulé (ticks) ≠ temps réel de l'horloge. Un SimulationClock
+              gère la correspondance tick ↔ durée réelle (ex: 1 tick = 1 jour).
+
+      [M4-D6] SimulationState capture l'état global du système simulé à chaque tick,
+              permettant la reprise, la comparaison et l'extraction de résultats (M6).
+
+      [M4-D7] Imports : M0 + M1 + M2 + M3 (chaîne complète).
+-->
+<rdf:RDF xmlns="http://www.pacadi.org/these/piponto/module4#"
+     xml:base="http://www.pacadi.org/these/piponto/module4"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:m2="http://www.pacadi.org/these/piponto/module2#"
+     xmlns:m4="http://www.pacadi.org/these/piponto/module4#"
+     xmlns:m8="http://www.pacadi.org/these/piponto/module8#">
+
+    <owl:Ontology rdf:about="http://www.pacadi.org/these/piponto/module4">
+        <owl:versionIRI rdf:resource="http://www.pacadi.org/these/piponto/module4"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module0"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module1"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module2"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module3"/>
+        <rdfs:label>PIPOnto - Module 4 : Ontologie de la Simulation</rdfs:label>
+        <rdfs:comment>Module décrivant l'exécution de simulations : configuration, plateformes
+        (GAMA, NetLogo, Mesa), runs individuels, temps simulé, état courant et lien
+        vers les résultats (M6) et l'expérimentation (M5).</rdfs:comment>
+    </owl:Ontology>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- ─── Propriétés de la Simulation (patron) ─── -->
+
+
+    <!-- module4#instanciates -->
+    <!-- [M4-D1] Lien Simulation → Model(M2) ou MultiAgentSystem(M3) -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#instanciates">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>[M4-D1] Une simulation instancie un modèle (M2) pour l'exécuter.
+        Le range est Model (M2) — couvre à la fois les modèles compartimentaux/stochastiques
+        et les MultiAgentSystem (M3 subClassOf AgentBasedModel subClassOf Model).
+        Relation directionnelle : la simulation dépend du modèle, pas l'inverse.
+        Complète la chaîne : Model isImplementedBy → Simulation instanciates → SimulationRun.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasConfiguration -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasConfiguration">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration"/>
+        <rdfs:comment>Une simulation possède une configuration regroupant tous les paramètres
+        de setup : conditions initiales, durée, graine aléatoire, valeurs des paramètres du modèle.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#runsOn -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#runsOn">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationPlatform"/>
+        <rdfs:comment>Une simulation s'exécute sur une plateforme de simulation donnée
+        (GAMA, NetLogo, Mesa...). Le choix de la plateforme dépend du formalisme du modèle (M2).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasRun -->
+    <!-- [M4-D2] Lien Simulation → SimulationRun -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasRun">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:comment>[M4-D2] Une simulation (patron) peut générer plusieurs runs individuels.
+        Ex: 100 SimulationRun pour une analyse Monte Carlo, ou N runs avec des graines
+        aléatoires différentes pour estimer la variabilité stochastique.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasScenario -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasScenario">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationScenario"/>
+        <rdfs:comment>Une simulation peut être associée à un ou plusieurs scénarios décrivant
+        des hypothèses contextuelles (ex: scénario sans intervention, avec vaccination,
+        avec distanciation sociale). Point d'entrée pour la comparaison entre scénarios (M5/M6).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés d'un SimulationRun ─── -->
+
+
+    <!-- module4#isRunOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#isRunOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#partOf"/>
+        <owl:inverseOf rdf:resource="http://www.pacadi.org/these/piponto/module4#hasRun"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:comment>Inverse de hasRun. Un SimulationRun est une exécution individuelle
+        appartenant à une Simulation patron.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasSimulationClock -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasSimulationClock">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationClock"/>
+        <rdfs:comment>Horloge de la simulation gérant la correspondance entre ticks internes
+        et durée réelle représentée. Critique pour l'interprétation des résultats épidémiologiques.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasCurrentState -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasCurrentState">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasState"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationState"/>
+        <rdfs:comment>[M4-D6] État global du système simulé au tick courant.
+        Capture les valeurs de toutes les variables d'état à un instant donné.
+        Permet la reprise de simulation (checkpoint) et l'extraction de résultats (M6).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#producesOutput -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#producesOutput">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationOutput"/>
+        <rdfs:comment>Un run de simulation produit des sorties (séries temporelles, snapshots,
+        métriques agrégées). Ces sorties seront structurées en résultats dans M6.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasRunStatus -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasRunStatus">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasState"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#RunStatus"/>
+        <rdfs:comment>Statut courant du run (PENDING, RUNNING, PAUSED, COMPLETED, FAILED).
+        Utilisé par l'orchestrateur microservices de la plateforme pour gérer le cycle de vie.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés de la configuration ─── -->
+
+
+    <!-- module4#setsParameterValue -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#setsParameterValue">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:comment>Une configuration fixe les valeurs des paramètres du modèle (M2) pour ce run.
+        Ex: β=0.3, γ=0.1, population initiale=10000. Ces valeurs surchargent les valeurs
+        par défaut définies dans la base de connaissances.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasInitialCondition -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasInitialCondition">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#InitialCondition"/>
+        <rdfs:comment>Conditions initiales de la simulation : état de départ de chaque compartiment
+        ou de chaque agent (ex: 1 infecté pour 9999 susceptibles à t=0).
+        Détermine l'état initial du SimulationState du premier tick.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#configuresAgent -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#configuresAgent">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentSpecies"/>
+        <rdfs:comment>La configuration définit les attributs initiaux des espèces d'agents (M3)
+        dans la simulation ABM (taille de la population par espèce, distributions d'attributs...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés de la plateforme ─── -->
+
+
+    <!-- module4#implementsFormalism -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#implementsFormalism">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationPlatform"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelFormalism"/>
+        <rdfs:comment>Une plateforme de simulation supporte un ou plusieurs formalismes (M2).
+        Ex: GAMAPlatform implémente ABMFormalism ; un solver EDO implémente ODEFormalism.
+        Permet à la plateforme de sélectionner automatiquement l'outil d'exécution adapté.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasGAMAExperiment -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasGAMAExperiment">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#GAMASimulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#GAMAExperiment"/>
+        <rdfs:comment>[M4-D3] Concept GAMA : une GAMASimulation est définie par un ou plusieurs
+        experiments (GUI, batch, test). Syntaxe GAML :
+        experiment nom_experience type: gui/batch { ... }.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasGAMAOutput -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasGAMAOutput">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#GAMAExperiment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#GAMAOutputMonitor"/>
+        <rdfs:comment>Moniteurs de sortie d'un experiment GAMA (charts, monitors, fichiers CSV...).
+        Syntaxe GAML : output { display ... ; monitor ... ; file ... }.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module4#hasStopCondition -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasStopCondition">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#StopCondition"/>
+        <rdfs:comment>Condition d'arrêt du run (durée max atteinte, épidémie éteinte,
+        seuil de cas dépassé...). Syntaxe GAML : until: condition.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés du temps simulé ─── -->
+
+
+    <!-- module4#hasSimulationTime -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasSimulationTime">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasTime"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationTime"/>
+        <rdfs:comment>[M4-D5] Temps interne de la simulation (en ticks), distinct du temps réel.
+        Un SimulationClock convertit les ticks en durée réelle représentée.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- module4#hasRandomSeed -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasRandomSeed">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#long"/>
+        <rdfs:comment>Graine du générateur de nombres aléatoires pour ce run.
+        Indispensable pour la reproductibilité : deux runs avec la même graine et la même
+        configuration produisent des résultats identiques (audit scientifique).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module4#hasCurrentTick -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasCurrentTick">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Tick courant du run (pas de temps interne actuel).
+        Incrémenté à chaque cycle d'activation des agents.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module4#hasMaxTicks -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasMaxTicks">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Nombre maximum de ticks pour ce run (durée de simulation configurée).
+        Dans GAMA : paramètre stop: de l'experiment batch, ou until: dans l'experiment GUI.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module4#hasRealTimeDuration -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasRealTimeDuration">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationRun"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Durée réelle d'exécution du run en secondes (temps CPU/wall-clock).
+        Métrique de performance pour l'optimisation de la plateforme microservices.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module4#hasTickToRealTimeRatio -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasTickToRealTimeRatio">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationClock"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>[M4-D5] Ratio de conversion ticks → temps réel représenté.
+        Ex: 1.0 tick = 1.0 jour simulé, ou 1.0 tick = 0.0417 jours (1 heure).
+        Dans GAMA : défini par step: dans l'experiment (ex: step: 1#day).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module4#hasNumberOfRuns -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasNumberOfRuns">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Nombre total de SimulationRun configurés pour cette simulation.
+        Dans GAMA batch : paramètre repeat: N.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module4#hasPlatformVersion -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasPlatformVersion">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationPlatform"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Version de la plateforme de simulation utilisée (ex: "GAMA 1.9.3").
+        Important pour la reproductibilité et la traçabilité des résultats (M6).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module4#hasGAMLModelPath -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasGAMLModelPath">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#GAMASimulation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>[M4-D3] Chemin vers le fichier .gaml implémentant le modèle dans GAMA.
+        Permet la traçabilité ontologie ↔ code et l'exécution automatique via l'API GAMA headless.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         CLASSE RACINE : Simulation
+         [M4-D1] Ancrée dans ComputationalProcess (M0)
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#Simulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#ComputationalProcess"/>
+        <rdfs:comment>[M4-D1] Processus computationnel instanciant et exécutant un modèle (M2/M3).
+        La Simulation est le PATRON : elle définit quel modèle exécuter, sur quelle plateforme,
+        avec quelle configuration. Elle peut générer N SimulationRun (exécutions individuelles).
+        Ancrée dans ComputationalProcess (M0) : une simulation est fondamentalement un processus
+        de calcul se déroulant dans le temps.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         SimulationRun — exécution individuelle [M4-D2]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationRun">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#ComputationalProcess"/>
+        <rdfs:comment>[M4-D2] Exécution individuelle et concrète d'une Simulation.
+        Correspond à une réalisation unique : une graine aléatoire, une trajectoire stochastique,
+        un scénario spécifique. Plusieurs SimulationRun peuvent être lancés en parallèle
+        (architecture microservices) pour analyses Monte Carlo ou études de sensibilité.
+        Produit des SimulationOutput exploités dans M5 (Expérimentation) et M6 (Résultats).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         Configuration [M4-D4]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>[M4-D4] Ensemble complet des décisions de paramétrage d'une simulation :
+        valeurs des paramètres du modèle, conditions initiales, durée, graine aléatoire.
+        C'est le pont entre la requête NLP (qui fournit le contexte) et l'exécution réelle.
+        Générée automatiquement par la plateforme à partir de la requête et de la base de connaissances.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module4#InitialCondition -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#InitialCondition">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>État initial du système simulé à t=0 : valeurs des compartiments,
+        nombre et distribution des agents, état épidémiologique initial.
+        Ex: S₀=9999, I₀=1, R₀=0 pour un SIR avec 1 cas index.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module4#SimulationScenario -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationScenario">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Scénario de simulation décrivant un ensemble cohérent d'hypothèses
+        contextuelles et d'interventions (ex: scénario de base sans intervention,
+        scénario vaccination 60%, scénario confinement strict).
+        Permet la comparaison de scénarios dans M5/M6.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Sous-classes de scénarios épidémiologiques -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#BaselineScenario">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationScenario"/>
+        <rdfs:comment>Scénario de référence sans intervention (propagation libre).
+        Sert de baseline pour mesurer l'efficacité des interventions dans d'autres scénarios.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#InterventionScenario">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationScenario"/>
+        <rdfs:comment>Scénario avec une ou plusieurs interventions de santé publique activées
+        (vaccination, confinement, distanciation, quarantaine, port du masque...).
+        Compare ses résultats au BaselineScenario pour évaluer l'impact de l'intervention.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SensitivityScenario">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationScenario"/>
+        <rdfs:comment>Scénario d'analyse de sensibilité : variation d'un paramètre (ex: β ∈ [0.1, 0.5])
+        pour mesurer l'impact sur les résultats. Typiquement utilisé dans les GAMABatchExperiment.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         État et temps simulé [M4-D5, M4-D6]
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- module4#SimulationState -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationState">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#SystemState"/>
+        <rdfs:comment>[M4-D6] Snapshot de l'état global du système simulé à un tick donné.
+        Contient les valeurs de toutes les variables d'état (compartiments, positions des agents...).
+        Peut être sérialisé pour : checkpoint/reprise, comparaison entre runs, extraction M6.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module4#SimulationTime -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationTime">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#TemporalEntity"/>
+        <rdfs:comment>[M4-D5] Représentation du temps interne à la simulation (en ticks).
+        Distinct du temps réel (TemporalEntity M0 = temps du monde réel).
+        Converti en durée réelle par SimulationClock.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module4#SimulationClock -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationClock">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        <rdfs:comment>[M4-D5] Gère la correspondance tick ↔ durée réelle.
+        Dans GAMA : défini par step: dans l'experiment (ex: step: 1 #day).
+        Permet d'interpréter les résultats en unités épidémiologiques (jours, semaines).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module4#RunStatus -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#RunStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#State"/>
+        <rdfs:comment>Statut du cycle de vie d'un SimulationRun.
+        Utilisé par l'orchestrateur microservices pour gérer les runs en parallèle.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#PendingStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#RunStatus"/>
+        <rdfs:comment>Run en attente d'exécution (dans la file de l'orchestrateur).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#RunningStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#RunStatus"/>
+        <rdfs:comment>Run en cours d'exécution sur la plateforme de simulation.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#CompletedStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#RunStatus"/>
+        <rdfs:comment>Run terminé normalement — résultats disponibles dans M6.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#FailedStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#RunStatus"/>
+        <rdfs:comment>Run échoué (erreur numérique, crash GAMA, timeout...).
+        L'orchestrateur peut décider de relancer avec une nouvelle graine.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module4#StopCondition -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#StopCondition">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Condition d'arrêt automatique d'un run (alternative à hasMaxTicks).
+        Ex: "arrêter quand I=0" (épidémie éteinte), "arrêter si I > seuil_saturation".
+        Dans GAMA : until: condition dans l'experiment.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         Plateformes de simulation [M4-D3]
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- module4#SimulationPlatform -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationPlatform">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        <rdfs:comment>[M4-D3] Classe abstraite représentant un moteur/outil d'exécution de simulation.
+        Possède un ou plusieurs formalismes supportés (M2). Permet l'abstraction multi-plateforme :
+        la plateforme sélectionne automatiquement le bon moteur selon le ModelFormalism du modèle choisi.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module4#GAMAPlatform -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#GAMAPlatform">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationPlatform"/>
+        <rdfs:comment>Plateforme GAMA (GAMA-Platform.org) — moteur de simulation ABM/SMA.
+        Supporte ABMFormalism, langage GAML, topologies spatiales et GIS.
+        Cible principale de la plateforme PIPOnto pour les simulations épidémiologiques ABM.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#NetLogoPlatform">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationPlatform"/>
+        <rdfs:comment>Plateforme NetLogo — moteur ABM alternatif (langage NetLogo).
+        Supporte ABMFormalism. Interopérabilité via M7.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#MesaPlatform">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationPlatform"/>
+        <rdfs:comment>Plateforme Mesa (Python) — moteur ABM léger.
+        Supporte ABMFormalism + StochasticProcessFormalism. Intégrable dans l'architecture microservices.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#ODESolverPlatform">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationPlatform"/>
+        <rdfs:comment>Solveur d'équations différentielles (scipy.integrate, R deSolve...).
+        Supporte ODEFormalism pour les modèles compartimentaux déterministes (SIR, SEIR...).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ─── Concepts GAMA spécifiques [M4-D3] ─── -->
+
+    <!-- module4#GAMASimulation -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#GAMASimulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:comment>[M4-D3] Simulation concrète dans GAMA platform.
+        Correspond à un fichier .gaml contenant un ou plusieurs experiments.
+        Hérite de Simulation et ajoute les propriétés GAMA-spécifiques (chemin GAML, experiments).</rdfs:comment>
+    </owl:Class>
+
+    <!-- module4#GAMAExperiment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#GAMAExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration"/>
+        <rdfs:comment>[M4-D3] Concept GAMA : un Experiment définit le type d'exécution et les
+        paramètres de la simulation. Syntaxe GAML : experiment nom type: gui/batch/test { ... }.
+        Spécialise SimulationConfiguration car il regroupe tous les paramètres de setup GAMA.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module4#GAMAGUIExperiment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#GAMAGUIExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#GAMAExperiment"/>
+        <rdfs:comment>Experiment GAMA interactif avec interface graphique (visualisation temps réel).
+        Syntaxe : experiment ... type: gui. Utile pour explorer visuellement la dynamique épidémique.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module4#GAMABatchExperiment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#GAMABatchExperiment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#GAMAExperiment"/>
+        <rdfs:comment>Experiment GAMA en mode batch : exécute N runs (repeat: N) sans interface.
+        Syntaxe : experiment ... type: batch repeat: N until: condition.
+        Cœur de l'analyse de sensibilité et des études Monte Carlo.
+        Mode headless : exécutable via API REST dans l'architecture microservices.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module4#GAMAOutputMonitor -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#GAMAOutputMonitor">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationOutput"/>
+        <rdfs:comment>Moniteur de sortie GAMA : display, monitor, file save.
+        Définit quelles données sont extraites et comment elles sont visualisées/sauvegardées.
+        Syntaxe GAML : output { display ... { chart ... } monitor ... save ... }.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         Sorties de simulation
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- module4#SimulationOutput -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationOutput">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Données brutes produites par un SimulationRun.
+        Préalable aux Résultats structurés (M6) : les outputs sont les données brutes,
+        les résultats (M6) sont leur interprétation et agrégation scientifique.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#TimeSeriesOutput">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationOutput"/>
+        <rdfs:comment>Série temporelle des valeurs d'une variable d'état tick par tick.
+        Ex: courbe I(t) = nombre d'infectés au cours du temps. Format : CSV, JSON, DataFrame.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SnapshotOutput">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationOutput"/>
+        <rdfs:comment>Capture de l'état spatial à un tick donné (carte de distribution des agents,
+        carte de chaleur des cas...). Utile pour visualiser la propagation spatiale.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#AggregatedMetricOutput">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationOutput"/>
+        <rdfs:comment>Métrique agrégée calculée sur la durée du run (taille finale de l'épidémie,
+        pic d'infection, durée de l'épidémie, taux d'attaque). Point d'entrée pour M6.</rdfs:comment>
+    </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // EXTENSION M4 — VERSION 2.0
+    // [M4-EXT-1] CompositeSimulation — assemblage multi-modèles depuis la bibliothèque
+    // [M4-EXT-2] ModelAssembly — sélection + combinaison des modèles M2 candidats
+    // [M4-EXT-3] CalibratedParameter — paramètre recalibré sur données locales (vs publié)
+    // [M4-EXT-4] Ponts M4→M2 (modèles sélectionnés) et M4→M8 (population, géo, sources)
+    // [M4-EXT-5] ABox — instances de simulation pour les cas d'usage principaux
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M4-EXT-1] CompositeSimulation
+         Une simulation construite depuis plusieurs modèles candidats
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#CompositeSimulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:label xml:lang="fr">Simulation composite</rdfs:label>
+        <rdfs:label xml:lang="en">Composite Simulation</rdfs:label>
+        <rdfs:comment>[M4-EXT-1] Simulation assemblée à partir de plusieurs modèles candidats
+        sélectionnés par le pipeline NLP→M2. Intègre :
+        - un ou plusieurs modèles de la bibliothèque (M2)
+        - des paramètres recalibrés sur données locales (M8)
+        - un contexte populationnel spécifique (M8)
+        - des sources de données externes (M8 ExternalDataSource)
+        Exemple : "COVID-19 Paris écoliers" → SEIR_Cauchemez + données INSEE + POLYMOD.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimpleSimulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:label xml:lang="fr">Simulation simple</rdfs:label>
+        <rdfs:label xml:lang="en">Simple Simulation</rdfs:label>
+        <rdfs:comment>[M4-EXT-1] Simulation avec un seul modèle, paramètres publiés sans recalibration.
+        Cas le plus simple : l'utilisateur choisit directement un modèle connu.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M4-EXT-2] ModelAssembly
+         Le processus de sélection et combinaison des modèles candidats
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#ModelAssembly">
+        <rdfs:label xml:lang="fr">Assemblage de modèles</rdfs:label>
+        <rdfs:label xml:lang="en">Model Assembly</rdfs:label>
+        <rdfs:comment>[M4-EXT-2] Processus de sélection et d'assemblage des modèles candidats.
+        Produit par le pipeline NLP→SPARQL→BD. Contient :
+        - la liste ordonnée des modèles candidats (par score de pertinence)
+        - le modèle principal retenu (hasSelectedModel)
+        - les modèles alternatifs pour comparaison (hasAlternativeModel)
+        - la stratégie de combinaison utilisée (hasCombinationStrategy)</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#CombinationStrategy">
+        <rdfs:label xml:lang="fr">Stratégie de combinaison</rdfs:label>
+        <rdfs:label xml:lang="en">Combination Strategy</rdfs:label>
+        <rdfs:comment>[M4-EXT-2] Stratégie utilisée pour assembler plusieurs modèles candidats.
+        Ex: BestScoreSelection, EnsembleAverage, PopulationWeighted.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#BestScoreSelection">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#CombinationStrategy"/>
+        <rdfs:label xml:lang="fr">Sélection par meilleur score</rdfs:label>
+        <rdfs:comment>Retient le modèle avec le meilleur score qualité × pertinence NLP.
+        Stratégie par défaut dans le pipeline PIPOnto.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#EnsembleAverage">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#CombinationStrategy"/>
+        <rdfs:label xml:lang="fr">Moyenne d'ensemble</rdfs:label>
+        <rdfs:comment>Exécute plusieurs modèles candidats et moyenne les résultats.
+        Réduit l'incertitude de modélisation. Coûteux en calcul.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#PopulationLayered">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#CombinationStrategy"/>
+        <rdfs:label xml:lang="fr">Modèle en couches populationnelles</rdfs:label>
+        <rdfs:comment>Combine un modèle général (population totale) + un modèle spécialisé
+        (sous-population : écoliers, âgés...). Les deux couches interagissent via
+        la matrice de contacts (POLYMOD).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M4-EXT-3] CalibratedParameter
+         Paramètre recalibré sur données locales réelles
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#CalibratedParameter">
+        <rdfs:label xml:lang="fr">Paramètre calibré</rdfs:label>
+        <rdfs:label xml:lang="en">Calibrated Parameter</rdfs:label>
+        <rdfs:comment>[M4-EXT-3] Paramètre épidémiologique recalibré sur données locales réelles,
+        par opposition à la valeur publiée dans l'article d'origine.
+        Ex: β calibré sur données OpenCOVID19-fr pour Paris 2022,
+        plutôt que β=0.429 de Ferguson 2020 (UK).
+        Contient : valeur publiée (référence) + valeur calibrée + méthode + source données.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#CalibrationMethod">
+        <rdfs:label xml:lang="fr">Méthode de calibration</rdfs:label>
+        <rdfs:comment>Méthode mathématique utilisée pour recalibrer les paramètres.
+        Ex: MoindresCarrés, MCMC, ABC (Approximate Bayesian Computation).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#LeastSquaresCalibration">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibrationMethod"/>
+        <rdfs:label xml:lang="fr">Calibration par moindres carrés</rdfs:label>
+        <rdfs:comment>Minimise l'écart entre courbe simulée et données observées. Méthode rapide.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#MCMCCalibration">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibrationMethod"/>
+        <rdfs:label xml:lang="fr">Calibration MCMC</rdfs:label>
+        <rdfs:comment>Markov Chain Monte Carlo. Estime la distribution postérieure des paramètres.
+        Plus précis mais plus coûteux en calcul.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M4-EXT-4] PONTS M4→M2 et M4→M8
+         Clés d'intégration entre les modules
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Pont M4→M2 : simulation → modèle sélectionné depuis la bibliothèque -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasSelectedModel">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#ModelAssembly"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:label xml:lang="fr">a sélectionné le modèle</rdfs:label>
+        <rdfs:comment>[M4-EXT-4] Pont M4→M2. Modèle principal retenu depuis la bibliothèque M2.
+        Lien direct entre l'assemblage (M4) et l'individu modèle (M2).
+        Ex: ModelAssembly_COVID_Paris → m2:SEIR_School_Cauchemez_2011</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasAlternativeModel">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#ModelAssembly"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:label xml:lang="fr">a pour modèle alternatif</rdfs:label>
+        <rdfs:comment>Modèles candidats non retenus comme principal, mais disponibles pour
+        comparaison ou simulation d'ensemble.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasModelAssembly">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#CompositeSimulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#ModelAssembly"/>
+        <rdfs:label xml:lang="fr">utilise l'assemblage</rdfs:label>
+        <rdfs:comment>Lie une simulation composite à son assemblage de modèles.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasCombinationStrategy">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#ModelAssembly"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#CombinationStrategy"/>
+        <rdfs:label xml:lang="fr">applique la stratégie de combinaison</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- Pont M4→M8 : simulation → contexte populationnel -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasTargetPopulationGroup">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">cible le groupe de population</rdfs:label>
+        <rdfs:comment>[M4-EXT-4] Pont M4→M8. Groupe de population ciblé par la simulation.
+        Ex: CompositeSimulation_COVID_Paris_Ecoliers → m8:SchoolChildren_Paris</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Pont M4→M8 : simulation → contexte géographique -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasGeographicContext">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label xml:lang="fr">se déroule dans le contexte géographique</rdfs:label>
+        <rdfs:comment>[M4-EXT-4] Pont M4→M8. Territoire de la simulation.
+        Ex: CompositeSimulation_COVID_Paris_Ecoliers → m8:Paris</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Pont M4→M8 : simulation → sources de données utilisées -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#usesDataSource">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:label xml:lang="fr">utilise la source de données</rdfs:label>
+        <rdfs:comment>[M4-EXT-4] Pont M4→M8. Sources de données externes utilisées pour
+        contextualiser ou calibrer la simulation.
+        Ex: simulation Paris → INSEE_France + POLYMOD + OpenCOVID19_France</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Pont M4→M4 : simulation → paramètres calibrés -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasCalibratedParameter">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibratedParameter"/>
+        <rdfs:label xml:lang="fr">a pour paramètre calibré</rdfs:label>
+        <rdfs:comment>Paramètres recalibrés sur données locales, utilisés à la place
+        des valeurs publiées dans l'article d'origine.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#usesCalibrationMethod">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibratedParameter"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibrationMethod"/>
+        <rdfs:label xml:lang="fr">calibré par la méthode</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module4#calibratedFrom">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibratedParameter"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:label xml:lang="fr">calibré depuis la source</rdfs:label>
+        <rdfs:comment>Source de données utilisée pour la recalibration du paramètre.
+        Ex: beta_calibré_Paris ← OpenCOVID19_France</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Propriétés de données pour CalibratedParameter -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasPublishedValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibratedParameter"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">valeur publiée (référence)</rdfs:label>
+        <rdfs:comment>Valeur du paramètre telle que publiée dans l'article source (M2).
+        Conservée pour traçabilité et comparaison.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasCalibratedValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibratedParameter"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">valeur calibrée (locale)</rdfs:label>
+        <rdfs:comment>Valeur recalibrée sur données locales. Remplace la valeur publiée
+        pour cette simulation spécifique.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasParameterSymbol">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibratedParameter"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">symbole du paramètre</rdfs:label>
+        <rdfs:comment>Symbole mathématique : beta, gamma, sigma, R0, omega...</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasCalibrationGOF">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibratedParameter"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">score d'ajustement (goodness-of-fit)</rdfs:label>
+        <rdfs:comment>Score R² ou RMSE mesurant la qualité de la calibration.
+        1.0 = ajustement parfait aux données.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Score de pertinence NLP de la simulation -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasNLPRelevanceScore">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#ModelAssembly"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">score de pertinence NLP</rdfs:label>
+        <rdfs:comment>Score 0-1 calculé par le pipeline NLP lors de la sélection du modèle.
+        Combine : score qualité M2 × pertinence mots-clés × correspondance géo × correspondance population.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Requête NLP originale ayant déclenché la simulation -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module4#hasNLPQuery">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">requête NLP source</rdfs:label>
+        <rdfs:comment>Texte brut de la requête utilisateur ayant déclenché cette simulation.
+        Ex: "simule COVID-19 à Paris chez les écoliers".
+        Conservé pour traçabilité et reproductibilité.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M4-EXT-5] ABOX — INSTANCES DE SIMULATION
+         Cas d'usage : COVID-19 Paris écoliers + Paludisme Thiès
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Stratégies de combinaison (individus) -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#Strategy_BestScore">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#BestScoreSelection"/>
+        <rdfs:label xml:lang="fr">Stratégie : meilleur score</rdfs:label>
+        <rdfs:comment>Stratégie par défaut du pipeline PIPOnto. Retient le modèle M2
+        avec le meilleur score qualité × pertinence NLP.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#Strategy_Layered">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#PopulationLayered"/>
+        <rdfs:label xml:lang="fr">Stratégie : couches populationnelles</rdfs:label>
+        <rdfs:comment>Combine modèle général (Paris) + modèle scolaire (écoliers).
+        Interactions via matrice de contacts POLYMOD.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Méthodes de calibration (individus) -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#Method_LeastSquares">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#LeastSquaresCalibration"/>
+        <rdfs:label xml:lang="fr">Moindres carrés non-linéaires</rdfs:label>
+        <rdfs:comment>scipy.optimize.curve_fit. Rapide, adapté pour calibration beta/gamma.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── CAS 1 : COVID-19 Paris écoliers ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#Assembly_COVID_Paris_Ecoliers">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#ModelAssembly"/>
+        <rdfs:label xml:lang="fr">Assemblage COVID-19 Paris Écoliers</rdfs:label>
+        <m4:hasSelectedModel rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_School_Cauchemez_2011"/>
+        <m4:hasAlternativeModel rdf:resource="http://www.pacadi.org/these/piponto/module2#ABM_COVID_Urban_Kerr_2021"/>
+        <m4:hasAlternativeModel rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_COVID_France_Roux_2020"/>
+        <m4:hasCombinationStrategy rdf:resource="http://www.pacadi.org/these/piponto/module4#Strategy_Layered"/>
+        <m4:hasNLPRelevanceScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.91</m4:hasNLPRelevanceScore>
+        <rdfs:comment>Assemblage sélectionné par le pipeline NLP pour la requête
+        "simule COVID-19 à Paris chez les écoliers".
+        Principal : Cauchemez 2011 (scolaire). Alternatifs : Covasim, Roux 2020.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#Param_Beta_Calibre_Paris_2022">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#CalibratedParameter"/>
+        <rdfs:label xml:lang="fr">β calibré Paris 2022</rdfs:label>
+        <m4:hasParameterSymbol>beta</m4:hasParameterSymbol>
+        <m4:hasPublishedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.429</m4:hasPublishedValue>
+        <m4:hasCalibratedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.31</m4:hasCalibratedValue>
+        <m4:hasCalibrationGOF rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.94</m4:hasCalibrationGOF>
+        <m4:usesCalibrationMethod rdf:resource="http://www.pacadi.org/these/piponto/module4#Method_LeastSquares"/>
+        <m4:calibratedFrom rdf:resource="http://www.pacadi.org/these/piponto/module8#OpenCOVID19_France"/>
+        <rdfs:comment>β recalibré sur données réelles Paris 2022 (wave Omicron).
+        Valeur publiée Ferguson : 0.429. Valeur locale Paris : 0.31 (mesures en place).
+        R² = 0.94. Source : OpenCOVID19-fr.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#Config_COVID_Paris_Ecoliers">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration"/>
+        <rdfs:label xml:lang="fr">Configuration simulation COVID-19 Paris Écoliers</rdfs:label>
+        <m4:hasCalibratedParameter rdf:resource="http://www.pacadi.org/these/piponto/module4#Param_Beta_Calibre_Paris_2022"/>
+        <m4:hasMaxTicks rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">365</m4:hasMaxTicks>
+        <m4:hasRandomSeed rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">42</m4:hasRandomSeed>
+        <m4:hasNumberOfRuns rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</m4:hasNumberOfRuns>
+        <rdfs:comment>Configuration : 365 ticks (1 an), 100 répétitions stochastiques, graine 42.
+        β Paris calibré = 0.31. N_écoliers = 280 000.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#Sim_COVID_Paris_Ecoliers">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#CompositeSimulation"/>
+        <rdfs:label xml:lang="fr">Simulation COVID-19 Paris Écoliers</rdfs:label>
+        <m4:hasNLPQuery>simule COVID-19 à Paris chez les écoliers</m4:hasNLPQuery>
+        <m4:hasModelAssembly rdf:resource="http://www.pacadi.org/these/piponto/module4#Assembly_COVID_Paris_Ecoliers"/>
+        <m4:hasConfiguration rdf:resource="http://www.pacadi.org/these/piponto/module4#Config_COVID_Paris_Ecoliers"/>
+        <m4:hasTargetPopulationGroup rdf:resource="http://www.pacadi.org/these/piponto/module8#SchoolChildren_Paris"/>
+        <m4:hasGeographicContext rdf:resource="http://www.pacadi.org/these/piponto/module8#Paris"/>
+        <m4:usesDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#INSEE_France"/>
+        <m4:usesDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#POLYMOD_Mossong2008"/>
+        <m4:usesDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#OpenCOVID19_France"/>
+        <m4:runsOn rdf:resource="http://www.pacadi.org/these/piponto/module4#ODESolver_Instance"/>
+        <rdfs:comment>Simulation principale du cas d'usage "COVID-19 Paris écoliers".
+        Pipeline complet : NLP → M2 → M8 → M4 → exécution → M6 résultats.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── CAS 2 : Paludisme Thiès population rurale ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#Assembly_Malaria_Thies">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#ModelAssembly"/>
+        <rdfs:label xml:lang="fr">Assemblage Paludisme Thiès</rdfs:label>
+        <m4:hasSelectedModel rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRS_Malaria_Senegal_Diallo_2022"/>
+        <m4:hasCombinationStrategy rdf:resource="http://www.pacadi.org/these/piponto/module4#Strategy_BestScore"/>
+        <m4:hasNLPRelevanceScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.95</m4:hasNLPRelevanceScore>
+        <rdfs:comment>Assemblage pour "paludisme région Thiès".
+        SEIRS Diallo 2022 validé Sénégal avec saisonnalité des pluies.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#Sim_Malaria_Thies">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#CompositeSimulation"/>
+        <rdfs:label xml:lang="fr">Simulation Paludisme Thiès</rdfs:label>
+        <m4:hasNLPQuery>simule le paludisme dans la région de Thiès</m4:hasNLPQuery>
+        <m4:hasModelAssembly rdf:resource="http://www.pacadi.org/these/piponto/module4#Assembly_Malaria_Thies"/>
+        <m4:hasTargetPopulationGroup rdf:resource="http://www.pacadi.org/these/piponto/module8#RuralPop_Thies"/>
+        <m4:hasGeographicContext rdf:resource="http://www.pacadi.org/these/piponto/module8#Thies"/>
+        <m4:usesDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#ANSD_Senegal"/>
+        <m4:usesDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#PNLP_Senegal"/>
+        <m4:usesDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#Prem2017_ContactMatrices"/>
+        <rdfs:comment>Simulation paludisme Thiès. Modèle SEIRS deux populations
+        (humains + Anopheles). Données ANSD + PNLP Sénégal.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Instance plateforme ODE solver (référencée par Sim_COVID_Paris) -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module4#ODESolver_Instance">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module4#ODESolverPlatform"/>
+        <rdfs:label>Python ODE Solver (scipy.integrate)</rdfs:label>
+        <m4:hasPlatformVersion>scipy 1.11</m4:hasPlatformVersion>
+        <rdfs:comment>Solveur ODE Python. Utilisé pour les modèles SEIR/SIRS/SEIRS.
+        scipy.integrate.solve_ivp avec méthode RK45.</rdfs:comment>
+    </owl:NamedIndividual>
+
+</rdf:RDF>
+
+<!-- Généré manuellement — PIPOnto Module 4 v1.0 -->
+<!-- Choix M4-D1 à M4-D7 documentés inline dans les rdfs:comment -->

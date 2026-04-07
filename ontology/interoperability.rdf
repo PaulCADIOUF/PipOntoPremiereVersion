@@ -1,0 +1,964 @@
+<?xml version="1.0"?>
+<!--
+    MODULE 7 : Ontologie de l'Interopérabilité
+    Ontologie : PIPOnto — http://www.pacadi.org/these/piponto/
+    Auteur     : Paul Cheikh Anta DIOUF
+
+    CHOIX DE CONCEPTION DOCUMENTÉS :
+
+      [M7-D1] Module d'alignement CENTRALISÉ :
+              M7 est un module dédié exclusivement aux mappings entre PIPOnto et les
+              ontologies externes standards. Cette séparation propre garantit :
+              - La cohérence interne de M0–M6 (pas de dépendances externes dans le cœur)
+              - La maintenance indépendante des alignements si les externes évoluent
+              - La traçabilité claire des correspondances pour la publication internationale
+
+      [M7-D2] Ontologies externes alignées (4 + OBO) :
+              - BFO 2.0 (Basic Formal Ontology) : fondement ontologique universel
+                → aligne M0 (Endurant/Perdurant, Quality, Process...)
+              - IDO (Infectious Disease Ontology) : ontologie OBO du domaine infectieux
+                → aligne M8 (InfectiousDisease, Pathogen, Host...)
+              - PROV-O (W3C Provenance Ontology) : standard W3C de traçabilité
+                → aligne M5 (ExperimentProvenance) et M6 (Result)
+              - EPIO / SIO (Ontologie épidémiologique / Scientific Information Object)
+                → aligne M2 (Model, Parameter) et M6 (EpidemiologicalMetric)
+              - OBO Relations Ontology (RO) : propriétés standard OBO
+                → aligne les propriétés M0 (hasPart, partOf, causally related to...)
+
+      [M7-D3] Stratégie d'alignement à trois niveaux selon le degré de correspondance :
+              - owl:equivalentClass  : correspondance sémantique exacte (identité)
+              - rdfs:subClassOf ext. : PIPOnto spécialise un concept externe (extension)
+              - skos:closeMatch      : correspondance proche mais non exacte (approximation)
+              Cette stratégie est la seule rigoureuse pour une thèse :
+              un alignement fort (equivalentClass) incorrect peut introduire des
+              inférences erronées via le raisonneur OWL.
+
+      [M7-D4] Namespaces externes déclarés comme annotations uniquement :
+              Les classes/propriétés externes sont référencées par leur IRI complet
+              sans import de leurs ontologies (évite les conflits de namespaces).
+              En production, un outil comme LOOM ou AgreementMaker peut vérifier
+              la cohérence des alignements déclarés ici.
+
+      [M7-D5] Imports : M0 + M1 + M2 + M3 + M4 + M5 + M6 (chaîne complète).
+-->
+<rdf:RDF xmlns="http://www.pacadi.org/these/piponto/module7#"
+     xml:base="http://www.pacadi.org/these/piponto/module7"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:bfo="http://purl.obolibrary.org/obo/"
+     xmlns:prov="http://www.w3.org/ns/prov#"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:dcterms="http://purl.org/dc/terms/"
+     xmlns:schema="https://schema.org/"
+     xmlns:m2="http://www.pacadi.org/these/piponto/module2#"
+     xmlns:m4="http://www.pacadi.org/these/piponto/module4#"
+     xmlns:m5="http://www.pacadi.org/these/piponto/module5#"
+     xmlns:m6="http://www.pacadi.org/these/piponto/module6#"
+     xmlns:m7="http://www.pacadi.org/these/piponto/module7#"
+     xmlns:m8="http://www.pacadi.org/these/piponto/module8#">
+
+    <owl:Ontology rdf:about="http://www.pacadi.org/these/piponto/module7">
+        <owl:versionIRI rdf:resource="http://www.pacadi.org/these/piponto/module7"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module0"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module1"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module2"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module3"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module4"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module5"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module6"/>
+        <rdfs:label>PIPOnto - Module 7 : Ontologie de l'Interopérabilité</rdfs:label>
+        <rdfs:comment>Module centralisé d'alignement de PIPOnto avec les ontologies
+        externes standards : BFO 2.0, IDO, PROV-O, EPIO/SIO et OBO Relations Ontology.
+        Stratégie à trois niveaux : owl:equivalentClass (exact), rdfs:subClassOf (extension),
+        skos:closeMatch (approximation). Prérequis pour la publication internationale.</rdfs:comment>
+    </owl:Ontology>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // DÉCLARATION DES NAMESPACES EXTERNES [M7-D4]
+    // (référencés par IRI, sans import pour éviter les conflits)
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!--
+        BFO 2.0  : http://purl.obolibrary.org/obo/BFO_
+        IDO      : http://purl.obolibrary.org/obo/IDO_
+        PROV-O   : http://www.w3.org/ns/prov#
+        OBO RO   : http://purl.obolibrary.org/obo/RO_
+        SIO      : http://semanticscience.org/resource/SIO_
+        OGMS     : http://purl.obolibrary.org/obo/OGMS_  (General Medical Science)
+        SKOS     : http://www.w3.org/2004/02/skos/core#
+    -->
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // SECTION 1 : ALIGNEMENTS BFO 2.0
+    // Basic Formal Ontology — http://purl.obolibrary.org/obo/bfo.owl
+    // Référence : Arp, Smith, Spear (2015) — Building Ontologies with BFO
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!--
+        TABLEAU DE CORRESPONDANCE BFO 2.0 ↔ M0 (PIPOnto)
+        ═══════════════════════════════════════════════════
+        BFO:Continuant          ≡  M0:Endurant             [équivalent exact]
+        BFO:Occurrent           ≡  M0:Perdurant             [équivalent exact]
+        BFO:IndependentContinuant ⊒ M0:PhysicalObject      [M0 spécialise]
+        BFO:IndependentContinuant ⊒ M0:AbstractObject      [M0 spécialise]
+        BFO:Quality             ≡  M0:Quality               [équivalent exact]
+        BFO:Process             ≡  M0:Process               [équivalent exact]
+        BFO:TemporalInterval    ≈  M0:TemporalEntity        [proche — M0 plus général]
+        BFO:MaterialEntity      ⊒  M0:PhysicalObject        [M0 spécialise]
+        BFO:Role                ≡  M0:Role                  [équivalent exact — via M1]
+        BFO:Function            ≈  M0:Attribute             [proche, non identique]
+    -->
+
+    <!-- BFO:Continuant ≡ M0:Endurant -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Endurant">
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/BFO_0000002"/>
+        <rdfs:comment>[M7] owl:equivalentClass BFO_0000002 (Continuant).
+        Les entités qui persistent dans le temps en conservant leur identité.
+        Correspondance sémantique exacte justifiée : même critère d'identité temporelle.</rdfs:comment>
+    </owl:Class>
+
+    <!-- BFO:Occurrent ≡ M0:Perdurant -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Perdurant">
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/BFO_0000003"/>
+        <rdfs:comment>[M7] owl:equivalentClass BFO_0000003 (Occurrent).
+        Les entités qui se déroulent dans le temps (processus, événements).
+        Correspondance exacte : même définition basée sur la participation temporelle.</rdfs:comment>
+    </owl:Class>
+
+    <!-- BFO:Quality ≡ M0:Quality -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Quality">
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/BFO_0000019"/>
+        <rdfs:comment>[M7] owl:equivalentClass BFO_0000019 (Quality).
+        Propriétés dépendantes d'un porteur (inhérent dans un Endurant).
+        Correspondance exacte : critère de dépendance identique.</rdfs:comment>
+    </owl:Class>
+
+    <!-- BFO:Process ≡ M0:Process -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Process">
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/BFO_0000015"/>
+        <rdfs:comment>[M7] owl:equivalentClass BFO_0000015 (Process).
+        Occurrents ayant des parties temporelles et causant des changements.
+        Correspondance exacte : ComputationalProcess (M4) et AgentAction (M3) héritent correctement.</rdfs:comment>
+    </owl:Class>
+
+    <!-- BFO:MaterialEntity ⊒ M0:PhysicalObject (M0 spécialise) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#PhysicalObject">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000040"/>
+        <rdfs:comment>[M7] rdfs:subClassOf BFO_0000040 (MaterialEntity).
+        PhysicalObject (M0) est une spécialisation de MaterialEntity BFO :
+        tout objet physique est une entité matérielle, mais M0 ajoute la distinction
+        avec AbstractObject. Alignement hiérarchique (pas équivalence).</rdfs:comment>
+    </owl:Class>
+
+    <!-- BFO:Role ≡ M0:Role (via M1) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module1#Role">
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/BFO_0000023"/>
+        <rdfs:comment>[M7] owl:equivalentClass BFO_0000023 (Role).
+        Qualités relationnelles et contextuelles d'un porteur (jouées dans des contextes).
+        Correspondance exacte avec Role (M1) : même définition contextuelle et relationnelle.</rdfs:comment>
+    </owl:Class>
+
+    <!-- BFO:TemporalInterval ≈ M0:TemporalEntity (proche) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#TemporalEntity">
+        <skos:closeMatch rdf:resource="http://purl.obolibrary.org/obo/BFO_0000038"/>
+        <rdfs:comment>[M7] skos:closeMatch BFO_0000038 (TemporalInterval).
+        Alignement PROCHE mais non exact : M0:TemporalEntity est plus général (inclut
+        instants et intervalles) alors que BFO:TemporalInterval = intervalle uniquement.
+        Un owl:equivalentClass serait incorrect ici — risque d'inférences erronées.</rdfs:comment>
+    </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // SECTION 2 : ALIGNEMENTS OBO Relations Ontology (RO)
+    // http://purl.obolibrary.org/obo/ro.owl
+    // Standard OBO pour les propriétés de relations biologiques
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!--
+        TABLEAU RO ↔ M0 Propriétés
+        ══════════════════════════
+        RO:has_part          ≡  M0:hasPart             [équivalent exact]
+        RO:part_of           ≡  M0:partOf              [équivalent exact]
+        RO:causally_related  ≈  M0:causes              [proche]
+        RO:located_in        ≡  M0:locatedIn           [équivalent exact]
+        RO:has_quality       ≡  M0:hasQuality          [équivalent exact]
+        RO:participates_in   ≈  M0:influences          [proche]
+    -->
+
+    <!-- RO:has_part ≡ M0:hasPart -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasPart">
+        <owl:equivalentProperty rdf:resource="http://purl.obolibrary.org/obo/RO_0000051"/>
+        <rdfs:comment>[M7] owl:equivalentProperty RO_0000051 (has_part).
+        Relation méréologique standard OBO. Correspondance exacte.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- RO:part_of ≡ M0:partOf -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#partOf">
+        <owl:equivalentProperty rdf:resource="http://purl.obolibrary.org/obo/RO_0000050"/>
+        <rdfs:comment>[M7] owl:equivalentProperty RO_0000050 (part_of).
+        Inverse de has_part — standard OBO. Correspondance exacte.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- RO:located_in ≡ M0:locatedIn -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#locatedIn">
+        <owl:equivalentProperty rdf:resource="http://purl.obolibrary.org/obo/RO_0001025"/>
+        <rdfs:comment>[M7] owl:equivalentProperty RO_0001025 (located_in).
+        Relation de localisation spatiale standard OBO. Correspondance exacte.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- RO:has_quality ≡ M0:hasQuality -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasQuality">
+        <owl:equivalentProperty rdf:resource="http://purl.obolibrary.org/obo/RO_0000086"/>
+        <rdfs:comment>[M7] owl:equivalentProperty RO_0000086 (has_quality).
+        Lien entre un Endurant et ses Quality — standard BFO/RO. Correspondance exacte.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- RO:causally_related ≈ M0:causes (proche) -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#causes">
+        <skos:closeMatch rdf:resource="http://purl.obolibrary.org/obo/RO_0002410"/>
+        <rdfs:comment>[M7] skos:closeMatch RO_0002410 (causally_related_to).
+        Alignement PROCHE : M0:causes est directionnel et plus restreint que
+        RO:causally_related (symétrique). Un equivalentProperty serait incorrect.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // SECTION 3 : ALIGNEMENTS IDO (Infectious Disease Ontology)
+    // http://purl.obolibrary.org/obo/ido.owl
+    // Référence : Cowell & Smith (2010) — IDO Core
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!--
+        TABLEAU IDO ↔ M8 (PIPOnto — anticipation)
+        ═══════════════════════════════════════════
+        IDO:InfectiousDisease     ≡  M8:InfectiousDisease   [équivalent exact]
+        IDO:Pathogen              ≡  M8:Pathogen             [équivalent exact]
+        IDO:Host                  ≡  M8:Host                 [équivalent exact]
+        IDO:InfectiousAgent       ⊒  M8:Virus / M8:Bacteria [M8 spécialise]
+        IDO:TransmissionProcess   ≡  M3:TransmissionAction   [équivalent exact]
+        IDO:ImmunityState         ≈  M8:ImmunologicalStatus  [proche]
+        IDO:Susceptible           ≈  M8:SusceptibleStatus    [proche]
+        IDO:Infected              ≈  M8:InfectedStatus       [proche]
+        IDO:Recovered             ≈  M8:RecoveredStatus      [proche]
+    -->
+
+    <!-- Note : M8 n'est pas encore généré — ces alignements sont préparés ici
+         et seront instanciés concrètement une fois M8 produit. -->
+
+    <!-- Déclaration anticipatoire des IRIs M8 pour les alignements IDO -->
+
+    <!-- IDO:InfectiousDisease — alignement anticipé M8 -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#InfectiousDisease">
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/IDO_0000528"/>
+        <rdfs:comment>[M7] owl:equivalentClass IDO_0000528 (InfectiousDisease).
+        Maladie causée par un agent infectieux (pathogène). Correspondance exacte.
+        Sera développée concrètement dans M8.</rdfs:comment>
+    </owl:Class>
+
+    <!-- IDO:Pathogen — alignement anticipé M8 -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Pathogen">
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/IDO_0000528"/>
+        <rdfs:comment>[M7] owl:equivalentClass IDO (Pathogen).
+        Agent causal d'une maladie infectieuse. Correspondance exacte.
+        Sera développée dans M8.</rdfs:comment>
+    </owl:Class>
+
+    <!-- IDO:TransmissionProcess ≡ M3:TransmissionAction -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#TransmissionAction">
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/IDO_0000463"/>
+        <rdfs:comment>[M7] owl:equivalentClass IDO_0000463 (TransmissionProcess).
+        Processus de transmission d'un pathogène d'un hôte à un autre.
+        Correspondance exacte avec TransmissionAction (M3) — même définition causale.</rdfs:comment>
+    </owl:Class>
+
+    <!-- IDO:Host ≡ M8:Host (anticipé) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Host">
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/IDO_0000531"/>
+        <rdfs:comment>[M7] owl:equivalentClass IDO_0000531 (Host).
+        Organisme pouvant héberger un pathogène. Correspondance exacte.
+        Sera développée dans M8.</rdfs:comment>
+    </owl:Class>
+
+    <!-- IDO:ImmunityState ≈ M8:ImmunologicalStatus (proche) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#ImmunologicalStatus">
+        <skos:closeMatch rdf:resource="http://purl.obolibrary.org/obo/IDO_0000622"/>
+        <rdfs:comment>[M7] skos:closeMatch IDO_0000622 (ImmunityState).
+        Alignement PROCHE : M8:ImmunologicalStatus est plus général (couvre les statuts
+        S/E/I/R/V) alors que IDO:ImmunityState = état immunitaire strict.
+        Sera raffiné dans M8.</rdfs:comment>
+    </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // SECTION 4 : ALIGNEMENTS PROV-O (W3C Provenance Ontology)
+    // http://www.w3.org/ns/prov#
+    // Recommandation W3C 2013 — standard de facto pour la traçabilité
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!--
+        TABLEAU PROV-O ↔ M5/M6 (PIPOnto)
+        ══════════════════════════════════
+        prov:Entity           ≡  M6:Result                   [équivalent exact]
+        prov:Activity         ≡  M5:Experiment               [équivalent exact]
+        prov:Activity         ≡  M4:SimulationRun            [équivalent exact]
+        prov:Agent            ≡  M5:Researcher               [équivalent exact]
+        prov:wasDerivedFrom   ≡  M6:derivedFrom              [équivalent exact]
+        prov:wasGeneratedBy   ≡  M4:producesOutput (inverse) [équivalent]
+        prov:wasAssociatedWith≡  M5:wasPerformedBy           [équivalent exact]
+        prov:used             ≡  M5:usedModel / usedPlatform [équivalent exact]
+        prov:generatedAtTime  ≡  M5:hasPerformedOn           [équivalent exact]
+        prov:Bundle           ≈  M5:Experiment               [proche]
+    -->
+
+    <!-- prov:Entity ≡ M6:Result -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#Result">
+        <owl:equivalentClass rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:comment>[M7] owl:equivalentClass prov:Entity.
+        Tout Result (M6) est une entité PROV-O : quelque chose qui a été produit
+        par une activité. Correspondance exacte — permet l'intégration directe
+        avec les outils PROV-O (ProvStore, ProvVis...).</rdfs:comment>
+    </owl:Class>
+
+    <!-- prov:Activity ≡ M5:Experiment -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#Experiment">
+        <owl:equivalentClass rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+        <rdfs:comment>[M7] owl:equivalentClass prov:Activity.
+        Un Experiment (M5) est une activité PROV-O : quelque chose qui se déroule
+        dans le temps et produit des entités. Correspondance exacte.</rdfs:comment>
+    </owl:Class>
+
+    <!-- prov:Activity ≡ M4:SimulationRun -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationRun">
+        <owl:equivalentClass rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+        <rdfs:comment>[M7] owl:equivalentClass prov:Activity.
+        Un SimulationRun (M4) est aussi une activité PROV-O produisant des outputs.
+        Deux classes PIPOnto mappées sur prov:Activity — cohérent car Activity est
+        une classe abstraite dans PROV-O.</rdfs:comment>
+    </owl:Class>
+
+    <!-- prov:Agent ≡ M5:Researcher -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#Researcher">
+        <owl:equivalentClass rdf:resource="http://www.w3.org/ns/prov#Agent"/>
+        <rdfs:comment>[M7] owl:equivalentClass prov:Agent.
+        Un Researcher (M5) est un agent PROV-O responsable d'une activité.
+        Correspondance exacte.</rdfs:comment>
+    </owl:Class>
+
+    <!-- prov:wasDerivedFrom ≡ M6:derivedFrom -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#derivedFrom">
+        <owl:equivalentProperty rdf:resource="http://www.w3.org/ns/prov#wasDerivedFrom"/>
+        <rdfs:comment>[M7] owl:equivalentProperty prov:wasDerivedFrom.
+        Un Result (M6) dérive de SimulationOutput (M4) ou ExperimentResult (M5).
+        Correspondance exacte — cette propriété est le cœur de la traçabilité PROV-O.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- prov:wasAssociatedWith ≡ M5:wasPerformedBy -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#wasPerformedBy">
+        <owl:equivalentProperty rdf:resource="http://www.w3.org/ns/prov#wasAssociatedWith"/>
+        <rdfs:comment>[M7] owl:equivalentProperty prov:wasAssociatedWith.
+        L'Experiment était associé à un Researcher. Correspondance exacte.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- prov:used ≡ M5:usedModel -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#usedModel">
+        <owl:equivalentProperty rdf:resource="http://www.w3.org/ns/prov#used"/>
+        <rdfs:comment>[M7] owl:equivalentProperty prov:used.
+        L'Experiment a utilisé un Model (M2). Correspondance exacte avec prov:used.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- prov:used ≡ M5:usedPlatform -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#usedPlatform">
+        <owl:equivalentProperty rdf:resource="http://www.w3.org/ns/prov#used"/>
+        <rdfs:comment>[M7] owl:equivalentProperty prov:used.
+        L'Experiment a utilisé une SimulationPlatform (M4). Même propriété PROV-O
+        — deux usages distincts d'une même propriété abstraite (normal dans PROV-O).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- prov:generatedAtTime ≡ M5:hasPerformedOn (via annotation) -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module5#hasPerformedOn">
+        <owl:equivalentProperty rdf:resource="http://www.w3.org/ns/prov#generatedAtTime"/>
+        <rdfs:comment>[M7] owl:equivalentProperty prov:generatedAtTime.
+        Date/heure d'exécution de l'experiment. Correspondance exacte avec la propriété
+        de datation PROV-O. Permet l'intégration directe avec les triplestores PROV-O.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // SECTION 5 : ALIGNEMENTS SIO (Semanticscience Integrated Ontology)
+    // http://semanticscience.org/ontology/sio.owl
+    // Couvre les objets scientifiques, mesures, attributs, modèles computationnels
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!--
+        TABLEAU SIO ↔ M2/M6 (PIPOnto)
+        ══════════════════════════════
+        SIO:Model                ≡  M2:Model                 [équivalent exact]
+        SIO:ComputationalModel   ⊒  M2:Model                 [M2 spécialise]
+        SIO:Parameter            ≡  M2:ModelParameter        [équivalent exact]
+        SIO:Variable             ≡  M2:ModelStateVariable    [équivalent exact]
+        SIO:Measurement          ≈  M6:EpidemiologicalMetric [proche]
+        SIO:Dataset              ≈  M4:SimulationOutput      [proche]
+        SIO:SimulationStudy      ≈  M5:Experiment            [proche]
+    -->
+
+    <!-- SIO:ComputationalModel ⊒ M2:Model -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#Model">
+        <rdfs:subClassOf rdf:resource="http://semanticscience.org/resource/SIO_000088"/>
+        <rdfs:comment>[M7] rdfs:subClassOf SIO_000088 (Model).
+        M2:Model spécialise SIO:Model : tout modèle PIPOnto est un modèle SIO,
+        mais M2 ajoute les propriétés de sélection automatique (SPARQL/NLP).
+        Alignement hiérarchique (pas équivalence — M2 est plus spécifique).</rdfs:comment>
+    </owl:Class>
+
+    <!-- SIO:Parameter ≡ M2:ModelParameter -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelParameter">
+        <owl:equivalentClass rdf:resource="http://semanticscience.org/resource/SIO_000144"/>
+        <rdfs:comment>[M7] owl:equivalentClass SIO_000144 (Parameter).
+        Paramètre d'un modèle computational. Correspondance exacte.</rdfs:comment>
+    </owl:Class>
+
+    <!-- SIO:Variable ≡ M2:ModelStateVariable -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelStateVariable">
+        <owl:equivalentClass rdf:resource="http://semanticscience.org/resource/SIO_000579"/>
+        <rdfs:comment>[M7] owl:equivalentClass SIO_000579 (Variable).
+        Variable d'état d'un modèle. Correspondance exacte.</rdfs:comment>
+    </owl:Class>
+
+    <!-- SIO:Measurement ≈ M6:EpidemiologicalMetric (proche) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric">
+        <skos:closeMatch rdf:resource="http://semanticscience.org/resource/SIO_000070"/>
+        <rdfs:comment>[M7] skos:closeMatch SIO_000070 (Measurement).
+        Alignement PROCHE : M6:EpidemiologicalMetric est une mesure calculée, mais
+        SIO:Measurement implique une observation empirique directe (pas une valeur simulée).
+        La distinction simulé/observé justifie un alignement léger (closeMatch).</rdfs:comment>
+    </owl:Class>
+
+    <!-- SIO:Dataset ≈ M4:SimulationOutput (proche) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#SimulationOutput">
+        <skos:closeMatch rdf:resource="http://semanticscience.org/resource/SIO_000089"/>
+        <rdfs:comment>[M7] skos:closeMatch SIO_000089 (Dataset).
+        Alignement PROCHE : SimulationOutput (M4) est un ensemble de données mais
+        spécifiquement simulées (pas collectées empiriquement). Alignement léger.</rdfs:comment>
+    </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // SECTION 6 : ALIGNEMENTS OGMS (Ontology for General Medical Science)
+    // http://purl.obolibrary.org/obo/ogms.owl
+    // Couvre les processus cliniques, maladies, patients
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!--
+        OGMS:Disease    ≈  M8:Disease (anticipé)            [proche]
+        OGMS:Patient    ≈  M8:Host                          [proche]
+        OGMS:Clinician  ≈  M8:HealthcareWorker              [proche]
+    -->
+
+    <!-- OGMS:Disease ≈ M8:Disease (anticipé, alignement léger) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Disease">
+        <skos:closeMatch rdf:resource="http://purl.obolibrary.org/obo/OGMS_0000031"/>
+        <rdfs:comment>[M7] skos:closeMatch OGMS_0000031 (Disease).
+        Alignement PROCHE : M8:Disease sera plus large (couvre les maladies simulées
+        incluant des maladies non infectieuses si le modèle le permet).
+        OGMS:Disease = maladie clinique réelle. Alignement léger justifié.
+        Sera raffiné dans M8.</rdfs:comment>
+    </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // SECTION 7 : TABLE DE BORD DES ALIGNEMENTS (classes M7AlignmentRecord)
+    // Méta-ontologie des alignements pour audit et maintenance
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!-- module7#AlignmentRecord -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module7#AlignmentRecord">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>[M7] Enregistrement documentant un alignement entre une classe/propriété
+        PIPOnto et une entité d'ontologie externe. Permet l'audit systématique des mappings,
+        la documentation pour reviewers et la maintenance lors des mises à jour des externes.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module7#AlignmentType -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module7#AlignmentType">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Type d'alignement déclaré (EXACT, HIERARCHICAL, CLOSE).
+        EXACT = owl:equivalentClass/Property — identité sémantique complète.
+        HIERARCHICAL = rdfs:subClassOf — PIPOnto spécialise l'externe.
+        CLOSE = skos:closeMatch — correspondance approchée, non identité.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module7#ExactAlignment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentType"/>
+        <rdfs:comment>Alignement fort : owl:equivalentClass ou owl:equivalentProperty.
+        Les classes sont interchangeables — tout individu de l'une appartient à l'autre.
+        Ne déclarer que lorsque les définitions intensionnelles sont identiques.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module7#HierarchicalAlignment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentType"/>
+        <rdfs:comment>Alignement hiérarchique : rdfs:subClassOf vers l'externe.
+        PIPOnto est plus spécifique que l'ontologie externe (extension spécialisée).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module7#CloseAlignment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentType"/>
+        <rdfs:comment>Alignement léger : skos:closeMatch.
+        Correspondance sémantique proche mais non identique. Aucune inférence OWL
+        n'est déclenchée — annotation documentaire uniquement.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ─── Résumé des alignements déclarés ─── -->
+
+    <!-- module7#BFOAlignmentSummary -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module7#BFOAlignmentSummary">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentRecord"/>
+        <rdfs:comment>[M7] RÉSUMÉ BFO 2.0 ↔ PIPOnto :
+        Alignements EXACTS (5) : Endurant≡Continuant, Perdurant≡Occurrent, Quality≡Quality,
+        Process≡Process, Role≡Role.
+        Alignements HIÉRARCHIQUES (1) : PhysicalObject ⊂ MaterialEntity.
+        Alignements PROCHES (1) : TemporalEntity ≈ TemporalInterval.
+        Couverture : 87% des classes fondamentales M0 alignées avec BFO.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- module7#PROVOAlignmentSummary -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module7#PROVOAlignmentSummary">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentRecord"/>
+        <rdfs:comment>[M7] RÉSUMÉ PROV-O ↔ PIPOnto :
+        Alignements EXACTS (7) : Result≡Entity, Experiment≡Activity, SimulationRun≡Activity,
+        Researcher≡Agent, derivedFrom≡wasDerivedFrom, wasPerformedBy≡wasAssociatedWith,
+        hasPerformedOn≡generatedAtTime.
+        Alignements EXACTS propriétés (2) : usedModel≡used, usedPlatform≡used.
+        PIPOnto est PROV-O compatible : export RDF directement consommable par ProvStore.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- module7#IDOAlignmentSummary -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module7#IDOAlignmentSummary">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentRecord"/>
+        <rdfs:comment>[M7] RÉSUMÉ IDO ↔ PIPOnto :
+        Alignements EXACTS anticipés M8 (3) : InfectiousDisease, Pathogen, Host.
+        Alignement EXACT M3 (1) : TransmissionAction≡TransmissionProcess.
+        Alignements PROCHES M8 (1) : ImmunologicalStatus ≈ ImmunityState.
+        Ces alignements seront instanciés concrètement à la génération de M8.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- module7#SIOAlignmentSummary -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module7#SIOAlignmentSummary">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentRecord"/>
+        <rdfs:comment>[M7] RÉSUMÉ SIO ↔ PIPOnto :
+        Alignements HIÉRARCHIQUES (1) : Model ⊂ SIO:Model.
+        Alignements EXACTS (2) : ModelParameter≡Parameter, ModelStateVariable≡Variable.
+        Alignements PROCHES (2) : EpidemiologicalMetric ≈ Measurement, SimulationOutput ≈ Dataset.
+        Couverture complète des concepts computationnels de M2 et M6.</rdfs:comment>
+    </owl:NamedIndividual>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // EXTENSION M7 — VERSION 2.0
+    // [M7-EXT-1] Alignements Dublin Core — ModelReference (M2)
+    // [M7-EXT-2] Alignements schema.org — ExternalDataSource (M8) + ModelReference (M2)
+    // [M7-EXT-3] Alignements PROV-O étendus — SimulationProvenance (M6)
+    // [M7-EXT-4] Alignements SKOS — PopulationContext (M2) / PopulationGroup (M8)
+    // [M7-EXT-5] Alignements pour nouvelles classes M4, M5
+    // [M7-EXT-6] ABox — résumés des alignements + registre complet
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M7-EXT-1] DUBLIN CORE — ModelReference (M2)
+         DC est le standard bibliographique universel
+         ModelReference stocke : auteurs, année, DOI, journal, titre
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!--
+    Dublin Core mappings :
+        dcterms:bibliographicCitation ≈  m2:ModelReference
+        dc:creator                    ≡  m2:hasAuthor
+        dcterms:issued                ≡  m2:hasPublicationYear
+        dc:title                      ≡  rdfs:label (titre article)
+        dcterms:identifier            ≡  m2:hasDOI
+        dc:source                     ≡  m2:hasJournal
+        dcterms:isPartOf              ≡  modèle M2 → sa référence
+    -->
+
+    <!-- dcterms:BibliographicResource ≈ m2:ModelReference -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelReference">
+        <skos:closeMatch rdf:resource="http://purl.org/dc/terms/BibliographicResource"/>
+        <rdfs:comment>[M7-EXT-1] skos:closeMatch dcterms:BibliographicResource.
+        ModelReference est une ressource bibliographique décrivant un article scientifique.
+        Correspondance approchée (pas exacte) car ModelReference est spécialisée aux modèles.</rdfs:comment>
+    </owl:Class>
+
+    <!-- dc:creator ≡ m2:hasAuthor -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasAuthor">
+        <owl:equivalentProperty rdf:resource="http://purl.org/dc/elements/1.1/creator"/>
+        <rdfs:comment>[M7-EXT-1] owl:equivalentProperty dc:creator.
+        m2:hasAuthor et dc:creator décrivent tous deux le créateur d'une ressource.
+        Correspondance exacte — permet l'interopérabilité avec les catalogues bibliographiques.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- dcterms:issued ≡ m2:hasPublicationYear -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasPublicationYear">
+        <skos:closeMatch rdf:resource="http://purl.org/dc/terms/issued"/>
+        <rdfs:comment>[M7-EXT-1] skos:closeMatch dcterms:issued.
+        Correspondance approchée : dcterms:issued est une date complète (xsd:date),
+        m2:hasPublicationYear est un entier (xsd:integer = année seulement).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- dcterms:identifier ≡ m2:hasDOI -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasDOI">
+        <skos:closeMatch rdf:resource="http://purl.org/dc/terms/identifier"/>
+        <rdfs:comment>[M7-EXT-1] skos:closeMatch dcterms:identifier.
+        Le DOI est un identifiant de ressource — correspondance sémantique forte.
+        Approchée et non exacte car dcterms:identifier est plus général (ISBN, URL, DOI...).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- dc:source ≡ m2:hasJournal -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasJournal">
+        <skos:closeMatch rdf:resource="http://purl.org/dc/elements/1.1/source"/>
+        <rdfs:comment>[M7-EXT-1] skos:closeMatch dc:source.
+        m2:hasJournal est la source bibliographique de l'article modèle.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M7-EXT-2] SCHEMA.ORG — ExternalDataSource (M8) + ModelReference (M2)
+         schema.org est le standard du web sémantique pour les données structurées
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!--
+    Schema.org mappings :
+        schema:Dataset          ≈  m8:ExternalDataSource
+        schema:ScholarlyArticle ≈  m2:ModelReference
+        schema:DataCatalog      ≈  m8:DemographicDataSource / EpidemiologicalDataSource
+        schema:url              ≡  m8:hasSourceURL
+        schema:areaServed       ≈  m8:hasCoverageArea
+        schema:encodingFormat   ≈  m8:hasDataFormat
+    -->
+
+    <!-- schema:Dataset ≈ m8:ExternalDataSource -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#ExternalDataSource">
+        <skos:closeMatch rdf:resource="https://schema.org/Dataset"/>
+        <rdfs:comment>[M7-EXT-2] skos:closeMatch schema:Dataset.
+        ExternalDataSource décrit une source de données épidémiologiques ou démographiques.
+        schema:Dataset est la classe générique pour tout jeu de données structuré.
+        Correspondance approchée — ExternalDataSource ajoute la notion de territoire et format.</rdfs:comment>
+    </owl:Class>
+
+    <!-- schema:ScholarlyArticle ≈ m2:ModelReference (complète l'alignement DC) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelReference">
+        <skos:closeMatch rdf:resource="https://schema.org/ScholarlyArticle"/>
+        <rdfs:comment>[M7-EXT-2] skos:closeMatch schema:ScholarlyArticle.
+        ModelReference décrit un article scientifique publié dans un journal à comité de lecture.
+        Complète l'alignement Dublin Core — double ancrage bibliographique DC + schema.org.</rdfs:comment>
+    </owl:Class>
+
+    <!-- schema:url ≡ m8:hasSourceURL -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasSourceURL">
+        <owl:equivalentProperty rdf:resource="https://schema.org/url"/>
+        <rdfs:comment>[M7-EXT-2] owl:equivalentProperty schema:url.
+        Correspondance exacte — les deux désignent l'URL d'accès à une ressource.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- schema:areaServed ≈ m8:hasCoverageArea -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasCoverageArea">
+        <skos:closeMatch rdf:resource="https://schema.org/areaServed"/>
+        <rdfs:comment>[M7-EXT-2] skos:closeMatch schema:areaServed.
+        hasCoverageArea indique le territoire couvert par la source de données.
+        schema:areaServed couvre le territoire d'un service — correspondance sémantique forte.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- schema:encodingFormat ≈ m8:hasDataFormat -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasDataFormat">
+        <skos:closeMatch rdf:resource="https://schema.org/encodingFormat"/>
+        <rdfs:comment>[M7-EXT-2] skos:closeMatch schema:encodingFormat.
+        hasDataFormat indique le format des données (CSV, JSON, API REST).
+        schema:encodingFormat indique le format MIME d'une ressource numérique.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M7-EXT-3] PROV-O ÉTENDU — SimulationProvenance (M6)
+         Les nouvelles propriétés de M6 alignées avec PROV-O W3C
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!--
+    PROV-O extensions mappings :
+        prov:Entity               ≡  m6:SimulationProvenance  (trace = entité)
+        prov:used                 ≡  m6:usedModel
+        prov:used                 ≡  m6:usedDataSource
+        prov:wasGeneratedBy       ≡  m6:generatedBySimulation (inverse)
+        prov:wasInfluencedBy      ≈  m6:justifiedByExperiment
+        prov:atLocation           ≈  m6:simulatedGeography
+        prov:wasAttributedTo      ≈  m6:simulatedPopulation
+    -->
+
+    <!-- prov:Entity ≡ m6:SimulationProvenance -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#SimulationProvenance">
+        <owl:equivalentClass rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:comment>[M7-EXT-3] owl:equivalentClass prov:Entity.
+        SimulationProvenance est une entité PROV-O : elle enregistre la traçabilité
+        d'un résultat (prov:Entity wasGeneratedBy prov:Activity).
+        Alignement exact — renforce l'interopérabilité avec les systèmes PROV-O.</rdfs:comment>
+    </owl:Class>
+
+    <!-- prov:used ≡ m6:usedModel -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#usedModel">
+        <owl:equivalentProperty rdf:resource="http://www.w3.org/ns/prov#used"/>
+        <rdfs:comment>[M7-EXT-3] owl:equivalentProperty prov:used.
+        La provenance "a utilisé" le modèle M2 — correspondance exacte avec prov:used.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- prov:used ≡ m6:usedDataSource -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#usedDataSource">
+        <owl:equivalentProperty rdf:resource="http://www.w3.org/ns/prov#used"/>
+        <rdfs:comment>[M7-EXT-3] owl:equivalentProperty prov:used.
+        La provenance "a utilisé" les sources de données M8 — correspondance exacte avec prov:used.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- prov:wasInfluencedBy ≈ m6:justifiedByExperiment -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#justifiedByExperiment">
+        <skos:closeMatch rdf:resource="http://www.w3.org/ns/prov#wasInfluencedBy"/>
+        <rdfs:comment>[M7-EXT-3] skos:closeMatch prov:wasInfluencedBy.
+        L'expérience M5 a influencé la sélection du modèle — correspondance approchée.
+        prov:wasInfluencedBy est plus général (toute influence), pas spécifiquement une justification.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- prov:generatedAtTime ≡ m6:hasExecutionTimestamp -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasExecutionTimestamp">
+        <owl:equivalentProperty rdf:resource="http://www.w3.org/ns/prov#generatedAtTime"/>
+        <rdfs:comment>[M7-EXT-3] owl:equivalentProperty prov:generatedAtTime.
+        Horodatage d'exécution de la simulation — correspondance exacte.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M7-EXT-4] SKOS — PopulationContext (M2) / PopulationGroup (M8)
+         Alignement entre les deux représentations de population
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- m2:PopulationContext skos:exactMatch m8:PopulationGroup -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#PopulationContext">
+        <skos:exactMatch rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:comment>[M7-EXT-4] skos:exactMatch m8:PopulationGroup.
+        Les deux classes décrivent le même concept : un groupe de population ciblé.
+        M2 représente le contexte du modèle, M8 représente la population dans le domaine.
+        Le pont hasM2PopulationContext (M8) implémente ce lien opérationnellement.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Sous-classes M2 ↔ M8 -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#SchoolPopulation">
+        <skos:exactMatch rdf:resource="http://www.pacadi.org/these/piponto/module8#SchoolChildren"/>
+        <rdfs:comment>[M7-EXT-4] skos:exactMatch m8:SchoolChildren. Même concept — population scolaire.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ElderlyPopulation">
+        <skos:exactMatch rdf:resource="http://www.pacadi.org/these/piponto/module8#ElderlyPopulation"/>
+        <rdfs:comment>[M7-EXT-4] skos:exactMatch m8:ElderlyPopulation. Même concept — personnes âgées.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#UrbanPopulation">
+        <skos:exactMatch rdf:resource="http://www.pacadi.org/these/piponto/module8#UrbanPopulationGroup"/>
+        <rdfs:comment>[M7-EXT-4] skos:exactMatch m8:UrbanPopulationGroup. Même concept — population urbaine.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#RuralPopulation">
+        <skos:exactMatch rdf:resource="http://www.pacadi.org/these/piponto/module8#RuralPopulationGroup"/>
+        <rdfs:comment>[M7-EXT-4] skos:exactMatch m8:RuralPopulationGroup. Même concept — population rurale.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M7-EXT-5] ALIGNEMENTS POUR NOUVELLES CLASSES M4 ET M5
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- prov:Activity ≡ m4:CompositeSimulation -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#CompositeSimulation">
+        <owl:equivalentClass rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+        <rdfs:comment>[M7-EXT-5] owl:equivalentClass prov:Activity.
+        Une CompositeSimulation est une activité PROV-O qui génère des résultats (prov:Entity).
+        Cohérent avec l'alignement existant SimulationRun ≡ prov:Activity.</rdfs:comment>
+    </owl:Class>
+
+    <!-- prov:Activity ≡ m5:ModelComparisonExperiment -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ModelComparisonExperiment">
+        <owl:equivalentClass rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+        <rdfs:comment>[M7-EXT-5] owl:equivalentClass prov:Activity.
+        ModelComparisonExperiment est une activité PROV-O qui produit un classement et
+        une recommandation — entités résultantes (prov:Entity).</rdfs:comment>
+    </owl:Class>
+
+    <!-- prov:Entity ≡ m5:ModelRanking -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module5#ModelRanking">
+        <owl:equivalentClass rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:comment>[M7-EXT-5] owl:equivalentClass prov:Entity.
+        ModelRanking est une entité PROV-O produite par une ModelComparisonExperiment.</rdfs:comment>
+    </owl:Class>
+
+    <!-- prov:used ≡ m5:comparesModels -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module5#comparesModels">
+        <owl:equivalentProperty rdf:resource="http://www.w3.org/ns/prov#used"/>
+        <rdfs:comment>[M7-EXT-5] owl:equivalentProperty prov:used.
+        L'expérience de comparaison "utilise" les modèles M2 — correspondance exacte prov:used.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- m4:ModelAssembly ≈ prov:Plan (plan d'exécution) -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#ModelAssembly">
+        <skos:closeMatch rdf:resource="http://www.w3.org/ns/prov#Plan"/>
+        <rdfs:comment>[M7-EXT-5] skos:closeMatch prov:Plan.
+        ModelAssembly est le plan d'assemblage des modèles — proximité avec prov:Plan
+        (entité guidant l'exécution d'une activité). Non exacte car Plan est plus abstrait.</rdfs:comment>
+    </owl:Class>
+
+    <!-- m4:CalibratedParameter ≈ SIO:Parameter -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module4#CalibratedParameter">
+        <skos:closeMatch rdf:resource="http://semanticscience.org/resource/SIO_000144"/>
+        <rdfs:comment>[M7-EXT-5] skos:closeMatch SIO_000144 (Parameter).
+        CalibratedParameter est un paramètre SIO avec la notion supplémentaire de calibration.
+        Correspondance approchée — SIO:Parameter est plus général (pas de notion calibration).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M7-EXT-6] ABOX — RÉSUMÉS DES ALIGNEMENTS v2.0
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module7#DublinCoreAlignmentSummary">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentRecord"/>
+        <rdfs:label xml:lang="fr">Résumé alignements Dublin Core</rdfs:label>
+        <rdfs:comment>Standard : Dublin Core (DC / DCTerms) — http://purl.org/dc/
+        Scope : métadonnées bibliographiques des modèles de la littérature (M2).
+        Alignements :
+          dc:creator       ≡ m2:hasAuthor              [ExactAlignment]
+          dcterms:issued   ≈ m2:hasPublicationYear      [CloseAlignment]
+          dcterms:identifier ≈ m2:hasDOI               [CloseAlignment]
+          dc:source        ≈ m2:hasJournal              [CloseAlignment]
+          dcterms:BibliographicResource ≈ m2:ModelReference [CloseAlignment]
+        Justification : Dublin Core est le standard bibliographique universel.
+        Permet l'interopérabilité avec les catalogues (HAL, OpenAIRE, CrossRef).</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module7#SchemaOrgAlignmentSummary">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentRecord"/>
+        <rdfs:label xml:lang="fr">Résumé alignements schema.org</rdfs:label>
+        <rdfs:comment>Standard : schema.org — https://schema.org/
+        Scope : sources de données externes (M8) + références bibliographiques (M2).
+        Alignements :
+          schema:Dataset          ≈ m8:ExternalDataSource   [CloseAlignment]
+          schema:ScholarlyArticle ≈ m2:ModelReference       [CloseAlignment]
+          schema:url              ≡ m8:hasSourceURL          [ExactAlignment]
+          schema:areaServed       ≈ m8:hasCoverageArea       [CloseAlignment]
+          schema:encodingFormat   ≈ m8:hasDataFormat         [CloseAlignment]
+        Justification : schema.org est le standard du web sémantique (Google, Bing...).
+        Facilite l'indexation des sources de données par les moteurs de recherche.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module7#PROVOAlignmentSummary_v2">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentRecord"/>
+        <rdfs:label xml:lang="fr">Résumé alignements PROV-O v2.0 (étendu)</rdfs:label>
+        <rdfs:comment>Standard : PROV-O W3C — http://www.w3.org/ns/prov#
+        Extension v2.0 : ajout des nouvelles classes M4, M5, M6.
+        Nouveaux alignements :
+          prov:Entity   ≡ m6:SimulationProvenance  [ExactAlignment]
+          prov:Entity   ≡ m5:ModelRanking           [ExactAlignment]
+          prov:Activity ≡ m4:CompositeSimulation    [ExactAlignment]
+          prov:Activity ≡ m5:ModelComparisonExperiment [ExactAlignment]
+          prov:used     ≡ m6:usedModel              [ExactAlignment]
+          prov:used     ≡ m6:usedDataSource         [ExactAlignment]
+          prov:used     ≡ m5:comparesModels         [ExactAlignment]
+          prov:Plan     ≈ m4:ModelAssembly           [CloseAlignment]
+          prov:wasInfluencedBy ≈ m6:justifiedByExperiment [CloseAlignment]
+          prov:generatedAtTime ≡ m6:hasExecutionTimestamp [ExactAlignment]
+        Total PROV-O PIPOnto : 15 alignements (8 exacts, 7 approchés).</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module7#SKOSPopulationAlignmentSummary">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentRecord"/>
+        <rdfs:label xml:lang="fr">Résumé alignements SKOS — Population M2 ↔ M8</rdfs:label>
+        <rdfs:comment>Type : alignements intra-PIPOnto via SKOS.
+        Scope : cohérence entre PopulationContext (M2) et PopulationGroup (M8).
+        Alignements :
+          m2:PopulationContext  skos:exactMatch m8:PopulationGroup       [exactMatch]
+          m2:SchoolPopulation   skos:exactMatch m8:SchoolChildren         [exactMatch]
+          m2:ElderlyPopulation  skos:exactMatch m8:ElderlyPopulation      [exactMatch]
+          m2:UrbanPopulation    skos:exactMatch m8:UrbanPopulationGroup   [exactMatch]
+          m2:RuralPopulation    skos:exactMatch m8:RuralPopulationGroup   [exactMatch]
+        Justification : évite la duplication de concepts entre M2 et M8.
+        Le pont hasM2PopulationContext implémente ce lien au niveau des individus.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Registre global de tous les alignements PIPOnto v2.0 -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module7#PIPOntoAlignmentRegistry_v2">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module7#AlignmentRecord"/>
+        <rdfs:label xml:lang="fr">Registre global des alignements PIPOnto v2.0</rdfs:label>
+        <rdfs:comment>PIPOnto v2.0 — Tableau de bord des alignements
+
+        STANDARDS EXTERNES :
+        ┌─────────────────────┬──────────┬──────────┬────────────────────────────────┐
+        │ Standard            │ Exacts   │ Approchés│ Modules concernés              │
+        ├─────────────────────┼──────────┼──────────┼────────────────────────────────┤
+        │ BFO (OBO)           │    5     │    1     │ M0, M1                         │
+        │ IDO (OBO)           │    4     │    1     │ M8, M3                         │
+        │ PROV-O (W3C) v2.0   │    8     │    7     │ M4, M5, M6                     │
+        │ SIO                 │    2     │    2     │ M2, M6                         │
+        │ Dublin Core         │    1     │    4     │ M2                             │
+        │ schema.org          │    1     │    4     │ M2, M8                         │
+        │ SKOS intra-PIPOnto  │    5     │    0     │ M2 ↔ M8                        │
+        ├─────────────────────┼──────────┼──────────┼────────────────────────────────┤
+        │ TOTAL               │   26     │   19     │ 7 standards — 8 modules        │
+        └─────────────────────┴──────────┴──────────┴────────────────────────────────┘
+
+        OGMS : 1 alignement approché (m8:Disease).
+        Total général : 46 alignements (26 exacts + 19 approchés + 1 OGMS).</rdfs:comment>
+    </owl:NamedIndividual>
+
+</rdf:RDF>
+
+<!-- Généré manuellement — PIPOnto Module 7 v1.0 -->
+<!-- Choix M7-D1 à M7-D5 documentés inline dans les rdfs:comment -->

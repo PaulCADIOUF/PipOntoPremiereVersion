@@ -1,0 +1,1277 @@
+<?xml version="1.0"?>
+<!--
+    MODULE 2 : Ontologie des Modèles
+    Ontologie : PIPOnto — http://www.pacadi.org/these/piponto/
+    Auteur     : Paul Cheikh Anta DIOUF
+
+    CHOIX DE CONCEPTION DOCUMENTÉS :
+      [D1] Model est une abstraction d'un ComplexSystem (M1) : 
+           Model rdfs:subClassOf AbstractObject (M0) et lié à ComplexSystem via abstractsFrom.
+           Un modèle n'est pas lui-même un système complexe réel — il en est une représentation
+           intentionnelle et simplifiée (distinction réel/modèle fondamentale pour M4/Simulation).
+
+      [D2] Tous les types de modèles couverts : compartimentaux, stochastiques,
+           réseau, multi-agents (ABM), hybrides. ABM sera approfondi dans M3.
+
+      [D3] Métadonnées de sélection automatique intégrées (pour SPARQL/NLP) :
+           ModelAssumption, ModelScope, ModelFormalism, ModelSelectionCriteria.
+           Ces métadonnées permettent à la plateforme de répondre à des requêtes comme
+           "quel modèle pour une épidémie à grande échelle avec hétérogénéité spatiale ?".
+
+      [D4] Lien vers M4 (Simulation) via isImplementedBy : un modèle peut être
+           instancié en simulation, mais la simulation n'est pas définie ici (M4).
+
+      [D5] Imports : M0 (fondations) + M1 (ComplexSystem comme cible d'abstraction).
+-->
+<rdf:RDF xmlns="http://www.pacadi.org/these/piponto/module2#"
+     xml:base="http://www.pacadi.org/these/piponto/module2"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:m2="http://www.pacadi.org/these/piponto/module2#">
+
+    <owl:Ontology rdf:about="http://www.pacadi.org/these/piponto/module2">
+        <owl:versionIRI rdf:resource="http://www.pacadi.org/these/piponto/module2"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module0"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module1"/>
+        <rdfs:label>PIPOnto - Module 2 : Ontologie des Modèles</rdfs:label>
+        <rdfs:comment>Module décrivant les modèles de simulation : leur structure formelle,
+        leurs types (compartimentaux, stochastiques, réseau, ABM, hybrides), leurs composants,
+        hypothèses et métadonnées de sélection automatique pour la plateforme NLP/SPARQL.</rdfs:comment>
+    </owl:Ontology>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- ─── Propriétés de structure du modèle ─── -->
+
+
+    <!-- module2#abstractsFrom -->
+    <!-- [D1] Relation fondamentale : un modèle abstrait un système complexe réel (M1) -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#abstractsFrom">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:comment>[D1] Un modèle est une abstraction intentionnelle d'un système complexe réel.
+        C'est la relation épistémique centrale de M2 : elle relie le monde modélisé (M1)
+        au monde des modèles (M2). Sous-propriété de causes car l'abstraction est
+        déclenchée par l'observation du système réel.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasComponent -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasComponent">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelComponent"/>
+        <rdfs:comment>Un modèle est composé de composants structurels (compartiments,
+        équations, règles comportementales, topologie de réseau...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasCompartment -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasCompartment">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module2#hasComponent"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentalModel"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Compartment"/>
+        <rdfs:comment>Un modèle compartimental est composé de compartiments (S, E, I, R...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasTransition -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasTransition">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module2#hasComponent"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentalModel"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentTransition"/>
+        <rdfs:comment>Un modèle compartimental contient des transitions entre compartiments
+        (ex: S→E gouvernée par le taux de transmission β).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasModelParameter -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasModelParameter">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasParameter"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:comment>Un modèle est caractérisé par des paramètres (taux de transmission,
+        période d'incubation, taux de guérison...) qui le configurent.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasStateVariable -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasStateVariable">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasStateVariable"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelStateVariable"/>
+        <rdfs:comment>Variables d'état du modèle dont l'évolution est calculée pendant la simulation
+        (ex: N_S = nombre de susceptibles, I = nombre d'infectés).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasEquation -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasEquation">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Equation"/>
+        <rdfs:comment>Équations mathématiques définissant la dynamique du modèle
+        (EDO, EDA, équations différentielles stochastiques...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasBehaviorRule -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasBehaviorRule">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#AgentBasedModel"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#BehaviorRule"/>
+        <rdfs:comment>Règles comportementales définissant les actions des agents dans un ABM
+        (ex: "si susceptible et en contact avec infecté → transmission avec probabilité β").</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasNetworkTopology -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasNetworkTopology">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module2#hasComponent"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#NetworkModel"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#NetworkTopology"/>
+        <rdfs:comment>Structure topologique du réseau de contacts dans un modèle réseau
+        (aléatoire, petit-monde, sans-échelle, géographique...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés d'hypothèses et portée (métadonnées de sélection) ─── -->
+
+
+    <!-- module2#hasAssumption -->
+    <!-- [D3] Métadonnée clé pour la sélection automatique via SPARQL -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasAssumption">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasQuality"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelAssumption"/>
+        <rdfs:comment>[D3] Hypothèse simplificatrice du modèle (homogénéité de la population,
+        mélange homogène, stationnarité démographique...). Utilisée pour la sélection
+        automatique : le NLP peut éliminer les modèles dont les hypothèses ne s'appliquent pas.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasScope -->
+    <!-- [D3] Portée du modèle : échelle spatiale, temporelle, populationnelle -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasScope">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelScope"/>
+        <rdfs:comment>[D3] Portée d'application du modèle : échelle spatiale (locale, régionale,
+        globale), échelle temporelle (jours, semaines, années), taille de population cible.
+        Utilisée pour filtrer les modèles selon le contexte de la requête NLP.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasFormalism -->
+    <!-- [D3] Formalisme mathématique du modèle -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasFormalism">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelFormalism"/>
+        <rdfs:comment>[D3] Formalisme mathématique utilisé par le modèle (EDO, EDA, processus
+        stochastique, automate cellulaire, ABM/GAML...). Permet l'alignement avec les
+        capacités d'exécution de GAMA ou autres plateformes (M4).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#hasSelectionCriteria -->
+    <!-- [D3] Critères explicites pour la sélection automatique SPARQL -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasSelectionCriteria">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelSelectionCriteria"/>
+        <rdfs:comment>[D3] Critères de sélection automatique du modèle par la plateforme.
+        Regroupe : type de maladie applicable, contexte géographique, niveau de détail,
+        disponibilité des données requises. Point d'entrée pour les requêtes SPARQL du NLP.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#isComposedOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#isComposedOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#HybridModel"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>Un modèle hybride est composé de sous-modèles de types différents
+        (ex: SEIR compartimental + couche réseau de contacts).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#isImplementedBy -->
+    <!-- [D4] Lien vers M4 (Simulation) — un modèle peut être instancié -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#isImplementedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>[D4] Un modèle peut être implémenté et exécuté dans une simulation (M4).
+        Range non contraint ici — sera restreint à Simulation dans M4 via sous-propriété.
+        Relation directionnelle : le modèle oriente l'implémentation, pas l'inverse.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#refines -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#refines">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>Un modèle peut raffiner un autre modèle plus général
+        (ex: SEIR raffine SIR en ajoutant le compartiment Exposed).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#transitionFrom / transitionTo -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#transitionFrom">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentTransition"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Compartment"/>
+        <rdfs:comment>Compartiment source d'une transition (ex: S dans la transition S→I).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#transitionTo">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentTransition"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Compartment"/>
+        <rdfs:comment>Compartiment cible d'une transition (ex: I dans la transition S→I).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module2#governedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#governedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentTransition"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:comment>Une transition entre compartiments est gouvernée par un taux/paramètre
+        (ex: la transition S→I est gouvernée par le taux de transmission β).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- module2#hasModelID -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasModelID">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Identifiant unique du modèle dans la base de connaissances de la plateforme
+        (utilisé pour les requêtes SPARQL et l'API REST).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module2#hasComplexityLevel -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasComplexityLevel">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Niveau de complexité computationnelle du modèle (1=simple EDO,
+        2=stochastique, 3=réseau, 4=ABM, 5=hybride). Utilisé pour la sélection selon
+        les ressources computationnelles disponibles.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module2#isStochastic -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#isStochastic">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment>Vrai si le modèle incorpore des processus aléatoires (stochastique),
+        faux si entièrement déterministe. Critère de sélection important.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module2#isSpatiallyExplicit -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#isSpatiallyExplicit">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment>Vrai si le modèle représente explicitement la géographie (localisation
+        des agents ou patches). Pertinent pour des requêtes comme "COVID à Montréal".</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module2#hasParameterSymbol -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasParameterSymbol">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Symbole mathématique standard du paramètre (ex: "β" pour taux de
+        transmission, "γ" pour taux de guérison, "R₀" pour nombre de reproduction de base).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module2#hasDefaultValue -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasDefaultValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Valeur par défaut du paramètre dans la base de connaissances
+        (peut être surchargée lors de la configuration d'une simulation spécifique).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         CLASSE RACINE : Model
+         ═══════════════════════════════════════════════════════ -->
+
+
+    <!-- module2#Model -->
+    <!-- [D1] Ancré dans AbstractObject (M0) — un modèle n'est pas physique -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#Model">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        <rdfs:comment>[D1] Représentation intentionnelle et simplifiée d'un système complexe réel (M1).
+        Un modèle est un objet abstrait (AbstractObject, M0) — il n'existe pas physiquement
+        mais encode une structure formelle (équations, règles, compartiments) permettant
+        de raisonner sur le système qu'il représente.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         TYPES DE MODÈLES
+         ═══════════════════════════════════════════════════════ -->
+
+
+    <!-- module2#CompartmentalModel -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#CompartmentalModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>Modèle divisant la population en compartiments discrets reliés par des
+        flux gouvernés par des taux (EDO). Exemple canonique en épidémiologie : SIR, SEIR.
+        Hypothèse implicite : mélange homogène de la population.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#SIRModel -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#SIRModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentalModel"/>
+        <rdfs:comment>Modèle SIR : trois compartiments Susceptible (S), Infectieux (I), Recouvré (R).
+        Adapté aux maladies conférant une immunité durable après guérison (rougeole, COVID...).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#SEIRModel -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#SEIRModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentalModel"/>
+        <rdfs:comment>Modèle SEIR : ajoute le compartiment Exposé (E) au modèle SIR pour représenter
+        la période d'incubation. Raffinement de SIRModel (refines SIRModel).
+        Pertinent pour COVID-19, Ebola, et maladies à incubation significative.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#SIRSModel -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#SIRSModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentalModel"/>
+        <rdfs:comment>Modèle SIRS : étend SIR avec perte d'immunité (R→S). Adapté aux maladies
+        à immunité temporaire (grippe saisonnière, infections respiratoires).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#SEIRSModel -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#SEIRSModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentalModel"/>
+        <rdfs:comment>Modèle SEIRS : combine période d'incubation et perte d'immunité.
+        Raffinement de SEIRModel et SIRSModel.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#StochasticModel -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#StochasticModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>Modèle incorporant une ou plusieurs sources d'aléatoire (bruit démographique,
+        transmission probabiliste). Pertinent pour les petites populations et les
+        événements rares (extinction, émergence d'épidémie). Adapté à des processus
+        de type chaîne de Markov ou équation maîtresse.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#StochasticCompartmentalModel -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#StochasticCompartmentalModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#StochasticModel"/>
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#CompartmentalModel"/>
+        <rdfs:comment>Modèle compartimental stochastique : structure SIR/SEIR avec transitions
+        probabilistes (processus de branchement, Gillespie...). Combine les deux approches.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#NetworkModel -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#NetworkModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>Modèle représentant explicitement le réseau de contacts entre individus.
+        La transmission se propage sur les arêtes du réseau — lève l'hypothèse de mélange
+        homogène. Types de réseaux : aléatoire (Erdős–Rényi), petit-monde (Watts-Strogatz),
+        sans-échelle (Barabási-Albert).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#AgentBasedModel -->
+    <!-- [D2] ABM décrit ici à un niveau générique ; M3 le spécialise pour les SMA -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#AgentBasedModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>[D2] Modèle dans lequel chaque individu est représenté explicitement
+        comme un agent autonome suivant des règles comportementales locales.
+        L'épidémie émerge des interactions individuelles (EmergentProperty, M1).
+        Lien avec M3 : les ABM en épidémiologie sont des Systèmes Multi-Agents spécialisés.
+        Implémentable dans GAMA platform (isSpatiallyExplicit souvent true).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#HybridModel -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#HybridModel">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>Modèle combinant plusieurs formalismes (ex: SEIR compartimental pour
+        la dynamique globale + réseau de contacts pour la transmission locale).
+        Composition définie via isComposedOf.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         COMPOSANTS DU MODÈLE
+         ═══════════════════════════════════════════════════════ -->
+
+
+    <!-- module2#ModelComponent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelComponent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        <rdfs:comment>Élément structurel constitutif d'un modèle (compartiment, transition,
+        règle comportementale, topologie réseau...).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#Compartment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#Compartment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelComponent"/>
+        <rdfs:comment>Sous-population homogène dans un modèle compartimental, définie par un
+        statut épidémiologique (Susceptible, Exposed, Infectious, Recovered, Deceased...).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#SusceptibleCompartment -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#SusceptibleCompartment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#Compartment"/>
+        <rdfs:comment>Compartiment S : individus susceptibles, pouvant contracter la maladie.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module2#ExposedCompartment -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ExposedCompartment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#Compartment"/>
+        <rdfs:comment>Compartiment E : individus exposés en période d'incubation (infectés mais
+        pas encore contagieux). Présent dans SEIR/SEIRS.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module2#InfectiousCompartment -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#InfectiousCompartment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#Compartment"/>
+        <rdfs:comment>Compartiment I : individus infectieux capables de transmettre la maladie.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module2#RecoveredCompartment -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#RecoveredCompartment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#Compartment"/>
+        <rdfs:comment>Compartiment R : individus guéris (avec ou sans immunité selon le modèle).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#CompartmentTransition -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#CompartmentTransition">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelComponent"/>
+        <rdfs:comment>Flux de passage d'un compartiment vers un autre, gouverné par un paramètre
+        (taux). Structure : (Compartiment source) →[taux]→ (Compartiment cible).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#BehaviorRule -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#BehaviorRule">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelComponent"/>
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Rule"/>
+        <rdfs:comment>Règle définissant le comportement local d'un agent dans un ABM
+        (perception, décision, action). Hérite de Rule (M0) et de ModelComponent (M2).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#NetworkTopology -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#NetworkTopology">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelComponent"/>
+        <rdfs:comment>Structure du réseau de contacts (aléatoire, petit-monde, sans-échelle,
+        géographique, basé sur les ménages...). Détermine les voies de transmission possible.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#RandomNetworkTopology">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#NetworkTopology"/>
+        <rdfs:comment>Réseau aléatoire (Erdős–Rényi) : chaque paire de nœuds connectée avec probabilité p.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#SmallWorldTopology">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#NetworkTopology"/>
+        <rdfs:comment>Réseau petit-monde (Watts-Strogatz) : clustering élevé + courtes distances.
+        Représente bien les réseaux sociaux réels.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ScaleFreeTopology">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#NetworkTopology"/>
+        <rdfs:comment>Réseau sans-échelle (Barabási-Albert) : distribution de degré en loi de puissance.
+        Présence de hubs (super-propagateurs) — pertinent pour COVID-19.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         PARAMÈTRES ET VARIABLES D'ÉTAT
+         ═══════════════════════════════════════════════════════ -->
+
+
+    <!-- module2#ModelParameter -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelParameter">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Parameter"/>
+        <rdfs:comment>Paramètre spécifique à un modèle épidémiologique. Sous-classe de
+        Parameter (M0) spécialisée pour le contexte de la modélisation.
+        Exemples : β (taux de transmission), γ (taux de guérison), σ (taux d'incubation).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#TransmissionRateParameter">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:comment>Taux de transmission β : probabilité de transmission par contact × taux de contact.
+        Paramètre central de tout modèle épidémiologique.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#RecoveryRateParameter">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:comment>Taux de guérison γ : inverse de la durée infectieuse moyenne (1/γ = durée).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#IncubationRateParameter">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:comment>Taux d'incubation σ : inverse de la période d'incubation moyenne (présent dans SEIR).
+        1/σ = durée moyenne entre exposition et apparition de l'infectiosité.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#BasicReproductionNumber">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:comment>Nombre de reproduction de base R₀ = β/γ. Nombre moyen de cas secondaires
+        produits par un individu infectieux dans une population entièrement susceptible.
+        Seuil : R₀ > 1 → épidémie ; R₀ &lt; 1 → extinction.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#ModelStateVariable -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelStateVariable">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#SystemStateVariable"/>
+        <rdfs:comment>Variable d'état calculée pendant la simulation (ex: N_S(t), N_I(t), N_R(t)).
+        Évolue selon les équations du modèle. Différent d'un ModelParameter qui est
+        une constante de configuration.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         MÉTADONNÉES DE SÉLECTION AUTOMATIQUE [D3]
+         ═══════════════════════════════════════════════════════ -->
+
+
+    <!-- module2#ModelAssumption -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelAssumption">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[D3] Hypothèse simplificatrice structurant le modèle.
+        Exemples : HomogeneousMixing, ConstantPopulation, NoSpatialStructure,
+        ExponentialDistributions, NoDemographics. Utilisée par SPARQL pour éliminer
+        les modèles incompatibles avec le contexte de la requête NLP.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#HomogeneousMixingAssumption">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelAssumption"/>
+        <rdfs:comment>Hypothèse de mélange homogène : tout individu peut entrer en contact avec
+        tout autre avec la même probabilité. Simplification forte — invalide pour les
+        contextes avec structure spatiale ou réseau de contacts explicite.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ConstantPopulationAssumption">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelAssumption"/>
+        <rdfs:comment>Hypothèse de population constante (naissances = morts). Invalide pour
+        des simulations longues ou des maladies à forte mortalité.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#DeterministicAssumption">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelAssumption"/>
+        <rdfs:comment>Hypothèse déterministe : absence d'aléatoire. Invalide pour les petites
+        populations où les fluctuations stochastiques sont importantes.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#ModelScope -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelScope">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[D3] Portée d'application du modèle définissant son domaine de validité.
+        Inclut l'échelle spatiale, la taille de population cible et l'horizon temporel.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#LocalScope">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelScope"/>
+        <rdfs:comment>Portée locale : quartier, hôpital, école. Population de quelques centaines à quelques milliers.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#RegionalScope">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelScope"/>
+        <rdfs:comment>Portée régionale : ville, province, région. Contexte typique de requêtes
+        comme "COVID-19 à Montréal".</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#GlobalScope">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelScope"/>
+        <rdfs:comment>Portée globale : pays, continent, monde. Modèles de pandémie.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#ModelFormalism -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelFormalism">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[D3] Formalisme mathématique ou computationnel du modèle.
+        Détermine l'outil d'exécution requis (M4) : EDO→solver numérique, ABM→GAMA, etc.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ODEFormalism">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelFormalism"/>
+        <rdfs:comment>Équations Différentielles Ordinaires (EDO). Formalisme standard des modèles
+        compartimentaux déterministes. Solveurs : RK4, Euler, scipy.integrate...</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#StochasticProcessFormalism">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelFormalism"/>
+        <rdfs:comment>Processus stochastique (chaîne de Markov, algorithme de Gillespie, Monte Carlo).
+        Requis pour les modèles stochastiques.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ABMFormalism">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelFormalism"/>
+        <rdfs:comment>Formalisme Agent-Based (GAML pour GAMA, NetLogo, Mesa/Python...).
+        Lien direct avec M3 (SMA) et M4 (Simulation sur GAMA platform).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module2#ModelSelectionCriteria -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelSelectionCriteria">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[D3] Ensemble de critères utilisés par la plateforme pour sélectionner
+        automatiquement le modèle le plus approprié à une requête NLP.
+        Combine : type de maladie, contexte géographique, données disponibles,
+        niveau de détail requis, contraintes computationnelles.</rdfs:comment>
+    </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // EXTENSION M2 — NOUVELLES CLASSES POUR BASE DE MODÈLES DE LA LITTÉRATURE
+    // [M2-EXT-1] ModelReference : source bibliographique d'un modèle publié
+    // [M2-EXT-2] PopulationContext : population cible du modèle
+    // [M2-EXT-3] GeographicScope : géographie sur laquelle le modèle a été validé
+    // [M2-EXT-4] ExecutionPlatform : plateforme d'exécution du modèle
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!-- ═══ NOUVELLES CLASSES TBox ═══ -->
+
+    <!-- Référence bibliographique -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ModelReference">
+        <rdfs:label xml:lang="fr">Référence bibliographique du modèle</rdfs:label>
+        <rdfs:comment>[M2-EXT-1] Source publiée d'un modèle épidémiologique.
+        Contient : auteurs, année, DOI, journal, titre.
+        Permet la traçabilité scientifique et le lien vers la littérature.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Contexte populationnel -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#PopulationContext">
+        <rdfs:label xml:lang="fr">Contexte populationnel</rdfs:label>
+        <rdfs:comment>[M2-EXT-2] Population cible pour laquelle le modèle a été conçu ou validé.
+        Ex: population générale, écoliers, personnes âgées, travailleurs de santé.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#GeneralPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#PopulationContext"/>
+        <rdfs:label xml:lang="fr">Population générale</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#SchoolPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#PopulationContext"/>
+        <rdfs:label xml:lang="fr">Population scolaire</rdfs:label>
+        <rdfs:comment>Enfants et adolescents en milieu scolaire. Contacts élevés, R0 scolaire > R0 général.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ElderlyPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#PopulationContext"/>
+        <rdfs:label xml:lang="fr">Population âgée (65+)</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#HealthcareWorkerPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#PopulationContext"/>
+        <rdfs:label xml:lang="fr">Travailleurs de santé</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#UrbanPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#PopulationContext"/>
+        <rdfs:label xml:lang="fr">Population urbaine</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#RuralPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#PopulationContext"/>
+        <rdfs:label xml:lang="fr">Population rurale</rdfs:label>
+    </owl:Class>
+
+    <!-- Périmètre géographique de validation -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#GeographicScope">
+        <rdfs:label xml:lang="fr">Périmètre géographique de validation</rdfs:label>
+        <rdfs:comment>[M2-EXT-3] Territoire sur lequel le modèle a été calibré ou validé.
+        Ex: France, Sénégal, Afrique subsaharienne, mondial.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Plateforme d'exécution -->
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module2#ExecutionPlatform">
+        <rdfs:label xml:lang="fr">Plateforme d'exécution</rdfs:label>
+        <rdfs:comment>[M2-EXT-4] Environnement logiciel requis pour exécuter le modèle.
+        Ex: GAMA, NetLogo, Python/Mesa, R, Matlab.</rdfs:comment>
+    </owl:Class>
+
+    <!-- ═══ NOUVELLES PROPRIÉTÉS TBox ═══ -->
+
+    <!-- Lien modèle → référence bibliographique -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasReference">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:label xml:lang="fr">a pour référence bibliographique</rdfs:label>
+        <rdfs:comment>Lie un modèle à sa source publiée dans la littérature scientifique.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Lien modèle → population cible -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasTargetPopulation">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#PopulationContext"/>
+        <rdfs:label xml:lang="fr">cible la population</rdfs:label>
+        <rdfs:comment>Population pour laquelle ce modèle a été conçu ou validé.
+        Clé de sélection NLP : "écoliers" → SchoolPopulation → modèles scolaires.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Lien modèle → géographie validée -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasValidatedScope">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#GeographicScope"/>
+        <rdfs:label xml:lang="fr">validé sur le territoire</rdfs:label>
+        <rdfs:comment>Territoire sur lequel le modèle a été calibré/validé.
+        Clé de sélection NLP : "Paris" → France → modèles validés France.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Lien modèle → plateforme d'exécution -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasExecutionPlatform">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ExecutionPlatform"/>
+        <rdfs:label xml:lang="fr">s'exécute sur la plateforme</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- Propriétés de données bibliographiques sur ModelReference -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasDOI">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">DOI de la publication</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasAuthor">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">auteur(s)</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasPublicationYear">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label xml:lang="fr">année de publication</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasJournal">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">journal ou conférence</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <!-- URI vers l'implémentation dans le dépôt externe -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasImplementationURI">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+        <rdfs:label xml:lang="fr">URI de l'implémentation</rdfs:label>
+        <rdfs:comment>Lien vers le fichier de code dans le dépôt de modèles (GitHub, dépôt institutionnel).
+        C'est ici que l'API microservice ira chercher le code à exécuter.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Mots-clés pour la recherche NLP -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasKeyword">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">mot-clé de recherche</rdfs:label>
+        <rdfs:comment>Mots-clés indexés pour la recherche sémantique NLP.
+        Permet de retrouver le modèle depuis une requête en langage naturel.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Score de qualité du modèle -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module2#hasQualityScore">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">score de qualité</rdfs:label>
+        <rdfs:comment>Score 0-1 basé sur : citations, validation empirique, reproductibilité.
+        Utilisé pour classer les modèles candidats lors de la sélection.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION ABOX — INSTANCES DE LA BASE DE MODÈLES DE LA LITTÉRATURE
+         Chaque individu = un modèle réel publié dans la littérature
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- ── FORMALISMES ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#ODE_Formalism">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ODEFormalism"/>
+        <rdfs:label xml:lang="fr">Équations Différentielles Ordinaires (EDO)</rdfs:label>
+        <rdfs:label xml:lang="en">Ordinary Differential Equations (ODE)</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Stochastic_Formalism">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#StochasticProcessFormalism"/>
+        <rdfs:label xml:lang="fr">Processus Stochastique</rdfs:label>
+        <rdfs:label xml:lang="en">Stochastic Process</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#ABM_Formalism">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ABMFormalism"/>
+        <rdfs:label xml:lang="fr">Système Multi-Agents (SMA)</rdfs:label>
+        <rdfs:label xml:lang="en">Agent-Based Modeling (ABM)</rdfs:label>
+    </owl:NamedIndividual>
+
+    <!-- ── PLATEFORMES ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#GAMA_Platform">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ExecutionPlatform"/>
+        <rdfs:label>GAMA Platform</rdfs:label>
+        <rdfs:comment>Plateforme ABM spatialisée. Langage GAML. Simulation multi-agents géoréférencée.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Python_Platform">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ExecutionPlatform"/>
+        <rdfs:label>Python (SciPy/Mesa)</rdfs:label>
+        <rdfs:comment>ODE via scipy.integrate.odeint ou ABM via Mesa framework.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#R_Platform">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ExecutionPlatform"/>
+        <rdfs:label>R (deSolve/EpiModel)</rdfs:label>
+        <rdfs:comment>ODE via deSolve, modèles stochastiques via EpiModel.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#NetLogo_Platform">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ExecutionPlatform"/>
+        <rdfs:label>NetLogo</rdfs:label>
+    </owl:NamedIndividual>
+
+    <!-- ── POPULATIONS ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Pop_General">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#GeneralPopulation"/>
+        <rdfs:label xml:lang="fr">Population générale</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Pop_School">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#SchoolPopulation"/>
+        <rdfs:label xml:lang="fr">Écoliers et collégiens (6-15 ans)</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Pop_Elderly">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ElderlyPopulation"/>
+        <rdfs:label xml:lang="fr">Personnes âgées (65+)</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Pop_Urban">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#UrbanPopulation"/>
+        <rdfs:label xml:lang="fr">Population urbaine dense</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Pop_Rural_Africa">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#RuralPopulation"/>
+        <rdfs:label xml:lang="fr">Population rurale africaine</rdfs:label>
+    </owl:NamedIndividual>
+
+    <!-- ── PÉRIMÈTRES GÉOGRAPHIQUES ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Scope_Global">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#GeographicScope"/>
+        <rdfs:label xml:lang="fr">Mondial</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Scope_France">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#GeographicScope"/>
+        <rdfs:label xml:lang="fr">France</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Scope_UK">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#GeographicScope"/>
+        <rdfs:label xml:lang="fr">Royaume-Uni</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Scope_Africa">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#GeographicScope"/>
+        <rdfs:label xml:lang="fr">Afrique subsaharienne</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Scope_Senegal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#GeographicScope"/>
+        <rdfs:label xml:lang="fr">Sénégal</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Scope_Canada">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#GeographicScope"/>
+        <rdfs:label xml:lang="fr">Canada</rdfs:label>
+    </owl:NamedIndividual>
+
+    <!-- ══════════════════════════════════════════════════════════
+         MODÈLES RÉELS DE LA LITTÉRATURE
+         Format : [TypeModele]_[Maladie]_[Auteur]_[Année]
+         ══════════════════════════════════════════════════════════ -->
+
+    <!-- ── REF 1 : Kermack & McKendrick 1927 — Modèle SIR original ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Ref_KermackMcKendrick_1927">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:label>Kermack &amp; McKendrick (1927)</rdfs:label>
+        <m2:hasAuthor>Kermack, W.O.; McKendrick, A.G.</m2:hasAuthor>
+        <m2:hasPublicationYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1927</m2:hasPublicationYear>
+        <m2:hasJournal>Proceedings of the Royal Society A</m2:hasJournal>
+        <m2:hasDOI>10.1098/rspa.1927.0118</m2:hasDOI>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#SIR_General_KermackMcKendrick_1927">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#SIRModel"/>
+        <rdfs:label xml:lang="fr">Modèle SIR — Kermack &amp; McKendrick (1927)</rdfs:label>
+        <rdfs:label xml:lang="en">SIR Model — Kermack &amp; McKendrick (1927)</rdfs:label>
+        <m2:hasFormalism rdf:resource="http://www.pacadi.org/these/piponto/module2#ODE_Formalism"/>
+        <m2:hasReference rdf:resource="http://www.pacadi.org/these/piponto/module2#Ref_KermackMcKendrick_1927"/>
+        <m2:hasTargetPopulation rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_General"/>
+        <m2:hasValidatedScope rdf:resource="http://www.pacadi.org/these/piponto/module2#Scope_Global"/>
+        <m2:hasExecutionPlatform rdf:resource="http://www.pacadi.org/these/piponto/module2#Python_Platform"/>
+        <m2:isStochastic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m2:isStochastic>
+        <m2:hasQualityScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.0</m2:hasQualityScore>
+        <m2:hasKeyword>SIR</m2:hasKeyword>
+        <m2:hasKeyword>compartmental</m2:hasKeyword>
+        <m2:hasKeyword>general population</m2:hasKeyword>
+        <m2:hasKeyword>immunité permanente</m2:hasKeyword>
+        <rdfs:comment>Modèle fondateur de l'épidémiologie mathématique. Immunité permanente.
+        Paramètres : β (taux transmission), γ (taux guérison), R0 = β/γ.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── REF 2 : Ferguson et al. 2020 — COVID-19 Imperial College ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Ref_Ferguson_2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:label>Ferguson et al. (2020) — Imperial College</rdfs:label>
+        <m2:hasAuthor>Ferguson, N.; Laydon, D.; Nedjati-Gilani, G. et al.</m2:hasAuthor>
+        <m2:hasPublicationYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2020</m2:hasPublicationYear>
+        <m2:hasJournal>Imperial College COVID-19 Response Team — Report 9</m2:hasJournal>
+        <m2:hasDOI>10.25561/77482</m2:hasDOI>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#SEIR_COVID_Ferguson_2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRModel"/>
+        <rdfs:label xml:lang="fr">Modèle SEIR COVID-19 — Ferguson Imperial College (2020)</rdfs:label>
+        <rdfs:label xml:lang="en">SEIR COVID-19 — Ferguson Imperial College (2020)</rdfs:label>
+        <m2:hasFormalism rdf:resource="http://www.pacadi.org/these/piponto/module2#ODE_Formalism"/>
+        <m2:hasReference rdf:resource="http://www.pacadi.org/these/piponto/module2#Ref_Ferguson_2020"/>
+        <m2:hasTargetPopulation rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_General"/>
+        <m2:hasValidatedScope rdf:resource="http://www.pacadi.org/these/piponto/module2#Scope_UK"/>
+        <m2:hasValidatedScope rdf:resource="http://www.pacadi.org/these/piponto/module2#Scope_Global"/>
+        <m2:hasExecutionPlatform rdf:resource="http://www.pacadi.org/these/piponto/module2#Python_Platform"/>
+        <m2:isStochastic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m2:isStochastic>
+        <m2:hasQualityScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.97</m2:hasQualityScore>
+        <m2:hasImplementationURI rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://github.com/mrc-ide/covid-sim</m2:hasImplementationURI>
+        <m2:hasKeyword>COVID-19</m2:hasKeyword>
+        <m2:hasKeyword>SEIR</m2:hasKeyword>
+        <m2:hasKeyword>coronavirus</m2:hasKeyword>
+        <m2:hasKeyword>SARS-CoV-2</m2:hasKeyword>
+        <m2:hasKeyword>pandémie</m2:hasKeyword>
+        <m2:hasKeyword>population générale</m2:hasKeyword>
+        <rdfs:comment>Modèle de référence COVID-19. Paramètres publiés :
+        R0=2.4, incubation=5.1j, infectiosité=2.9j.
+        Validé UK et extrapolé mondialement. Très cité (10 000+ citations).</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── REF 3 : Cauchemez et al. 2011 — COVID/grippe en milieu scolaire ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Ref_Cauchemez_2011">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:label>Cauchemez et al. (2011)</rdfs:label>
+        <m2:hasAuthor>Cauchemez, S.; Bhattarai, A.; Marchbanks, T.L. et al.</m2:hasAuthor>
+        <m2:hasPublicationYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2011</m2:hasPublicationYear>
+        <m2:hasJournal>American Journal of Epidemiology</m2:hasJournal>
+        <m2:hasDOI>10.1093/aje/kwq425</m2:hasDOI>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#SEIR_School_Cauchemez_2011">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRModel"/>
+        <rdfs:label xml:lang="fr">Modèle SEIR transmission scolaire — Cauchemez (2011)</rdfs:label>
+        <rdfs:label xml:lang="en">SEIR School Transmission — Cauchemez (2011)</rdfs:label>
+        <m2:hasFormalism rdf:resource="http://www.pacadi.org/these/piponto/module2#ODE_Formalism"/>
+        <m2:hasReference rdf:resource="http://www.pacadi.org/these/piponto/module2#Ref_Cauchemez_2011"/>
+        <m2:hasTargetPopulation rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_School"/>
+        <m2:hasValidatedScope rdf:resource="http://www.pacadi.org/these/piponto/module2#Scope_Global"/>
+        <m2:hasExecutionPlatform rdf:resource="http://www.pacadi.org/these/piponto/module2#R_Platform"/>
+        <m2:isStochastic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m2:isStochastic>
+        <m2:hasQualityScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.88</m2:hasQualityScore>
+        <m2:hasKeyword>école</m2:hasKeyword>
+        <m2:hasKeyword>écoliers</m2:hasKeyword>
+        <m2:hasKeyword>enfants</m2:hasKeyword>
+        <m2:hasKeyword>transmission scolaire</m2:hasKeyword>
+        <m2:hasKeyword>milieu scolaire</m2:hasKeyword>
+        <m2:hasKeyword>COVID-19</m2:hasKeyword>
+        <m2:hasKeyword>grippe</m2:hasKeyword>
+        <rdfs:comment>Modèle SEIR adapté au milieu scolaire. Taux de contact élevé entre élèves.
+        β_école &gt; β_général. Inclut fermeture d'école comme intervention.
+        Paramètres : R0_école ≈ 1.3 (grippe), β contact scolaire = 0.6/j.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── REF 4 : Roux et al. 2020 — COVID-19 France ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Ref_Roux_2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:label>Roux et al. (2020) — COVID-19 France</rdfs:label>
+        <m2:hasAuthor>Roux, J.; Massonnaud, C.; Crépey, P.</m2:hasAuthor>
+        <m2:hasPublicationYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2020</m2:hasPublicationYear>
+        <m2:hasJournal>medRxiv preprint</m2:hasJournal>
+        <m2:hasDOI>10.1101/2020.03.22.20040915</m2:hasDOI>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#SEIR_COVID_France_Roux_2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRModel"/>
+        <rdfs:label xml:lang="fr">Modèle SEIR COVID-19 France — Roux (2020)</rdfs:label>
+        <m2:hasFormalism rdf:resource="http://www.pacadi.org/these/piponto/module2#ODE_Formalism"/>
+        <m2:hasReference rdf:resource="http://www.pacadi.org/these/piponto/module2#Ref_Roux_2020"/>
+        <m2:hasTargetPopulation rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_General"/>
+        <m2:hasValidatedScope rdf:resource="http://www.pacadi.org/these/piponto/module2#Scope_France"/>
+        <m2:hasExecutionPlatform rdf:resource="http://www.pacadi.org/these/piponto/module2#R_Platform"/>
+        <m2:isStochastic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m2:isStochastic>
+        <m2:hasQualityScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.85</m2:hasQualityScore>
+        <m2:hasKeyword>COVID-19</m2:hasKeyword>
+        <m2:hasKeyword>France</m2:hasKeyword>
+        <m2:hasKeyword>Paris</m2:hasKeyword>
+        <m2:hasKeyword>confinement</m2:hasKeyword>
+        <m2:hasKeyword>SEIR</m2:hasKeyword>
+        <rdfs:comment>Modèle SEIR calibré sur les données françaises 2020.
+        Intègre les données de l'INSEE et de Santé Publique France.
+        Paramètres France : R0=3.0, confinement réduit R0 à 0.5.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── REF 5 : Diallo et al. 2022 — Paludisme Sénégal ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Ref_Diallo_2022">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:label>Diallo et al. (2022) — Paludisme Sénégal</rdfs:label>
+        <m2:hasAuthor>Diallo, I.; Seck, I.; Ndiaye, J.L.</m2:hasAuthor>
+        <m2:hasPublicationYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2022</m2:hasPublicationYear>
+        <m2:hasJournal>Malaria Journal</m2:hasJournal>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#SEIRS_Malaria_Senegal_Diallo_2022">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRSModel"/>
+        <rdfs:label xml:lang="fr">Modèle SEIRS Paludisme Sénégal — Diallo (2022)</rdfs:label>
+        <m2:hasFormalism rdf:resource="http://www.pacadi.org/these/piponto/module2#ODE_Formalism"/>
+        <m2:hasReference rdf:resource="http://www.pacadi.org/these/piponto/module2#Ref_Diallo_2022"/>
+        <m2:hasTargetPopulation rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_Rural_Africa"/>
+        <m2:hasValidatedScope rdf:resource="http://www.pacadi.org/these/piponto/module2#Scope_Senegal"/>
+        <m2:hasExecutionPlatform rdf:resource="http://www.pacadi.org/these/piponto/module2#Python_Platform"/>
+        <m2:isStochastic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m2:isStochastic>
+        <m2:hasQualityScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.82</m2:hasQualityScore>
+        <m2:hasKeyword>paludisme</m2:hasKeyword>
+        <m2:hasKeyword>malaria</m2:hasKeyword>
+        <m2:hasKeyword>Sénégal</m2:hasKeyword>
+        <m2:hasKeyword>Thiès</m2:hasKeyword>
+        <m2:hasKeyword>Afrique</m2:hasKeyword>
+        <m2:hasKeyword>vectoriel</m2:hasKeyword>
+        <rdfs:comment>Modèle SEIRS deux populations (humains + Anopheles).
+        Calibré sur données PNLP Sénégal. Intègre saisonnalité des pluies.
+        Validé régions Thiès, Diourbel, Kaolack.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── REF 6 : ABM COVID-19 Urbain — Kerr et al. 2021 ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Ref_Kerr_2021">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelReference"/>
+        <rdfs:label>Kerr et al. (2021) — Covasim ABM</rdfs:label>
+        <m2:hasAuthor>Kerr, C.C.; Stuart, R.M.; Mistry, D. et al.</m2:hasAuthor>
+        <m2:hasPublicationYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2021</m2:hasPublicationYear>
+        <m2:hasJournal>PLOS Computational Biology</m2:hasJournal>
+        <m2:hasDOI>10.1371/journal.pcbi.1009149</m2:hasDOI>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#ABM_COVID_Urban_Kerr_2021">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#AgentBasedModel"/>
+        <rdfs:label xml:lang="fr">Modèle ABM COVID-19 Urbain — Covasim (2021)</rdfs:label>
+        <rdfs:label xml:lang="en">ABM COVID-19 Urban — Covasim (2021)</rdfs:label>
+        <m2:hasFormalism rdf:resource="http://www.pacadi.org/these/piponto/module2#ABM_Formalism"/>
+        <m2:hasReference rdf:resource="http://www.pacadi.org/these/piponto/module2#Ref_Kerr_2021"/>
+        <m2:hasTargetPopulation rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_Urban"/>
+        <m2:hasTargetPopulation rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_School"/>
+        <m2:hasValidatedScope rdf:resource="http://www.pacadi.org/these/piponto/module2#Scope_Global"/>
+        <m2:hasExecutionPlatform rdf:resource="http://www.pacadi.org/these/piponto/module2#Python_Platform"/>
+        <m2:isStochastic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</m2:isStochastic>
+        <m2:isSpatiallyExplicit rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</m2:isSpatiallyExplicit>
+        <m2:hasQualityScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.93</m2:hasQualityScore>
+        <m2:hasImplementationURI rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://github.com/InstituteforDiseaseModeling/covasim</m2:hasImplementationURI>
+        <m2:hasKeyword>COVID-19</m2:hasKeyword>
+        <m2:hasKeyword>ABM</m2:hasKeyword>
+        <m2:hasKeyword>agents</m2:hasKeyword>
+        <m2:hasKeyword>urbain</m2:hasKeyword>
+        <m2:hasKeyword>Paris</m2:hasKeyword>
+        <m2:hasKeyword>écoliers</m2:hasKeyword>
+        <m2:hasKeyword>école</m2:hasKeyword>
+        <m2:hasKeyword>spatial</m2:hasKeyword>
+        <rdfs:comment>Covasim : ABM individu-centré COVID-19. Chaque agent a âge, statut, réseau de contacts.
+        Gère : école, travail, domicile, transports. Idéal pour "écoliers à Paris".
+        Calibré sur données de mobilité et démographie urbaine.</rdfs:comment>
+    </owl:NamedIndividual>
+
+
+    <!-- ══════════════════════════════════════════════════════════
+         PARAMÈTRES PUBLIÉS PAR MODÈLE
+         Valeurs tirées directement des articles — traçables et citables
+         ══════════════════════════════════════════════════════════ -->
+
+    <!-- Paramètres Ferguson 2020 (COVID-19 général) -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Param_Beta_Ferguson_2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#TransmissionRateParameter"/>
+        <rdfs:label>β — Ferguson 2020</rdfs:label>
+        <m2:hasParameterSymbol>β</m2:hasParameterSymbol>
+        <m2:hasDefaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.429</m2:hasDefaultValue>
+        <rdfs:comment>β = R0 × γ = 3.0 × (1/7) ≈ 0.429 /jour. Source : Ferguson et al. 2020.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Param_Sigma_Ferguson_2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:label>σ — Ferguson 2020</rdfs:label>
+        <m2:hasParameterSymbol>σ</m2:hasParameterSymbol>
+        <m2:hasDefaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.196</m2:hasDefaultValue>
+        <rdfs:comment>σ = 1/incubation = 1/5.1 ≈ 0.196 /jour. Source : Ferguson et al. 2020.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Param_Gamma_Ferguson_2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#RecoveryRateParameter"/>
+        <rdfs:label>γ — Ferguson 2020</rdfs:label>
+        <m2:hasParameterSymbol>γ</m2:hasParameterSymbol>
+        <m2:hasDefaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.143</m2:hasDefaultValue>
+        <rdfs:comment>γ = 1/infectiosité = 1/7 ≈ 0.143 /jour. Source : Ferguson et al. 2020.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Param_R0_Ferguson_2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#BasicReproductionNumber"/>
+        <rdfs:label>R0 — Ferguson 2020</rdfs:label>
+        <m2:hasParameterSymbol>R0</m2:hasParameterSymbol>
+        <m2:hasDefaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">3.0</m2:hasDefaultValue>
+        <rdfs:comment>R0 = 2.4–3.3. Valeur centrale 3.0. Source : Ferguson et al. 2020.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Lier les paramètres au modèle Ferguson -->
+    <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module2#SEIR_COVID_Ferguson_2020">
+        <m2:hasModelParameter rdf:resource="http://www.pacadi.org/these/piponto/module2#Param_Beta_Ferguson_2020"/>
+        <m2:hasModelParameter rdf:resource="http://www.pacadi.org/these/piponto/module2#Param_Sigma_Ferguson_2020"/>
+        <m2:hasModelParameter rdf:resource="http://www.pacadi.org/these/piponto/module2#Param_Gamma_Ferguson_2020"/>
+        <m2:hasModelParameter rdf:resource="http://www.pacadi.org/these/piponto/module2#Param_R0_Ferguson_2020"/>
+    </rdf:Description>
+
+    <!-- Paramètres Cauchemez 2011 (milieu scolaire) -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Param_Beta_School_Cauchemez_2011">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#TransmissionRateParameter"/>
+        <rdfs:label>β_école — Cauchemez 2011</rdfs:label>
+        <m2:hasParameterSymbol>β_école</m2:hasParameterSymbol>
+        <m2:hasDefaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6</m2:hasDefaultValue>
+        <rdfs:comment>β en milieu scolaire > β population générale (contacts rapprochés élevés).
+        Source : Cauchemez et al. 2011.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Param_R0_School_Cauchemez_2011">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#BasicReproductionNumber"/>
+        <rdfs:label>R0_école — Cauchemez 2011</rdfs:label>
+        <m2:hasParameterSymbol>R0_école</m2:hasParameterSymbol>
+        <m2:hasDefaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3</m2:hasDefaultValue>
+        <rdfs:comment>R0 en milieu scolaire pour grippe saisonnière = 1.3.
+        Source : Cauchemez et al. 2011.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module2#SEIR_School_Cauchemez_2011">
+        <m2:hasModelParameter rdf:resource="http://www.pacadi.org/these/piponto/module2#Param_Beta_School_Cauchemez_2011"/>
+        <m2:hasModelParameter rdf:resource="http://www.pacadi.org/these/piponto/module2#Param_R0_School_Cauchemez_2011"/>
+    </rdf:Description>
+
+    <!-- Paramètres Roux 2020 (COVID France) -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module2#Param_R0_France_Roux_2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module2#BasicReproductionNumber"/>
+        <rdfs:label>R0 France — Roux 2020</rdfs:label>
+        <m2:hasParameterSymbol>R0</m2:hasParameterSymbol>
+        <m2:hasDefaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">3.0</m2:hasDefaultValue>
+        <rdfs:comment>R0 France avant confinement = 3.0. Après confinement = 0.5.
+        Source : Roux et al. 2020.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module2#SEIR_COVID_France_Roux_2020">
+        <m2:hasModelParameter rdf:resource="http://www.pacadi.org/these/piponto/module2#Param_R0_France_Roux_2020"/>
+    </rdf:Description>
+
+</rdf:RDF>

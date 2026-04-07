@@ -1,0 +1,760 @@
+<?xml version="1.0"?>
+<!--
+    MODULE 3 : Ontologie des Systèmes Multi-Agents
+    Ontologie : PIPOnto — http://www.pacadi.org/these/piponto/
+    Auteur     : Paul Cheikh Anta DIOUF
+
+    CHOIX DE CONCEPTION DOCUMENTÉS :
+
+      [M3-D1] MultiAgentSystem hérite de DEUX parents :
+              - AgentBasedModel (M2) : un SMA est un TYPE de modèle ABM
+              - ComplexSystem (M1)   : un SMA exhibe aussi des propriétés de système complexe
+                                      (émergence, auto-organisation, non-linéarité)
+              Cette double héritage est intentionnel : il capture la dualité
+              "le SMA EST un modèle (M2)" ET "le SMA SE COMPORTE COMME un système complexe (M1)".
+
+      [M3-D2] Distinction fondamentale SimulatedAgent ≠ Agent (M1) :
+              - Agent (M1) = entité réelle du monde modélisé (humain, bactérie...)
+              - SimulatedAgent (M3) = représentation computationnelle d'un agent dans le modèle
+              SimulatedAgent abstractsFrom Agent (M1) via la propriété modelsAgent.
+              Cette distinction est critique pour la cohérence M1/M3/M4.
+
+      [M3-D3] Architectures d'agents couvertes : réactive, délibérative/BDI,
+              hybride, cognitive — avec hiérarchie propre AgentArchitecture.
+
+      [M3-D4] Concepts GAMA formalisés : Species, Reflex, GAMAAction, GAMATopology,
+              Schedule — permettant un alignement direct ontologie ↔ code GAML.
+
+      [M3-D5] Protocoles d'interaction (inspirés FIPA-ACL) et organisations
+              (inspirées MOISE+/AGR) pour couvrir la coordination inter-agents.
+
+      [M3-D6] SimulatedEnvironment ≠ Environment (M1) :
+              SimulatedEnvironment est la représentation computationnelle de l'environnement
+              dans le modèle ABM (grille, continu, réseau, 3D).
+
+      [D7] Imports : M0 + M1 + M2 (chaîne complète).
+-->
+<rdf:RDF xmlns="http://www.pacadi.org/these/piponto/module3#"
+     xml:base="http://www.pacadi.org/these/piponto/module3"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+    <owl:Ontology rdf:about="http://www.pacadi.org/these/piponto/module3">
+        <owl:versionIRI rdf:resource="http://www.pacadi.org/these/piponto/module3"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module0"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module1"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module2"/>
+        <rdfs:label>PIPOnto - Module 3 : Ontologie des Systèmes Multi-Agents</rdfs:label>
+        <rdfs:comment>Module décrivant les Systèmes Multi-Agents (SMA) comme modèles computationnels :
+        agents simulés, architectures, environnements simulés, interactions, organisations,
+        et concepts GAMA platform pour l'implémentation en GAML.</rdfs:comment>
+    </owl:Ontology>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- ─── Propriétés de composition du SMA ─── -->
+
+
+    <!-- module3#hasSimulatedAgent -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasSimulatedAgent">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#MultiAgentSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:comment>Un SMA est composé d'agents simulés (instances computationnelles).
+        Distinct de hasAgent (M1) qui lie un ComplexSystem à des agents réels.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasSimulatedEnvironment -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasSimulatedEnvironment">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#MultiAgentSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedEnvironment"/>
+        <rdfs:comment>Un SMA possède un environnement simulé dans lequel les agents évoluent.
+        [M3-D6] Distinct de hasEnvironment (M1) qui lie un système réel à son environnement.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasScheduler -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasScheduler">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#MultiAgentSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#Scheduler"/>
+        <rdfs:comment>Un SMA possède un ordonnanceur contrôlant l'ordre et la fréquence
+        d'activation des agents à chaque pas de temps (tick).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasOrganizationalStructure -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasOrganizationalStructure">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#MultiAgentSystem"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#OrganizationalStructure"/>
+        <rdfs:comment>Structure organisationnelle du SMA définissant rôles, groupes et normes
+        (inspiré MOISE+/AGR). Spécialise Organization (M1) pour le contexte SMA.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés de l'agent simulé ─── -->
+
+
+    <!-- module3#modelsAgent -->
+    <!-- [M3-D2] Lien fondamental SimulatedAgent → Agent(M1) -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#modelsAgent">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module2#abstractsFrom"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <rdfs:comment>[M3-D2] Un agent simulé modélise un agent réel (M1/M0).
+        Sous-propriété de abstractsFrom (M2) : la relation modèle/réel est cohérente
+        avec la philosophie générale de M2. Ex: SimulatedHuman modelsAgent HumanAgent (M1).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasArchitecture -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasArchitecture">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentArchitecture"/>
+        <rdfs:comment>Un agent simulé est caractérisé par son architecture interne
+        (réactive, BDI, hybride, cognitive) qui détermine son processus décisionnel.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasAgentState -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasAgentState">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasState"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgentState"/>
+        <rdfs:comment>État interne d'un agent simulé à un pas de temps donné
+        (ex: statut épidémiologique S/E/I/R, position, âge, niveau d'immunité).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasPerception -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasPerception">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#Perception"/>
+        <rdfs:comment>Mécanisme de perception de l'agent : ce qu'il peut observer de son
+        environnement et des autres agents (rayon de perception, capteurs...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasAction -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasAction">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentAction"/>
+        <rdfs:comment>Actions que l'agent peut exécuter sur l'environnement ou sur d'autres agents
+        (déplacement, transmission, guérison, mort, vaccination...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasReflex -->
+    <!-- [M3-D4] Concept GAMA : un Reflex est une règle réactive déclenchée automatiquement -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasReflex">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#Reflex"/>
+        <rdfs:comment>[M3-D4] Concept GAMA : un Reflex est une règle comportementale
+        automatiquement déclenchée à chaque tick si sa condition (when:) est vraie.
+        Correspond aux BehaviorRule (M2) dans le contexte GAML spécifiquement.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#belongsToSpecies -->
+    <!-- [M3-D4] Concept GAMA : Species = type d'agent dans GAML -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#belongsToSpecies">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#partOf"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentSpecies"/>
+        <rdfs:comment>[M3-D4] Un agent simulé appartient à une espèce (Species) au sens GAMA :
+        un type d'agent partageant les mêmes attributs, réflexes et actions définis dans GAML.
+        Équivalent d'une classe d'agent dans la simulation.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#playsSimulatedRole -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#playsSimulatedRole">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#playsRole"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedRole"/>
+        <rdfs:comment>Rôle joué par un agent simulé dans une organisation ou interaction du SMA
+        (ex: hôte, vecteur, soignant, super-propagateur). Spécialise playsRole (M0).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#locatedInSimulatedEnvironment -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#locatedInSimulatedEnvironment">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#locatedIn"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedEnvironment"/>
+        <rdfs:comment>Position d'un agent simulé dans l'environnement simulé.
+        Spécialise locatedIn (M0) pour le contexte computationnel.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés des interactions simulées ─── -->
+
+
+    <!-- module3#hasInteractionProtocol -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasInteractionProtocol">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedInteraction"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#InteractionProtocol"/>
+        <rdfs:comment>Protocole régissant le déroulement d'une interaction entre agents simulés
+        (échange de messages, négociation, transmission directe...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#sendsMessageTo -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#sendsMessageTo">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:comment>Un agent simulé envoie un message à un autre (communication directe).
+        Base des protocoles FIPA-ACL dans les SMA délibératifs.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#triggersEvent -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#triggersEvent">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentAction"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#InteractionEvent"/>
+        <rdfs:comment>Une action d'agent peut déclencher un événement d'interaction
+        (ex: l'action Contact déclenche un InteractionEvent de type TransmissionEvent).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés de l'environnement simulé ─── -->
+
+
+    <!-- module3#hasTopology -->
+    <!-- [M3-D4] Concept GAMA : Topology définit la géométrie de l'environnement -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasTopology">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedEnvironment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#GAMATopology"/>
+        <rdfs:comment>[M3-D4] Topologie spatiale de l'environnement simulé dans GAMA
+        (grille, espace continu, réseau, géographique/GIS). Détermine comment les
+        agents se déplacent et perçoivent leur voisinage.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#modelsEnvironment -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#modelsEnvironment">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module2#abstractsFrom"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedEnvironment"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Environment"/>
+        <rdfs:comment>[M3-D6] L'environnement simulé est une abstraction de l'environnement réel (M0/M1).
+        Ex: une grille GAMA modélise un territoire géographique réel (PhysicalEnvironment M1).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés BDI ─── -->
+
+
+    <!-- module3#hasBelief -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasBelief">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#BDIAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#Belief"/>
+        <rdfs:comment>Croyance d'un agent BDI : représentation interne de l'état du monde
+        (potentiellement incorrecte ou incomplète).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasDesire -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasDesire">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#BDIAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#Desire"/>
+        <rdfs:comment>Désir d'un agent BDI : état du monde que l'agent souhaite atteindre
+        (objectif à long terme, ex: éviter la contamination, se soigner).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#hasIntention -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasIntention">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#BDIAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#Intention"/>
+        <rdfs:comment>Intention d'un agent BDI : plan d'action en cours d'exécution
+        (engagement vers un désir, ex: "se diriger vers l'hôpital le plus proche").</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés organisationnelles (MOISE+/AGR) ─── -->
+
+
+    <!-- module3#hasSimulatedGroup -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasSimulatedGroup">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#OrganizationalStructure"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedGroup"/>
+        <rdfs:comment>Une structure organisationnelle est composée de groupes d'agents simulés
+        (ménages, quartiers, établissements de santé...) dans le contexte épidémiologique.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module3#governedByNorm -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module3#governedByNorm">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedNorm"/>
+        <rdfs:comment>Un agent simulé est contraint par des normes (règles, politiques de santé publique
+        : distanciation sociale, quarantaine, vaccination obligatoire...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- module3#hasTickDuration -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasTickDuration">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#Scheduler"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Durée réelle représentée par un pas de temps (tick) de la simulation.
+        Ex: 1 tick = 1 jour, 1 heure... Critique pour calibrer les paramètres épidémiologiques.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module3#hasActivationOrder -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasActivationOrder">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#Scheduler"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Ordre d'activation des espèces d'agents à chaque tick
+        (séquentiel, aléatoire, parallèle). Peut affecter significativement les résultats
+        dans les modèles épidémiologiques ABM.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module3#hasPerceptionRadius -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasPerceptionRadius">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#Perception"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Rayon de perception d'un agent dans l'environnement simulé.
+        Définit le voisinage dans lequel l'agent peut détecter d'autres agents (en mètres
+        dans un environnement continu, ou en nombre de cellules dans une grille).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module3#hasGAMLCode -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module3#hasGAMLCode">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentSpecies"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>[M3-D4] Référence au fichier ou fragment de code GAML implémentant
+        cette espèce d'agents dans GAMA platform. Permet la traçabilité ontologie ↔ code.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module3#isNormObligatory -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module3#isNormObligatory">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedNorm"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment>Vrai si la norme est obligatoire (ex: quarantaine imposée) ;
+        faux si recommandée (ex: distanciation recommandée). Pertinent pour modéliser
+        des scénarios d'intervention en santé publique.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         CLASSE RACINE : MultiAgentSystem
+         [M3-D1] Double héritage : AgentBasedModel (M2) + ComplexSystem (M1)
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#MultiAgentSystem">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#AgentBasedModel"/>
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#ComplexSystem"/>
+        <rdfs:comment>[M3-D1] Système composé d'agents autonomes en interaction dans un environnement
+        partagé. Double héritage intentionnel :
+        (1) AgentBasedModel (M2) : le SMA EST un modèle computationnel avec agents, règles, paramètres.
+        (2) ComplexSystem (M1) : le SMA SE COMPORTE comme un système complexe — émergence,
+        non-linéarité, auto-organisation sont des propriétés intrinsèques des SMA.
+        En épidémiologie : l'épidémie (EmergentProperty) émerge des interactions individuelles.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         AGENTS SIMULÉS
+         [M3-D2] SimulatedAgent ≠ Agent (M1)
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- module3#SimulatedAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#SimulatedAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        <rdfs:comment>[M3-D2] Représentation computationnelle d'un agent dans un SMA.
+        N'est PAS un Agent (M1) — c'est une abstraction qui le modélise via modelsAgent.
+        Possède : architecture interne, état, perceptions, actions, réflexes (GAMA).
+        Dans GAMA : correspond à une instance d'une Species définie en GAML.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ─── Architectures d'agents [M3-D3] ─── -->
+
+    <!-- module3#AgentArchitecture -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#AgentArchitecture">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[M3-D3] Architecture interne d'un agent simulé, définissant son processus
+        de décision (de la stimulus-réponse simple à la planification délibérative complexe).</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#ReactiveAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#ReactiveAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:comment>Agent à architecture réactive (stimulus-réponse) : pas de modèle interne
+        du monde, répond directement aux perceptions par des actions prédéfinies.
+        Simple et efficace pour de grandes populations (> 10 000 agents).
+        Adapté pour modéliser des agents épidémiologiques simples (propagation virale).</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#BDIAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#BDIAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:comment>Agent délibératif BDI (Belief-Desire-Intention) : maintient un modèle interne
+        du monde (Beliefs), des objectifs (Desires) et des plans en cours (Intentions).
+        Adapté pour modéliser des comportements humains complexes (compliance aux mesures,
+        décision de vaccination, mobilité contrainte).
+        Supporté par GAMA via l'architecture BDI intégrée.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#HybridAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#HybridAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:comment>Agent hybride combinant couche réactive (réponses immédiates) et couche
+        délibérative (planification à long terme). Architecture en couches.
+        Pertinent pour modéliser des humains qui réagissent immédiatement aux contacts
+        tout en planifiant leurs déplacements.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#CognitiveAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#CognitiveAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:comment>Agent cognitif avec capacités de planification, raisonnement et
+        apprentissage (reinforcement learning, adaptation). Architecture la plus complexe —
+        coût computationnel élevé. Adapté pour modéliser des décideurs de santé publique
+        ou des agents avec comportements adaptatifs face à l'épidémie.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ─── Concepts GAMA [M3-D4] ─── -->
+
+    <!-- module3#AgentSpecies -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#AgentSpecies">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        <rdfs:comment>[M3-D4] Concept GAMA : une Species est un TYPE d'agent défini en GAML,
+        partageant les mêmes attributs, réflexes et actions.
+        Équivalent d'une classe dans la POO. Ex: species Human { ... }, species Virus { ... }.
+        Dans l'ontologie : AgentSpecies est le patron dont SimulatedAgent est l'instance.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#Reflex -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#Reflex">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#BehaviorRule"/>
+        <rdfs:comment>[M3-D4] Concept GAMA : règle comportementale déclenchée automatiquement
+        à chaque tick si la condition (when:) est vraie. Syntaxe GAML :
+        reflex nom_reflex when: condition { ... actions ... }.
+        Spécialise BehaviorRule (M2) pour le contexte GAML spécifiquement.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#GAMAAction -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#GAMAAction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentAction"/>
+        <rdfs:comment>[M3-D4] Concept GAMA : une Action est une méthode explicitement appelée
+        par un agent (via do action_name). Distinct du Reflex (automatique) : une GAMAAction
+        est déclenchée intentionnellement. Syntaxe GAML : action nom_action { ... }.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ─── Perceptions et actions ─── -->
+
+    <!-- module3#Perception -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#Perception">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:comment>Processus par lequel un agent simulé observe son environnement et ses voisins.
+        Déterminé par le rayon de perception et la topologie de l'environnement.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#AgentAction -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#AgentAction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:comment>Action exécutable par un agent simulé modifiant son état ou
+        l'état de l'environnement/des autres agents (déplacement, transmission, guérison...).</rdfs:comment>
+    </owl:Class>
+
+    <!-- Sous-classes d'actions épidémiologiques -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#MoveAction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentAction"/>
+        <rdfs:comment>Action de déplacement dans l'environnement simulé (random walk,
+        déplacement dirigé, migration entre patches...).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#ContactAction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentAction"/>
+        <rdfs:comment>Action d'établissement de contact avec un autre agent (préalable
+        à la transmission dans un modèle épidémiologique ABM).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#TransmissionAction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentAction"/>
+        <rdfs:comment>Action de transmission d'un pathogène d'un agent infectieux à un agent
+        susceptible lors d'un contact. Gouvernée par le TransmissionRateParameter (M2).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#RecoveryAction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentAction"/>
+        <rdfs:comment>Action de guérison d'un agent infectieux (transition I→R).
+        Gouvernée par le RecoveryRateParameter (M2).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#VaccinationAction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentAction"/>
+        <rdfs:comment>Action de vaccination d'un agent susceptible (transition S→R ou vers
+        un compartiment vacciné). Modélise les interventions de santé publique.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ─── État de l'agent simulé ─── -->
+
+    <!-- module3#SimulatedAgentState -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#SimulatedAgentState">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AgentState"/>
+        <rdfs:comment>État computationnel d'un agent simulé à un tick donné.
+        Inclut : statut épidémiologique, position, âge, niveau d'immunité, compteur
+        de jours dans l'état courant. Mis à jour à chaque tick selon les réflexes/actions.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#EpidemiologicalStatus -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#EpidemiologicalStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgentState"/>
+        <rdfs:comment>Variable d'état épidémiologique de l'agent simulé, correspondant à son
+        compartiment courant dans le modèle (S, E, I, R...). Lien direct avec les
+        Compartment (M2) et le Compartment actif de l'agent.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ─── BDI States ─── -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#Belief">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Représentation interne d'un agent BDI sur l'état du monde.
+        Ex: "croyance que le risque de contamination dans ma zone est élevé".</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#Desire">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Objectif désiré par un agent BDI (état du monde à atteindre).
+        Ex: "rester en bonne santé", "maximiser les contacts sociaux".</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#Intention">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Plan d'action en cours d'un agent BDI, résultant de la sélection
+        d'un désir et de son instanciation en actions concrètes.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         ENVIRONNEMENTS SIMULÉS [M3-D6]
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- module3#SimulatedEnvironment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#SimulatedEnvironment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        <rdfs:comment>[M3-D6] Représentation computationnelle de l'environnement dans un SMA.
+        Distinct de Environment (M1) — c'est l'abstraction modélisée, pas l'environnement réel.
+        Lié à l'environnement réel via modelsEnvironment.
+        Dans GAMA : correspond au monde (world agent) et à ses topologies.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#GAMATopology -->
+    <!-- [M3-D4] Concept GAMA -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#GAMATopology">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module2#NetworkTopology"/>
+        <rdfs:comment>[M3-D4] Topologie spatiale gérée par GAMA platform, définissant comment
+        les distances, déplacements et voisinages sont calculés dans la simulation.
+        Sous-classes : grille, espace continu, réseau, topologie géographique (GIS/SHP).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#GridTopology">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#GAMATopology"/>
+        <rdfs:comment>Environnement en grille (cellules carrées ou hexagonales).
+        GAML : grid species_name width: N height: M. Simple et efficace pour la diffusion spatiale.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#ContinuousTopology">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#GAMATopology"/>
+        <rdfs:comment>Espace continu (coordonnées réelles). Les agents se déplacent librement.
+        GAML : topology par défaut. Pertinent pour modéliser des mobilités humaines réalistes.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#NetworkTopologyGAMA">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#GAMATopology"/>
+        <rdfs:comment>Topologie réseau dans GAMA : les agents sont des nœuds, les interactions
+        sont contraintes par les arêtes. GAML : graph_topology. Modélise les réseaux sociaux
+        ou de transport pour la propagation épidémique.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#GISTopology">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module3#GAMATopology"/>
+        <rdfs:comment>Topologie géographique réelle importée depuis des fichiers SHP/GeoJSON.
+        Permet de simuler des épidémies dans des territoires géographiques réels
+        (ex: arrondissements de Montréal, régions du Sénégal). Très pertinent pour votre plateforme.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         INTERACTIONS SIMULÉES
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- module3#SimulatedInteraction -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#SimulatedInteraction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AgentInteraction"/>
+        <rdfs:comment>Interaction entre agents simulés dans le SMA. Spécialise AgentInteraction (M0)
+        pour le contexte computationnel. Peut être directe (contact), indirecte (environnement partagé)
+        ou par message (protocole FIPA).</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#InteractionProtocol -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#InteractionProtocol">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Rule"/>
+        <rdfs:comment>Protocole définissant le déroulement structuré d'une interaction entre agents
+        (inspiré FIPA-ACL : INFORM, REQUEST, PROPOSE, ACCEPT, REJECT...).
+        Pertinent pour les agents délibératifs coordonnant des actions de santé publique.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         SCHEDULER [M3-D4]
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- module3#Scheduler -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#Scheduler">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        <rdfs:comment>Ordonnanceur de la simulation : contrôle l'ordre d'activation des agents
+        et la durée des pas de temps. Dans GAMA : géré par le cycle de simulation (step:).
+        L'ordre d'activation peut influencer les résultats épidémiologiques (biais de synchronisation).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         ORGANISATIONS [M3-D5] inspiré MOISE+/AGR
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- module3#OrganizationalStructure -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#OrganizationalStructure">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#Organization"/>
+        <rdfs:comment>[M3-D5] Structure organisationnelle d'un SMA : définit les groupes, rôles
+        et normes régissant les interactions. Spécialise Organization (M1) pour le contexte
+        computationnel. Inspiré des modèles MOISE+ et AGR (Agent/Group/Role).
+        Ex: ménages, lieux de travail, établissements de santé.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#SimulatedGroup -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#SimulatedGroup">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#Group"/>
+        <rdfs:comment>Groupe d'agents simulés dans une structure organisationnelle.
+        Ex: un ménage = groupe de HumanAgents simulés partageant un domicile.
+        Contexte épidémiologique : les groupes définissent des matrices de contact.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#SimulatedRole -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#SimulatedRole">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#Role"/>
+        <rdfs:comment>Rôle joué par un agent simulé dans une organisation (hôte, vecteur,
+        soignant, décideur, super-propagateur). Spécialise Role (M1) pour le SMA.
+        Détermine les actions autorisées et les interactions possibles.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module3#SimulatedNorm -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module3#SimulatedNorm">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#Norm"/>
+        <rdfs:comment>Norme computationnelle régissant le comportement des agents simulés.
+        Spécialise Norm (M1) pour le contexte SMA.
+        Ex: "les agents infectieux doivent rester à domicile" (quarantaine),
+        "la distance minimale entre agents est de 1,5m" (distanciation sociale).
+        Modélise les politiques d'intervention en santé publique.</rdfs:comment>
+    </owl:Class>
+
+</rdf:RDF>
+
+<!-- Généré manuellement — PIPOnto Module 3 v1.0 -->
+<!-- Choix M3-D1 à M3-D6 documentés inline dans les rdfs:comment -->

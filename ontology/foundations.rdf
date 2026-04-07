@@ -1,0 +1,777 @@
+<?xml version="1.0"?>
+<!--
+    MODULE 0 : Fondations Ontologiques
+    Ontologie : PIPOnto — http://www.pacadi.org/these/piponto/
+    Version corrigée — corrections de cohérence appliquées :
+      [F1] causes : domain/range élargi à Entity→Entity (+ produces comme sous-propriété
+           pour la causalité Event→Event, préservant la sémantique originale)
+      [F2] hasNumericValue : double domain (conjonction OWL) → superclasse QuantifiableQuality
+      [F3] System, Agent, Environment : PhysicalObject → AbstractObject|Endurant
+           (permet systèmes abstraits, agents logiciels, environnements sociaux)
+      [F4] hasRole vs playsRole : distinction sémantique explicite + hiérarchie
+      [F5] hasAttribute subPropertyOf hasQuality (cohérence hiérarchie propriétés)
+      [F6] IndividualAgent disjointWith CollectiveAgent
+      [F7] hasPart, partOf déclarés TransitiveProperty
+      [F8] Namespace uniformisé (# pour classes/propriétés, pas de slash final)
+-->
+<rdf:RDF xmlns="http://www.pacadi.org/these/piponto/module0#"
+     xml:base="http://www.pacadi.org/these/piponto/module0"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+    <owl:Ontology rdf:about="http://www.pacadi.org/these/piponto/module0">
+        <owl:versionIRI rdf:resource="http://www.pacadi.org/these/piponto/module0"/>
+        <rdfs:label>PIPOnto - Module 0 : Fondations Ontologiques</rdfs:label>
+        <rdfs:comment>Fondations ontologiques de PIPOnto. Basé sur la distinction
+        Endurant/Perdurant/TemporalEntity (inspirée de DOLCE). Fournit les primitives
+        partagées par tous les modules supérieurs (M1–M8).</rdfs:comment>
+    </owl:Ontology>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- module0#causes -->
+    <!-- [F1] Élargi à Entity→Entity pour permettre les sous-propriétés de M1
+         (EmergentProperty emergesFrom Interaction, ComplexSystem hasProcess Interaction).
+         La sémantique Event→Event est préservée via la sous-propriété produces. -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#causes">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:comment>[F1] Relation causale générale entre entités. Domain/range élargis
+        à Entity pour permettre les spécialisations dans M1 (émergence, processus).
+        La causalité Event→Event est gérée par la sous-propriété produces.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#produces -->
+    <!-- [F1] Nouvelle sous-propriété de causes : causalité spécifique Event→Event -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#produces">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Event"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Event"/>
+        <rdfs:comment>[F1] Causalité directe entre événements (un événement produit un autre).
+        Préserve la sémantique originale de causes tout en permettant son élargissement.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#hasAttribute -->
+    <!-- [F5] Déclaré subPropertyOf hasQuality (Attribute subClassOf Quality → cohérence) -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasAttribute">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasQuality"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>[F5] Spécialise hasQuality pour les attributs stables d'une entité.
+        subPropertyOf hasQuality est cohérent avec Attribute subClassOf Quality.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#hasParameter -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasParameter">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasQuality"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Parameter"/>
+        <rdfs:comment>Lie une entité à ses paramètres (valeurs configurables). 
+        subPropertyOf hasQuality (Parameter subClassOf Quality).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#hasPart -->
+    <!-- [F7] Déclaré TransitiveProperty pour une méréologie correcte -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasPart">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.pacadi.org/these/piponto/module0#partOf"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:comment>[F7] Relation mérologique : un tout contient des parties.
+        Transitive : si A hasPart B et B hasPart C, alors A hasPart C.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#hasParticipant -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasParticipant">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Perdurant"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:comment>Un processus ou événement (Perdurant) implique des participants
+        qui persistent dans le temps (Endurant).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#hasQuality -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasQuality">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Quality"/>
+        <rdfs:comment>Propriété fondamentale liant une entité à ses qualités.
+        Superproprété de hasAttribute, hasParameter, hasStateVariable.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#hasRole -->
+    <!-- [F4] Distinction explicite avec playsRole :
+         hasRole = rôle structurel/permanent d'une entité dans le système
+         playsRole = rôle contextuel joué dans une interaction/organisation spécifique -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasRole">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Role"/>
+        <rdfs:comment>[F4] Rôle structurel et permanent d'une entité dans un système
+        (ex: une institution a le rôle de régulateur). Distinct de playsRole
+        qui exprime un rôle contextuel dans une interaction ou organisation donnée.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#hasState -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasState">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#State"/>
+        <rdfs:comment>Une entité est dans un état à un instant donné.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#hasStateVariable -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasStateVariable">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasQuality"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#StateVariable"/>
+        <rdfs:comment>Lie une entité à ses variables d'état (quantités qui évoluent dans le temps).
+        subPropertyOf hasQuality (StateVariable subClassOf Quality).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#hasTime -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasTime">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Event"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#TemporalEntity"/>
+        <rdfs:comment>Un événement est associé à une entité temporelle (instant ou intervalle).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#influences -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#influences">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:comment>Relation directionnelle d'influence causale entre entités.
+        Non symétrique : A influence B n'implique pas B influence A.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#locatedIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#locatedIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Environment"/>
+        <rdfs:comment>Une entité est localisée dans un environnement (relation spatiale ou contextuelle).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#occursDuring -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#occursDuring">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#TimeInterval"/>
+        <rdfs:comment>Un processus se déroule pendant un intervalle de temps.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#partOf -->
+    <!-- [F7] Déclaré TransitiveProperty -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#partOf">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:comment>[F7] Relation mérologique inverse de hasPart.
+        Transitive : si A partOf B et B partOf C, alors A partOf C.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#participatesIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#participatesIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Perdurant"/>
+        <rdfs:comment>Inverse de hasParticipant. Un Endurant participe à un Perdurant
+        (ex: un agent participe à une interaction).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module0#playsRole -->
+    <!-- [F4] Distinction avec hasRole : rôle contextuel (dans une interaction ou organisation) -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module0#playsRole">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasRole"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module0#Role"/>
+        <rdfs:comment>[F4] Rôle contextuel joué par une entité dans une interaction
+        ou organisation spécifique (ex: un agent joue le rôle d'infecté dans une épidémie).
+        Sous-propriété de hasRole : tout rôle joué est aussi un rôle possédé dans ce contexte.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- module0#hasCategory -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasCategory">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Catégorie textuelle d'un attribut (ex: "démographique", "épidémiologique").</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module0#hasDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasDescription">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Description textuelle libre d'une entité (documentation humaine).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module0#hasName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasName">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Nom identifiant d'une entité (complément à rdfs:label).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module0#hasNumericValue -->
+    <!-- [F2] Double domain → superclasse QuantifiableQuality pour éviter la conjonction OWL -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasNumericValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#QuantifiableQuality"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>[F2] Valeur numérique d'une qualité quantifiable.
+        Domain unifié via QuantifiableQuality (superclasse de Parameter et StateVariable)
+        pour éviter la conjonction involontaire de deux déclarations rdfs:domain en OWL.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module0#hasTimeStamp -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasTimeStamp">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Event"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment>Horodatage d'un événement (date et heure précises).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module0#hasValue -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module0#hasValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module0#Quality"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Valeur numérique générale d'une qualité (peut être spécialisée par hasNumericValue).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         PRIMITIVES FONDAMENTALES
+         ═══════════════════════════════════════════════════════ -->
+
+
+    <!-- module0#Entity -->
+    <!-- Racine ontologique — toutes les classes en dérivent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Entity">
+        <rdfs:comment>Racine ontologique de PIPOnto. Toute chose pouvant être nommée,
+        décrite ou mise en relation est une Entity.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Endurant -->
+    <!-- Entités qui persistent dans le temps en maintenant leur identité -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Endurant">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:comment>Entité qui persiste dans le temps en maintenant son identité
+        (objets, états, qualités). Disjoint de Perdurant et TemporalEntity.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Perdurant -->
+    <!-- Entités qui se déroulent dans le temps (processus, événements) -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Perdurant">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:comment>Entité qui se déroule dans le temps (processus, événements, interactions).
+        Disjoint de Endurant et TemporalEntity.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#TemporalEntity -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#TemporalEntity">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Entity"/>
+        <rdfs:comment>Entité représentant le temps lui-même (instants, intervalles).
+        Disjoint de Endurant et Perdurant.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         HIÉRARCHIE DES ENDURANTS
+         ═══════════════════════════════════════════════════════ -->
+
+
+    <!-- module0#PhysicalObject -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#PhysicalObject">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:comment>Objet physique matériel avec une localisation spatiale.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#AbstractObject -->
+    <!-- [F3] Nouvelle classe pour permettre systèmes abstraits, agents logiciels,
+         environnements sociaux/institutionnels -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#AbstractObject">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:comment>[F3] Objet non physique : entité informationnelle, sociale, computationnelle
+        ou conceptuelle. Permet de couvrir les agents logiciels, systèmes abstraits,
+        environnements institutionnels que PhysicalObject ne peut pas représenter.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Agent -->
+    <!-- [F3] Remonté sous Endurant (plus PhysicalObject) pour couvrir agents logiciels -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Agent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:comment>[F3] Entité capable de percevoir son environnement et d'agir en conséquence.
+        Ancré dans Endurant (et non PhysicalObject) pour couvrir agents humains,
+        biologiques, artificiels (logiciels) et institutionnels.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#IndividualAgent -->
+    <!-- [F6] Déclaré disjointWith CollectiveAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#IndividualAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <owl:disjointWith rdf:resource="http://www.pacadi.org/these/piponto/module0#CollectiveAgent"/>
+        <rdfs:comment>[F6] Agent individuel unique et indivisible (humain, organisme, logiciel unitaire).
+        Disjoint de CollectiveAgent : un agent ne peut être à la fois individuel et collectif.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#CollectiveAgent -->
+    <!-- [F6] Déclaré disjointWith IndividualAgent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#CollectiveAgent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Agent"/>
+        <owl:disjointWith rdf:resource="http://www.pacadi.org/these/piponto/module0#IndividualAgent"/>
+        <rdfs:comment>[F6] Agent composé de plusieurs agents individuels agissant de façon unifiée
+        (institution, organisation, essaim). Disjoint de IndividualAgent.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Environment -->
+    <!-- [F3] Remonté sous Endurant pour couvrir environnements non physiques -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Environment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:comment>[F3] Contexte dans lequel les agents existent et interagissent.
+        Ancré dans Endurant (et non PhysicalObject) pour couvrir environnements physiques,
+        spatiaux, sociaux et institutionnels.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#SpatialEnvironment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#SpatialEnvironment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Environment"/>
+        <rdfs:comment>Environnement défini par une topologie spatiale (grille, continu, patches).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#NetworkEnvironment -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#NetworkEnvironment">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Environment"/>
+        <rdfs:comment>Environnement défini par un réseau de relations entre entités (graphe social, réseau épidémique).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#System -->
+    <!-- [F3] Remonté sous Endurant pour couvrir systèmes abstraits (modèles, simulations) -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#System">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:comment>[F3] Ensemble organisé d'entités en interaction formant un tout cohérent.
+        Ancré dans Endurant (et non PhysicalObject) pour permettre les systèmes abstraits,
+        computationnels et les modèles (M2).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#InformationObject -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#InformationObject">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        <rdfs:comment>Objet portant une information formalisable (algorithme, équation, règle, modèle).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Algorithm -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Algorithm">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Suite finie d'instructions computationnelles formalisées.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Equation -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Equation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Relation mathématique formelle entre variables ou paramètres.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Rule -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Rule">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Règle logique ou normative gouvernant le comportement d'agents ou systèmes.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Quality -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Quality">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:comment>Caractéristique intrinsèque d'une entité (propriété, état, valeur mesurable).
+        Superclasse de Attribute, Parameter, StateVariable.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Attribute -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Attribute">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Quality"/>
+        <rdfs:comment>Qualité stable et descriptive d'une entité (ex: type, catégorie, nom structurel).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#PhysicalAttribute -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#PhysicalAttribute">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Attribut physique d'une entité (masse, taille, position...).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#SpatialAttribute -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#SpatialAttribute">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Attribut spatial d'une entité (coordonnées, région, voisinage...).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#TemporalAttribute -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#TemporalAttribute">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Attribut temporel d'une entité (durée de vie, âge, période d'activité...).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#QuantifiableQuality -->
+    <!-- [F2] Nouvelle superclasse unifiant Parameter et StateVariable pour hasNumericValue -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#QuantifiableQuality">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Quality"/>
+        <rdfs:comment>[F2] Qualité pouvant prendre une valeur numérique.
+        Superclasse commune de Parameter et StateVariable, créée pour éviter le double
+        rdfs:domain de hasNumericValue (interprété comme conjonction en OWL).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Parameter -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Parameter">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#QuantifiableQuality"/>
+        <rdfs:comment>Valeur numérique configurable d'une entité (fixe ou ajustable dans une simulation).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#FixedParameter -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#FixedParameter">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Parameter"/>
+        <rdfs:comment>Paramètre dont la valeur est constante pendant toute une simulation.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#TunableParameter -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#TunableParameter">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Parameter"/>
+        <rdfs:comment>Paramètre dont la valeur peut être modifiée entre différentes runs de simulation.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#StateVariable -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#StateVariable">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#QuantifiableQuality"/>
+        <rdfs:comment>Variable décrivant l'état d'une entité à un instant donné (évolue dans le temps).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#SystemStateVariable -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#SystemStateVariable">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#StateVariable"/>
+        <rdfs:comment>Variable d'état caractérisant l'état global d'un système (ex: taux d'infection).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#AgentStateVariable -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#AgentStateVariable">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#StateVariable"/>
+        <rdfs:comment>Variable d'état caractérisant l'état individuel d'un agent (ex: statut infectieux).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#State -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#State">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:comment>Configuration instantanée d'une entité définie par ses variables d'état.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#SystemState -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#SystemState">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#State"/>
+        <rdfs:comment>État global d'un système à un instant donné.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#AgentState -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#AgentState">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#State"/>
+        <rdfs:comment>État individuel d'un agent à un instant donné.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Role -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Role">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+        <rdfs:comment>Fonction ou position qu'une entité occupe dans un contexte donné.
+        Voir hasRole (structurel) vs playsRole (contextuel).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#AgentRole -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#AgentRole">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Role"/>
+        <rdfs:comment>Rôle joué par un agent dans une organisation ou interaction (ex: infecteur, hôte).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#SystemRole -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#SystemRole">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Role"/>
+        <rdfs:comment>Rôle structurel d'un système dans un contexte plus large (ex: sous-système, régulateur).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#FunctionalRole -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#FunctionalRole">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Role"/>
+        <rdfs:comment>Rôle défini par une fonction opérationnelle dans un processus ou système.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         HIÉRARCHIE DES PERDURANTS
+         ═══════════════════════════════════════════════════════ -->
+
+
+    <!-- module0#Process -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Process">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Perdurant"/>
+        <rdfs:comment>Déroulement temporel structuré impliquant des participants (agents, systèmes).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#NaturalProcess -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#NaturalProcess">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:comment>Processus se déroulant sans intervention intentionnelle d'agents (ex: diffusion, croissance).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#ComputationalProcess -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#ComputationalProcess">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:comment>Processus d'exécution computationnelle (simulation, calcul algorithmique).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Interaction -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Interaction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:comment>Processus impliquant au moins deux participants en relation réciproque.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#AgentInteraction -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#AgentInteraction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Interaction"/>
+        <rdfs:comment>Interaction directe entre au moins deux agents (communication, coopération, compétition).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#SystemInteraction -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#SystemInteraction">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Interaction"/>
+        <rdfs:comment>Interaction entre systèmes ou entre un système et son environnement.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#Event -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#Event">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Perdurant"/>
+        <rdfs:comment>Occurrence ponctuelle dans le temps, sans durée interne significative.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#NaturalEvent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#NaturalEvent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Event"/>
+        <rdfs:comment>Événement non intentionnel (naissance, mort, mutation...).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#InteractionEvent -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#InteractionEvent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Event"/>
+        <rdfs:comment>Événement résultant d'une interaction entre agents (ex: transmission de pathogène).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         HIÉRARCHIE TEMPORELLE
+         ═══════════════════════════════════════════════════════ -->
+
+
+    <!-- module0#TimeInstant -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#TimeInstant">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#TemporalEntity"/>
+        <rdfs:comment>Point temporel sans durée (instant discret ou continu).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- module0#TimeInterval -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module0#TimeInterval">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#TemporalEntity"/>
+        <rdfs:comment>Durée temporelle délimitée par deux instants (début et fin).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General Axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- Disjonction fondamentale Endurant / Perdurant / TemporalEntity -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module0#Endurant"/>
+            <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module0#Perdurant"/>
+            <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module0#TemporalEntity"/>
+        </owl:members>
+    </rdf:Description>
+
+    <!-- Disjonction PhysicalObject / AbstractObject -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module0#PhysicalObject"/>
+            <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module0#AbstractObject"/>
+        </owl:members>
+    </rdf:Description>
+
+</rdf:RDF>
+
+<!-- Généré et corrigé manuellement — PIPOnto Module 0 v2.0 -->
+<!-- Corrections F1-F8 documentées inline dans les rdfs:comment -->

@@ -1,0 +1,1003 @@
+<?xml version="1.0"?>
+<!--
+    MODULE 6 : Ontologie des Résultats
+    Ontologie : PIPOnto — http://www.pacadi.org/these/piponto/
+    Auteur     : Paul Cheikh Anta DIOUF
+
+    CHOIX DE CONCEPTION DOCUMENTÉS :
+
+      [M6-D1] Double source des résultats :
+              - Result peut structurer les SimulationOutput bruts (M4) → run unique
+              - Result peut structurer les ExperimentResult (M5) → experiment complet
+              Un seul mécanisme via derivedFrom couvre les deux cas.
+              Result = connaissance interprétable, SimulationOutput (M4) = données brutes.
+              Cette distinction données brutes / connaissance est fondamentale pour la
+              plateforme : l'utilisateur voit des Result, pas des CSV bruts.
+
+      [M6-D2] Métriques épidémiologiques formalisées :
+              Pic d'infection, taille finale, taux d'attaque, R effectif, durée de l'épidémie,
+              nombre de reproduction de base observé. Ces métriques sont calculées à partir
+              des TimeSeriesOutput et AggregatedMetricOutput (M4).
+
+      [M6-D3] Visualisations comme objets ontologiques :
+              Une Visualization est un InformationObject décrivant la représentation graphique
+              d'un résultat (pas l'image elle-même). Permet à la plateforme de générer
+              automatiquement les bons graphiques selon le type de résultat.
+
+      [M6-D4] Rapports structurés pour la présentation à l'utilisateur :
+              SimulationReport regroupe métriques + visualisations + conclusions.
+              C'est la réponse finale de la plateforme à une requête NLP.
+
+      [M6-D5] Comparaisons inter-scénarios et inter-modèles :
+              ComparisonResult formalise la comparaison quantitative entre scénarios ou modèles.
+              Permet des requêtes SPARQL comme "quel scénario minimise le pic d'infection ?".
+
+      [M6-D6] Indicateurs de performance technique :
+              SimulationPerformanceResult capturent temps CPU, mémoire, convergence —
+              utiles pour l'optimisation de l'architecture microservices.
+
+      [M6-D7] Imports : M0 + M1 + M2 + M3 + M4 + M5.
+-->
+<rdf:RDF xmlns="http://www.pacadi.org/these/piponto/module6#"
+     xml:base="http://www.pacadi.org/these/piponto/module6"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:m2="http://www.pacadi.org/these/piponto/module2#"
+     xmlns:m4="http://www.pacadi.org/these/piponto/module4#"
+     xmlns:m5="http://www.pacadi.org/these/piponto/module5#"
+     xmlns:m6="http://www.pacadi.org/these/piponto/module6#"
+     xmlns:m8="http://www.pacadi.org/these/piponto/module8#">
+
+    <owl:Ontology rdf:about="http://www.pacadi.org/these/piponto/module6">
+        <owl:versionIRI rdf:resource="http://www.pacadi.org/these/piponto/module6"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module0"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module1"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module2"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module3"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module4"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module5"/>
+        <rdfs:label>PIPOnto - Module 6 : Ontologie des Résultats</rdfs:label>
+        <rdfs:comment>Module décrivant les résultats de simulation et d'expérimentation :
+        métriques épidémiologiques, visualisations, comparaisons inter-scénarios/modèles,
+        rapports structurés et indicateurs de performance. Interface finale entre
+        la plateforme et l'utilisateur.</rdfs:comment>
+    </owl:Ontology>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- ─── Propriétés de dérivation [M6-D1] ─── -->
+
+
+    <!-- module6#derivedFrom -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#derivedFrom">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>[M6-D1] Un résultat est dérivé soit d'un SimulationOutput brut (M4 — run unique)
+        soit d'un ExperimentResult (M5 — experiment complet).
+        Relation de provenance : les données brutes → connaissance interprétable.
+        Range non contraint : couvre InformationObject (M0) pour les deux sources.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#derivedFromOutput -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#derivedFromOutput">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module6#derivedFrom"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationOutput"/>
+        <rdfs:comment>Résultat dérivé d'un SimulationOutput brut (M4) — cas du run unique.
+        Ex: une EpidemicPeakMetric calculée à partir d'une TimeSeriesOutput (M4).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#derivedFromExperiment -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#derivedFromExperiment">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module6#derivedFrom"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ExperimentResult"/>
+        <rdfs:comment>Résultat dérivé d'un ExperimentResult (M5) — cas de l'experiment complet.
+        Ex: un ComparisonResult construit à partir d'une ScenarioComparison (M5).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- ─── Propriétés de composition du résultat ─── -->
+
+
+    <!-- module6#hasMetric -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasMetric">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>Un résultat contient une ou plusieurs métriques épidémiologiques calculées
+        (pic d'infection, taille finale, R effectif, taux d'attaque, durée...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#hasVisualization -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasVisualization">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#Visualization"/>
+        <rdfs:comment>[M6-D3] Un résultat est associé à une ou plusieurs visualisations
+        générées automatiquement par la plateforme selon le type de résultat.
+        Ex: courbe d'infection pour un RunResult, carte de chaleur pour un SpatialResult.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#isIncludedInReport -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#isIncludedInReport">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#partOf"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationReport"/>
+        <rdfs:comment>Un résultat est inclus dans un rapport de simulation présenté à l'utilisateur.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#hasReport -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasReport">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationReport"/>
+        <rdfs:comment>[M6-D4] Un résultat peut être accompagné d'un rapport structuré
+        (métriques + visualisations + conclusions + recommandations).
+        C'est la réponse finale de la plateforme à la requête NLP de l'utilisateur.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#comparesResult -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#comparesResult">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ComparisonResult"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>[M6-D5] Un résultat de comparaison met en relation plusieurs résultats
+        pour produire un classement ou une évaluation différentielle.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#hasWinner -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasWinner">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ComparisonResult"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationScenario"/>
+        <rdfs:comment>Scénario ou modèle le plus performant selon le critère de comparaison
+        (ex: scénario minimisant le pic d'infection, modèle avec meilleur R²).
+        Réponse directe à la requête NLP de l'utilisateur.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#representsMetricOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#representsMetricOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelStateVariable"/>
+        <rdfs:comment>Une métrique épidémiologique représente une variable d'état du modèle (M2)
+        calculée à un instant donné ou agrégée sur la durée du run.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#visualizes -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#visualizes">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Visualization"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>Une visualisation représente graphiquement une ou plusieurs métriques
+        épidémiologiques (courbe I(t), carte R₀ spatial, histogramme taux d'attaque...).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#hasUncertaintyInterval -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasUncertaintyInterval">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#UncertaintyInterval"/>
+        <rdfs:comment>Intervalle d'incertitude associé à une métrique (calculé à partir de N runs
+        Monte Carlo ou de l'analyse de sensibilité). Essentiel pour la communication
+        scientifique honnête des résultats de simulation stochastique.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#hasConclusion -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasConclusion">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationReport"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#ScientificConclusion"/>
+        <rdfs:comment>Conclusion scientifique incluse dans le rapport, dérivée de l'interprétation
+        des métriques et de l'évaluation des hypothèses (M5).</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- module6#hasRecommendation -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasRecommendation">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationReport"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#PolicyRecommendation"/>
+        <rdfs:comment>Recommandation de politique de santé publique générée à partir des résultats.
+        Ex: "La vaccination à 70% réduit le pic de 65% — recommandation prioritaire".
+        Réponse de haut niveau à l'utilisateur décideur.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- module6#hasMetricValue -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasMetricValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Valeur numérique de la métrique épidémiologique calculée
+        (ex: pic = 2341 individus, taux d'attaque = 0.68, durée = 127 jours).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasMetricUnit -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasMetricUnit">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Unité de la métrique (individus, jours, %, sans unité...).
+        Indispensable pour l'interprétation correcte des résultats présentés à l'utilisateur.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasMetricTimestamp -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasMetricTimestamp">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Tick de simulation auquel la métrique a été calculée ou atteinte
+        (ex: tick du pic d'infection, tick de l'extinction de l'épidémie).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasLowerBound -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasLowerBound">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#UncertaintyInterval"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Borne inférieure de l'intervalle d'incertitude (ex: 2.5e percentile).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasUpperBound -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasUpperBound">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#UncertaintyInterval"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Borne supérieure de l'intervalle d'incertitude (ex: 97.5e percentile).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasIntervalType -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasIntervalType">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#UncertaintyInterval"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Type d'intervalle d'incertitude : "CI95" (intervalle de confiance à 95%),
+        "IQR" (interquartile), "minmax", "std" (±1 écart-type).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasVisualizationType -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasVisualizationType">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Visualization"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Type de représentation graphique : "line_chart", "bar_chart", "heatmap",
+        "choropleth_map", "scatter_plot", "histogram", "boxplot".
+        Utilisé par la plateforme pour sélectionner le bon composant de visualisation.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasReportFormat -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasReportFormat">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Format de sortie du rapport : "PDF", "HTML", "JSON", "CSV".
+        Détermine la présentation finale à l'utilisateur de la plateforme.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasCPUTime -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasCPUTime">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#PerformanceResult"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>[M6-D6] Temps CPU consommé par le run en secondes.
+        Métrique d'optimisation pour l'architecture microservices (conteneurs Docker).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasMemoryUsage -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasMemoryUsage">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#PerformanceResult"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>[M6-D6] Mémoire RAM consommée en mégaoctets. Critique pour calibrer
+        les ressources allouées par conteneur dans l'orchestrateur (Kubernetes/Docker).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasConvergenceIndicator -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasConvergenceIndicator">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#PerformanceResult"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>[M6-D6] Indicateur de convergence numérique (variance résiduelle entre runs,
+        critère d'arrêt du solveur EDO). Évalue la stabilité des résultats.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasConclusionStatement -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasConclusionStatement">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ScientificConclusion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Énoncé textuel de la conclusion scientifique en langage naturel.
+        Peut être généré automatiquement par la plateforme via templates ou NLG.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasRecommendationStatement -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasRecommendationStatement">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#PolicyRecommendation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Énoncé textuel de la recommandation de politique sanitaire.
+        Ex: "Atteindre 70% de couverture vaccinale avant la saison hivernale pour éviter la saturation hospitalière".</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- module6#hasImprovementRate -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasImprovementRate">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ComparisonResult"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Taux d'amélioration relatif du meilleur scénario vs le baseline.
+        Ex: -0.65 signifie que le pic est réduit de 65% par rapport au scénario sans intervention.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         CLASSE RACINE : Result [M6-D1]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#Result">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>[M6-D1] Connaissance structurée et interprétable dérivée des données brutes
+        d'un SimulationRun (M4) ou d'un Experiment (M5).
+        Distinction fondamentale avec SimulationOutput (M4) = données brutes :
+        le Result est la connaissance interprétée, présentable à l'utilisateur et
+        interrogeable via SPARQL. Ancré dans InformationObject (M0).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- Sous-types de résultats -->
+
+    <!-- module6#RunResult -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#RunResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>Résultat d'un SimulationRun unique : métriques calculées sur une seule
+        trajectoire de simulation. Point de départ de toute analyse.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#AggregatedResult -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#AggregatedResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>Résultat agrégé sur N SimulationRun (moyenne, médiane, percentiles).
+        Produit par un MonteCarloExperiment (M5). Fournit des métriques avec intervalles
+        de confiance pour les modèles stochastiques et ABM.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#ComparisonResult -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#ComparisonResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>[M6-D5] Résultat comparant plusieurs scénarios ou modèles.
+        Produit par un ScenarioComparisonExperiment (M5). Répond aux requêtes NLP de type
+        "quelle est la meilleure intervention pour COVID-19 à Montréal ?".</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#SensitivityResult -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#SensitivityResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>Résultat d'une analyse de sensibilité : indices d'influence de chaque
+        paramètre sur les métriques cibles (indices de Sobol, effets élémentaires de Morris).
+        Répond à "quels paramètres influencent le plus le pic d'infection ?".</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#ValidationResult -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#ValidationResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>Résultat de la validation du modèle : métriques de qualité d'ajustement
+        (RMSE, R², log-vraisemblance) et jugement sur la crédibilité du modèle.
+        Prérequis à la publication scientifique.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#CalibrationResult -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#CalibrationResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>Résultat de la calibration : ensemble de valeurs de paramètres optimisées
+        minimisant l'écart modèle/données. Ces paramètres calibrés alimentent les simulations
+        prédictives suivantes.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#SpatialResult -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#SpatialResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>Résultat avec dimension spatiale explicite : distribution géographique
+        des cas, carte de chaleur des zones à risque, front de propagation.
+        Dérivé des SnapshotOutput (M4) des modèles spatialement explicites (GISTopology M3).</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#PerformanceResult -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#PerformanceResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:comment>[M6-D6] Résultat technique sur les performances d'exécution :
+        temps CPU, mémoire, convergence. Utile pour l'optimisation de l'architecture
+        microservices et le dimensionnement des conteneurs Docker.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         MÉTRIQUES ÉPIDÉMIOLOGIQUES [M6-D2]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#SystemStateVariable"/>
+        <rdfs:comment>[M6-D2] Métrique quantitative décrivant la dynamique épidémique simulée.
+        Calculée à partir des variables d'état du modèle (M2) sur la durée du run.
+        Ancré dans SystemStateVariable (M0) : une métrique est une variable d'état agrégée.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#EpidemicPeakMetric -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#EpidemicPeakMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>Pic d'infection : nombre maximal d'individus infectieux simultanément (max I(t)).
+        Métrique critique pour évaluer la saturation du système de santé.
+        "Aplatir la courbe" = réduire l'EpidemicPeakMetric.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#FinalEpidemicSizeMetric -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#FinalEpidemicSizeMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>Taille finale de l'épidémie : nombre total d'individus infectés sur toute
+        la durée (R(t_final) dans un modèle SIR). Mesure l'impact cumulatif total.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#AttackRateMetric -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#AttackRateMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>Taux d'attaque : proportion de la population infectée en fin d'épidémie
+        (FinalSize / N). Sans unité, entre 0 et 1. Permet la comparaison entre populations
+        de tailles différentes.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#EpidemicDurationMetric -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#EpidemicDurationMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>Durée de l'épidémie : nombre de jours/ticks entre le premier cas et
+        l'extinction (I=0). Métrique temporelle importante pour la planification sanitaire.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#EffectiveReproductionNumberMetric -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#EffectiveReproductionNumberMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>Nombre de reproduction effectif R(t) = R₀ × S(t)/N : nombre moyen de cas
+        secondaires à l'instant t. R(t) > 1 → croissance ; R(t) &lt; 1 → déclin.
+        Indicateur dynamique de l'état de l'épidémie au fil du temps.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#HerdImmunityThresholdMetric -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#HerdImmunityThresholdMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>Seuil d'immunité collective : proportion minimale de la population à immuniser
+        pour que R(t) &lt; 1 (= 1 - 1/R₀). Cible clé pour les stratégies de vaccination.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#PeakTimingMetric -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#PeakTimingMetric">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>Tick/jour d'occurrence du pic d'infection (quand max I(t) est atteint).
+        Permet de planifier les interventions en amont du pic.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#UncertaintyInterval -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#UncertaintyInterval">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Intervalle d'incertitude associé à une métrique, calculé à partir de N runs
+        (IC 95%, IQR, min-max). Représente la variabilité stochastique ou paramétrique.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         VISUALISATIONS [M6-D3]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#Visualization">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>[M6-D3] Description formelle d'une représentation graphique d'un résultat.
+        Ce n'est pas l'image elle-même mais sa spécification (type, métriques représentées,
+        axes, titre). La plateforme génère l'image à partir de cette spécification.
+        Permet une séparation propre données/présentation.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#InfectionCurveChart">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Visualization"/>
+        <rdfs:comment>Courbe d'infection I(t) en fonction du temps. Visualisation canonique
+        des modèles épidémiologiques. Peut superposer plusieurs scénarios pour comparaison.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#CompartmentChart">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Visualization"/>
+        <rdfs:comment>Courbes de tous les compartiments S(t), E(t), I(t), R(t) superposées.
+        Vue complète de la dynamique du modèle compartimental.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#SpatialHeatmap">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Visualization"/>
+        <rdfs:comment>Carte de chaleur spatiale représentant la densité de cas infectieux
+        par zone géographique. Dérivé des SpatialResult et GISTopology (M3).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#ScenarioComparisonChart">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Visualization"/>
+        <rdfs:comment>Graphique comparant les métriques de plusieurs scénarios (barres groupées,
+        courbes superposées). Visualisation principale des ComparisonResult.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#SensitivityIndexPlot">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Visualization"/>
+        <rdfs:comment>Graphique des indices de sensibilité (barres des indices Sobol S1/ST,
+        ou scatter plots Morris). Visualise l'influence relative de chaque paramètre.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#UncertaintyBandChart">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#Visualization"/>
+        <rdfs:comment>Courbe avec bande d'incertitude (médiane + IC 95%) issue des N runs Monte Carlo.
+        Représentation honnête de la variabilité des modèles stochastiques et ABM.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         RAPPORT [M6-D4]
+         ═══════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#SimulationReport">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>[M6-D4] Rapport structuré présenté à l'utilisateur de la plateforme.
+        Regroupe : métriques clés, visualisations, conclusions scientifiques, recommandations.
+        C'est la réponse finale et intelligible à la requête NLP initiale
+        ("simule moi la maladie de COVID-19 dans la région de Montréal").
+        Disponible en PDF, HTML ou JSON selon hasReportFormat.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#ScientificConclusion -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#ScientificConclusion">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Conclusion scientifique dérivée de l'interprétation des résultats et de
+        l'évaluation des hypothèses (M5). Peut référencer les hypothèses confirmées/réfutées.</rdfs:comment>
+    </owl:Class>
+
+    <!-- module6#PolicyRecommendation -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#PolicyRecommendation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Recommandation opérationnelle de politique de santé publique générée à partir
+        des résultats. Traduit les conclusions scientifiques en actions concrètes
+        pour les décideurs (ministère de la santé, OMS, MSAS...).
+        Valeur ajoutée majeure de la plateforme pour les utilisateurs non scientifiques.</rdfs:comment>
+    </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // EXTENSION M6 — VERSION 2.0
+    // [M6-EXT-1] SimulationProvenance — traçabilité complète bout en bout
+    // [M6-EXT-2] ModelSourceTrace — lien résultat → modèle M2 → article (DOI)
+    // [M6-EXT-3] ParameterTrace — valeur publiée vs valeur calibrée utilisée
+    // [M6-EXT-4] Ponts M6→M2, M6→M4, M6→M5, M6→M8
+    // [M6-EXT-5] ModelComparisonResult — résultat de comparaison inter-modèles
+    // [M6-EXT-6] ABox — résultats tracés pour les cas d'usage principaux
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M6-EXT-1] SimulationProvenance
+         Traçabilité complète : qui, quoi, avec quoi, depuis quoi
+         Inspiré de PROV-O (W3C) — alignement M7 prévu
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#SimulationProvenance">
+        <rdfs:label xml:lang="fr">Provenance de la simulation</rdfs:label>
+        <rdfs:label xml:lang="en">Simulation Provenance</rdfs:label>
+        <rdfs:comment>[M6-EXT-1] Enregistrement complet de la traçabilité d'un résultat.
+        Répond aux questions : quelle requête NLP a déclenché la simulation ?
+        Quel modèle de la littérature a été utilisé ? Quels paramètres (publiés ou calibrés) ?
+        Quelles sources de données externes ? Quel classement M5 a justifié le choix ?
+        Aligné avec PROV-O : prov:wasGeneratedBy, prov:used, prov:wasAttributedTo.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M6-EXT-2] ModelSourceTrace
+         Lien traçable entre un résultat et l'article scientifique source
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#ModelSourceTrace">
+        <rdfs:label xml:lang="fr">Trace du modèle source</rdfs:label>
+        <rdfs:label xml:lang="en">Model Source Trace</rdfs:label>
+        <rdfs:comment>[M6-EXT-2] Lien traçable entre un résultat de simulation et le modèle
+        de la bibliothèque M2 qui l'a produit, incluant la référence bibliographique complète.
+        Permet de citer correctement dans une publication : "résultats obtenus avec le
+        modèle de Cauchemez et al. (2011), DOI: 10.1093/aje/kwq425".</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M6-EXT-3] ParameterTrace
+         Valeur publiée vs valeur calibrée effectivement utilisée
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#ParameterTrace">
+        <rdfs:label xml:lang="fr">Trace des paramètres</rdfs:label>
+        <rdfs:label xml:lang="en">Parameter Trace</rdfs:label>
+        <rdfs:comment>[M6-EXT-3] Enregistrement des paramètres effectivement utilisés dans
+        la simulation : valeur publiée dans l'article source vs valeur recalibrée localement.
+        Essentiel pour la reproductibilité scientifique et la justification des écarts.
+        Ex: β publié Ferguson = 0.429, β calibré Paris = 0.31 (données OpenCOVID19-fr, R²=0.94).</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M6-EXT-5] ModelComparisonResult
+         Résultat structuré d'une comparaison inter-modèles
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module6#ModelComparisonResult">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module6#ComparisonResult"/>
+        <rdfs:label xml:lang="fr">Résultat de comparaison inter-modèles</rdfs:label>
+        <rdfs:comment>[M6-EXT-5] Résultat d'une ModelComparisonExperiment (M5).
+        Contient les scores par critère pour chaque modèle candidat et la recommandation finale.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M6-EXT-4] NOUVELLES PROPRIÉTÉS — Ponts M6→M2, M6→M4, M6→M5, M6→M8
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Résultat → provenance -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasProvenance">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#Result"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:label xml:lang="fr">a pour provenance</rdfs:label>
+        <rdfs:comment>[M6-EXT-4] Lien principal vers la fiche de traçabilité complète du résultat.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Provenance → modèle M2 utilisé -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#usedModel">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:label xml:lang="fr">a utilisé le modèle</rdfs:label>
+        <rdfs:comment>[M6-EXT-4] Pont M6→M2. Modèle de la bibliothèque effectivement utilisé.
+        Permet de remonter jusqu'à l'article source (DOI, auteurs).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Provenance → simulation composite M4 -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#generatedBySimulation">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#CompositeSimulation"/>
+        <rdfs:label xml:lang="fr">généré par la simulation</rdfs:label>
+        <rdfs:comment>[M6-EXT-4] Pont M6→M4. Simulation composite qui a produit ce résultat.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Provenance → expérience M5 -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#justifiedByExperiment">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelComparisonExperiment"/>
+        <rdfs:label xml:lang="fr">justifié par l'expérience de comparaison</rdfs:label>
+        <rdfs:comment>[M6-EXT-4] Pont M6→M5. Expérience de comparaison qui a justifié
+        le choix de ce modèle parmi les candidats.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Provenance → population M8 -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#simulatedPopulation">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">population simulée</rdfs:label>
+        <rdfs:comment>[M6-EXT-4] Pont M6→M8. Groupe de population effectivement simulé.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Provenance → géographie M8 -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#simulatedGeography">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label xml:lang="fr">géographie simulée</rdfs:label>
+        <rdfs:comment>[M6-EXT-4] Pont M6→M8. Territoire sur lequel la simulation a été exécutée.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Provenance → sources de données M8 -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#usedDataSource">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:label xml:lang="fr">a utilisé la source de données</rdfs:label>
+        <rdfs:comment>[M6-EXT-4] Pont M6→M8. Sources de données externes utilisées
+        pour contextualiser ou calibrer la simulation.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Provenance → trace modèle source -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasModelSourceTrace">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#ModelSourceTrace"/>
+        <rdfs:label xml:lang="fr">a pour trace du modèle source</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- Provenance → traces des paramètres -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasParameterTrace">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#ParameterTrace"/>
+        <rdfs:label xml:lang="fr">a pour trace de paramètre</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- ModelSourceTrace → modèle M2 -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module6#tracesModel">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ModelSourceTrace"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:label xml:lang="fr">trace le modèle</rdfs:label>
+        <rdfs:comment>Modèle M2 dont cette trace enregistre la provenance.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Propriétés de données pour SimulationProvenance -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasNLPQuery">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">requête NLP source</rdfs:label>
+        <rdfs:comment>Texte brut de la requête utilisateur qui a déclenché la simulation.
+        Point de départ de la chaîne de traçabilité.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasExecutionTimestamp">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label xml:lang="fr">horodatage d'exécution</rdfs:label>
+        <rdfs:comment>Date et heure d'exécution de la simulation. Format ISO 8601.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasModelSelectionScore">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">score de sélection du modèle</rdfs:label>
+        <rdfs:comment>Score composite M5 qui a justifié la sélection de ce modèle parmi les candidats.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#isReproducible">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:label xml:lang="fr">est reproductible</rdfs:label>
+        <rdfs:comment>true si tous les éléments nécessaires à la reproduction sont disponibles :
+        code source, données, paramètres, graine aléatoire.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Propriétés de données pour ModelSourceTrace -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasCitationText">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ModelSourceTrace"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">texte de citation</rdfs:label>
+        <rdfs:comment>Citation bibliographique complète prête à être insérée dans une publication.
+        Ex: "Cauchemez S. et al. (2011). Role of school closure... AJE. DOI:10.1093/aje/kwq425"</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasSourceDOI">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ModelSourceTrace"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">DOI de l'article source</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <!-- Propriétés de données pour ParameterTrace -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasParamSymbol">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ParameterTrace"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">symbole du paramètre</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasPublishedValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ParameterTrace"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">valeur publiée (référence)</rdfs:label>
+        <rdfs:comment>Valeur du paramètre telle que publiée dans l'article source M2.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasUsedValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ParameterTrace"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">valeur effectivement utilisée</rdfs:label>
+        <rdfs:comment>Valeur utilisée dans cette simulation : publiée si non recalibrée,
+        calibrée localement sinon.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#wasCalibrated">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ParameterTrace"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:label xml:lang="fr">a été recalibré</rdfs:label>
+        <rdfs:comment>true si la valeur utilisée diffère de la valeur publiée (recalibration locale).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module6#hasCalibrationGOF">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ParameterTrace"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">score d'ajustement (R²)</rdfs:label>
+        <rdfs:comment>R² de la calibration locale. Vide si paramètre non recalibré.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M6-EXT-6] ABOX — RÉSULTATS TRACÉS
+         Cas d'usage : COVID-19 Paris écoliers + Paludisme Thiès
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ── Traces de paramètres ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module6#Trace_Beta_Paris_COVID">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module6#ParameterTrace"/>
+        <rdfs:label xml:lang="fr">Trace β COVID-19 Paris 2022</rdfs:label>
+        <m6:hasParamSymbol>beta</m6:hasParamSymbol>
+        <m6:hasPublishedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.429</m6:hasPublishedValue>
+        <m6:hasUsedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.31</m6:hasUsedValue>
+        <m6:wasCalibrated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</m6:wasCalibrated>
+        <m6:hasCalibrationGOF rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.94</m6:hasCalibrationGOF>
+        <rdfs:comment>β publié (Ferguson UK 2020) = 0.429. β calibré Paris 2022 = 0.31.
+        Réduction due aux mesures barrières en vigueur. R² = 0.94. Source : OpenCOVID19-fr.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module6#Trace_Gamma_Paris_COVID">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module6#ParameterTrace"/>
+        <rdfs:label xml:lang="fr">Trace γ COVID-19 Paris 2022</rdfs:label>
+        <m6:hasParamSymbol>gamma</m6:hasParamSymbol>
+        <m6:hasPublishedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.143</m6:hasPublishedValue>
+        <m6:hasUsedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.143</m6:hasUsedValue>
+        <m6:wasCalibrated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m6:wasCalibrated>
+        <rdfs:comment>γ = 1/7 = 0.143. Valeur publiée conservée — durée infectiosité
+        biologique indépendante du contexte géographique.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module6#Trace_Sigma_Paris_COVID">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module6#ParameterTrace"/>
+        <rdfs:label xml:lang="fr">Trace σ COVID-19 Paris 2022</rdfs:label>
+        <m6:hasParamSymbol>sigma</m6:hasParamSymbol>
+        <m6:hasPublishedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.196</m6:hasPublishedValue>
+        <m6:hasUsedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.196</m6:hasUsedValue>
+        <m6:wasCalibrated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m6:wasCalibrated>
+        <rdfs:comment>σ = 1/5.1 = 0.196. Valeur publiée conservée — durée incubation
+        biologique indépendante du contexte géographique.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── Trace du modèle source ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module6#ModelTrace_Cauchemez_COVID_Paris">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module6#ModelSourceTrace"/>
+        <rdfs:label xml:lang="fr">Trace source Cauchemez 2011 — COVID Paris Écoliers</rdfs:label>
+        <m6:tracesModel rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_School_Cauchemez_2011"/>
+        <m6:hasSourceDOI>10.1093/aje/kwq425</m6:hasSourceDOI>
+        <m6:hasCitationText>Cauchemez S., Bhattarai A., Marchbanks T.L. et al. (2011). Role of school closure in the spread of influenza. American Journal of Epidemiology. DOI:10.1093/aje/kwq425</m6:hasCitationText>
+        <rdfs:comment>Trace complète vers l'article source. Rang 1 dans le classement M5
+        pour COVID-19 Paris écoliers (score composite 0.89).</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── Provenance complète COVID-19 Paris Écoliers ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module6#Prov_COVID_Paris_Ecoliers">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:label xml:lang="fr">Provenance — COVID-19 Paris Écoliers</rdfs:label>
+        <m6:hasNLPQuery>simule COVID-19 à Paris chez les écoliers</m6:hasNLPQuery>
+        <m6:hasExecutionTimestamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-03-09T10:00:00</m6:hasExecutionTimestamp>
+        <m6:hasModelSelectionScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.89</m6:hasModelSelectionScore>
+        <m6:isReproducible rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</m6:isReproducible>
+        <m6:usedModel rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIR_School_Cauchemez_2011"/>
+        <m6:generatedBySimulation rdf:resource="http://www.pacadi.org/these/piponto/module4#Sim_COVID_Paris_Ecoliers"/>
+        <m6:justifiedByExperiment rdf:resource="http://www.pacadi.org/these/piponto/module5#Exp_Compare_COVID_Paris_Ecoliers"/>
+        <m6:simulatedPopulation rdf:resource="http://www.pacadi.org/these/piponto/module8#SchoolChildren_Paris"/>
+        <m6:simulatedGeography rdf:resource="http://www.pacadi.org/these/piponto/module8#Paris"/>
+        <m6:usedDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#INSEE_France"/>
+        <m6:usedDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#POLYMOD_Mossong2008"/>
+        <m6:usedDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#OpenCOVID19_France"/>
+        <m6:hasModelSourceTrace rdf:resource="http://www.pacadi.org/these/piponto/module6#ModelTrace_Cauchemez_COVID_Paris"/>
+        <m6:hasParameterTrace rdf:resource="http://www.pacadi.org/these/piponto/module6#Trace_Beta_Paris_COVID"/>
+        <m6:hasParameterTrace rdf:resource="http://www.pacadi.org/these/piponto/module6#Trace_Gamma_Paris_COVID"/>
+        <m6:hasParameterTrace rdf:resource="http://www.pacadi.org/these/piponto/module6#Trace_Sigma_Paris_COVID"/>
+        <rdfs:comment>Provenance complète de la simulation COVID-19 Paris écoliers.
+        Chaîne : NLP → M5 comparaison (3 candidats) → M2 Cauchemez (rang 1, 0.89)
+        → M4 SimComposite (β calibré 0.31, R²=0.94) → M8 données INSEE+POLYMOD+OpenCOVID19.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── Résultat principal lié à la provenance ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module6#Result_COVID_Paris_Ecoliers">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module6#AggregatedResult"/>
+        <rdfs:label xml:lang="fr">Résultat agrégé — COVID-19 Paris Écoliers</rdfs:label>
+        <m6:hasProvenance rdf:resource="http://www.pacadi.org/these/piponto/module6#Prov_COVID_Paris_Ecoliers"/>
+        <m6:derivedFromExperiment rdf:resource="http://www.pacadi.org/these/piponto/module5#Exp_Compare_COVID_Paris_Ecoliers"/>
+        <rdfs:comment>Résultat agrégé sur 100 runs stochastiques. Taux d'attaque écoliers Paris.
+        Paramètres : β=0.31 (calibré), σ=0.196, γ=0.143. N_écoliers=280 000.
+        Entièrement traçable jusqu'à la requête NLP originale.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ── Provenance Paludisme Thiès ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module6#Prov_Malaria_Thies">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationProvenance"/>
+        <rdfs:label xml:lang="fr">Provenance — Paludisme Thiès</rdfs:label>
+        <m6:hasNLPQuery>simule le paludisme dans la région de Thiès</m6:hasNLPQuery>
+        <m6:hasModelSelectionScore rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.95</m6:hasModelSelectionScore>
+        <m6:isReproducible rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</m6:isReproducible>
+        <m6:usedModel rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRS_Malaria_Senegal_Diallo_2022"/>
+        <m6:generatedBySimulation rdf:resource="http://www.pacadi.org/these/piponto/module4#Sim_Malaria_Thies"/>
+        <m6:simulatedPopulation rdf:resource="http://www.pacadi.org/these/piponto/module8#RuralPop_Thies"/>
+        <m6:simulatedGeography rdf:resource="http://www.pacadi.org/these/piponto/module8#Thies"/>
+        <m6:usedDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#ANSD_Senegal"/>
+        <m6:usedDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#PNLP_Senegal"/>
+        <m6:usedDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#Prem2017_ContactMatrices"/>
+        <rdfs:comment>Provenance complète simulation paludisme Thiès.
+        Modèle SEIRS Diallo 2022 validé Sénégal. Score sélection 0.95 (match quasi-parfait).
+        Données : ANSD + PNLP + matrices contacts Prem 2017 (Sénégal).</rdfs:comment>
+    </owl:NamedIndividual>
+
+</rdf:RDF>
+
+<!-- Généré manuellement — PIPOnto Module 6 v1.0 -->
+<!-- Choix M6-D1 à M6-D7 documentés inline dans les rdfs:comment -->

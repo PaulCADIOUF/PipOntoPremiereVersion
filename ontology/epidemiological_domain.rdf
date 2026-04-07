@@ -1,0 +1,1399 @@
+<?xml version="1.0"?>
+<!--
+    MODULE 8 : Ontologie du Domaine Épidémiologique
+    Ontologie : PIPOnto — http://www.pacadi.org/these/piponto/
+    Auteur     : Paul Cheikh Anta DIOUF
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║  M8 EST LE MODULE D'ABOUTISSEMENT DE L'ONTOLOGIE PIPOnto               ║
+    ║                                                                          ║
+    ║  Il ne se contente pas d'importer M2 (modèles) :                        ║
+    ║  il est le pont entre le DOMAINE RÉEL et TOUTE la chaîne PIPOnto.       ║
+    ║                                                                          ║
+    ║  M0 → les fondements ontologiques (Endurant, Process, Quality...)       ║
+    ║  M1 → les systèmes complexes (Agent, Population, Environnement...)      ║
+    ║  M2 → les modèles mathématiques qui abstraient le domaine               ║
+    ║  M3 → les agents simulés qui incarnent les hôtes et pathogènes          ║
+    ║  M4 → les simulations qui exécutent les modèles sur ce domaine          ║
+    ║  M5 → les expériences qui testent des hypothèses sur ce domaine         ║
+    ║  M6 → les résultats qui quantifient l'état de ce domaine                ║
+    ║  M7 → les alignements qui ancrent ce domaine dans les standards         ║
+    ║  M8 → LE DOMAINE LUI-MÊME, qui donne sens à toute la chaîne            ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+
+    CHOIX DE CONCEPTION DOCUMENTÉS :
+
+      [M8-D1] M8 importe TOUS les modules M0–M7 :
+              M8 est la couche domaine qui donne sens à l'ensemble de PIPOnto.
+              Sans M8, les modules techniques (M2–M6) modélisent "quelque chose".
+              Avec M8, ils modélisent des MALADIES INFECTIEUSES RÉELLES dans des
+              POPULATIONS RÉELLES. M8 instancie et relie tous les concepts abstraits
+              définis dans les modules précédents.
+
+      [M8-D2] Ponts M8 → M3 (Agents Simulés) :
+              ImmunologicalStatus (M8) ↔ EpidemiologicalStatus (M3)
+              HumanHost (M8) est modélisé par SimulatedAgent (M3)
+              PublicHealthIntervention (M8) se traduit en VaccinationAction/
+              QuarantineAction/ContactAction (M3) dans les ABM.
+
+      [M8-D3] Ponts M8 → M4 (Simulation) :
+              EpidemicEvent (M8) isSimulatedBy Simulation (M4)
+              PopulationGroup (M8) fournit les InitialCondition (M4) : N, S0, I0...
+              GeographicContext (M8) fournit le SimulationConfiguration (M4)
+              PublicHealthIntervention (M8) génère un InterventionScenario (M4)
+              Pathogen.hasR0Value (M8) → TransmissionRateParameter (M4/M2)
+
+      [M8-D4] Ponts M8 → M5 (Expérimentation) :
+              EpidemicEvent (M8) isSubjectOfExperiment Experiment (M5)
+              L'Experiment (M5) teste des hypothèses sur un EpidemicEvent (M8)
+              PublicHealthIntervention (M8) est le facteur testé dans
+              ScenarioComparisonExperiment (M5)
+
+      [M8-D5] Ponts M8 → M6 (Résultats) :
+              EpidemiologicalMetric (M6) quantifiesAspectOf InfectiousDisease (M8)
+              EpidemicPeakMetric (M6) mesure le pic de InfectedStatus (M8)
+              PolicyRecommendation (M6) recommande PublicHealthIntervention (M8)
+              ComparisonResult (M6) compare des InterventionScenario liés à
+              des PublicHealthIntervention (M8)
+
+      [M8-D6] Instanciation des alignements M7 dans M8 :
+              Les alignements IDO/OGMS déclarés en M7 (anticipatoires) sont ici
+              pleinement développés avec leurs sous-classes et propriétés.
+              InfectiousDisease ≡ IDO_0000528, Host ≡ IDO_0000531.
+
+      [M8-D7] Propriétés de sélection automatique de modèle :
+              hasR0Value, hasIncubationPeriodDays, hasImmunityDurationDays
+              sont les critères SPARQL pour sélectionner le modèle M2 optimal.
+              bestModeledBy est la propriété synthétique qui encode le résultat
+              de cette sélection pour interrogation directe par la plateforme NLP.
+-->
+<rdf:RDF xmlns="http://www.pacadi.org/these/piponto/module8#"
+     xml:base="http://www.pacadi.org/these/piponto/module8"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:prov="http://www.w3.org/ns/prov#"
+     xmlns:m8="http://www.pacadi.org/these/piponto/module8#"
+     xmlns:m2="http://www.pacadi.org/these/piponto/module2#">
+
+    <owl:Ontology rdf:about="http://www.pacadi.org/these/piponto/module8">
+        <owl:versionIRI rdf:resource="http://www.pacadi.org/these/piponto/module8"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module0"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module1"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module2"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module3"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module4"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module5"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module6"/>
+        <owl:imports rdf:resource="http://www.pacadi.org/these/piponto/module7"/>
+        <rdfs:label>PIPOnto - Module 8 : Domaine Épidémiologique (Module d'aboutissement)</rdfs:label>
+        <rdfs:comment>Module d'aboutissement de PIPOnto. Ancre le domaine réel
+        (maladies infectieuses, pathogènes, hôtes, populations, interventions) dans toute
+        la chaîne M0-M7. Donne sens à l'ensemble de la plateforme.</rdfs:comment>
+    </owl:Ontology>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // SECTION 1 : PROPRIÉTÉS OBJET
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!-- ─── Liens M8 → M2 (Modèles) [M8-D7] ─── -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#bestModeledBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#Model"/>
+        <rdfs:comment>[M8-D7, pont M8→M2] Propriété clé pour la sélection automatique de modèle.
+        Interrogée par SPARQL : "COVID-19" → SEIRModel. Calculée à partir de
+        hasIncubationPeriodDays et hasImmunityDurationDays (M8) et des ModelSelectionCriteria (M2).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasModelSelectionCriteria">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelSelectionCriteria"/>
+        <rdfs:comment>[pont M8→M2] Critères de sélection du modèle dérivés des caractéristiques
+        épidémiologiques de la maladie. Ex: incubation > 0 → SEIRModelCriteria.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#calibratesParameter">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:comment>[pont M8→M2] Les propriétés biologiques du pathogène calibrent les
+        paramètres du modèle (M2) :
+        hasR0Value          → β = R0 x gamma
+        hasIncubationPeriod → sigma = 1 / incubation
+        hasInfectiousPeriod → gamma = 1 / infectiosite
+        hasImmunityDuration → omega = 1 / immunityDuration
+        Entrée pour ModelCalibrationExperiment (M5).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#reducesParameter">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#ModelParameter"/>
+        <rdfs:comment>[pont M8→M2] Une intervention réduit un paramètre du modèle.
+        SocialDistancing reducesParameter beta ; Quarantine reducesParameter beta ;
+        VaccinationCampaign reducesParameter S0 (conditions initiales M4).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- ─── Liens M8 → M3 (Agents Simulés) [M8-D2] ─── -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isModeledByAgent">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module2#abstractsFrom"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#Host"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#SimulatedAgent"/>
+        <rdfs:comment>[M8-D2, pont M8→M3] Un hôte réel (M8) est modélisé par un SimulatedAgent (M3).
+        HumanHost isModeledByAgent → EpidemiologicalAgent avec EpidemiologicalStatus
+        correspondant à ImmunologicalStatus (M8).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#correspondsToStatus">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#ImmunologicalStatus"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#EpidemiologicalStatus"/>
+        <rdfs:comment>[M8-D2, pont M8→M3] Le statut immunologique réel (M8) correspond au
+        statut de l'agent simulé (M3). Pont essentiel pour valider le modèle ABM sur
+        données réelles. SusceptibleStatus ↔ SusceptibleAgent (M3).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isImplementedAsAction">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module3#AgentAction"/>
+        <rdfs:comment>[M8-D2, pont M8→M3] Une intervention (M8) est implémentée comme
+        action d'agent (M3) dans les ABM :
+        VaccinationCampaign → VaccinationAction (M3)
+        Quarantine          → SimulatedNorm sur InfectedAgent (M3)
+        SocialDistancing    → réduction hasPerceptionRadius dans MoveAction (M3)
+        ContactTracing      → inspection réseau de contacts de l'agent (M3)</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- ─── Liens M8 → M4 (Simulation) [M8-D3] ─── -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isSimulatedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemicEvent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#Simulation"/>
+        <rdfs:comment>[M8-D3, pont M8→M4] Lien central entre le REEL et le SIMULE.
+        Un événement épidémique réel (M8) est reproduit par une Simulation (M4).
+        Une même EpidemicEvent peut être isSimulatedBy plusieurs Simulations (comparaison M5).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#providesInitialConditions">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#InitialCondition"/>
+        <rdfs:comment>[M8-D3, pont M8→M4] PopulationGroup (M8) fournit les conditions initiales M4 :
+        hasPopulationSize → N ; S0 = N x (1 - tauxImmunite) ; I0 = casIndex.
+        Extrait par NLP : "Montréal" → N=2049000.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#configuresScenario">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#InterventionScenario"/>
+        <rdfs:comment>[M8-D3, pont M8→M4] Une intervention (M8) configure automatiquement
+        un InterventionScenario (M4) avec les paramètres modifiés.
+        VaccinationCampaign(coverage=0.7, efficacy=0.9) → InterventionScenario(S0 reduit de 63%)
+        SocialDistancing(efficacy=0.4) → InterventionScenario(beta reduit de 40%)</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#definesGeographicScope">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module4#SimulationConfiguration"/>
+        <rdfs:comment>[M8-D3, pont M8→M4] GeographicContext (M8) definit la portée spatiale
+        de SimulationConfiguration (M4) : charge SHP/GeoJSON pour GISTopology (M3),
+        définit ModelScope (M2) Local/Regional/Global, fournit données climatiques.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- ─── Liens M8 → M5 (Expérimentation) [M8-D4] ─── -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isSubjectOfExperiment">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemicEvent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#Experiment"/>
+        <rdfs:comment>[M8-D4, pont M8→M5] Un événement épidémique (M8) est l'objet d'étude
+        d'un Experiment (M5) : validation de modèle, comparaison de scénarios,
+        analyse de sensibilité. Ex: COVIDMontreal isSubjectOfExperiment ValidationExpCOVID.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isTestedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ScenarioComparisonExperiment"/>
+        <rdfs:comment>[M8-D4, pont M8→M5] Une intervention (M8) est évaluée par un
+        ScenarioComparisonExperiment (M5) comparant le scénario de base au scénario
+        interventionnel. Résultat → PolicyRecommendation (M6).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#requiresCalibration">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module5#ModelCalibrationExperiment"/>
+        <rdfs:comment>[pont M8→M5] Une maladie requiert calibration (M5) quand ses paramètres
+        ne sont pas connus pour un contexte géographique. Beta COVID-19 à Thiès != beta à Montréal.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- ─── Liens M8 → M6 (Résultats) [M8-D5] ─── -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isQuantifiedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module6#EpidemiologicalMetric"/>
+        <rdfs:comment>[M8-D5, pont M8→M6] Une maladie infectieuse (M8) est quantifiée par
+        les métriques épidémiologiques (M6) : EpidemicPeakMetric, AttackRateMetric,
+        EffectiveReproductionNumberMetric... Ces métriques donnent sens aux résultats simulés.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#informs">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#ComparisonResult"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:comment>[M8-D5, pont M6→M8] Boucle de rétroaction de la plateforme :
+        Simulation (M4) → Résultats (M6) → ComparisonResult informe → Intervention (M8).
+        Ex: ComparisonResult(vaccination vs lockdown) informs → VaccinationCampaign préférée.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#generatesRecommendation">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module6#SimulationReport"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:comment>[pont M6→M8] Finalité applicative de PIPOnto :
+        SimulationReport (M6) → recommande VaccinationCampaign(coverage >= 0.67) concrète (M8).</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- ─── Propriétés internes M8 ─── -->
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isCausedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#causes"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#affects">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#Host"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasTransmissionRoute">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#TransmissionRoute"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasNaturalHistory">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#NaturalHistory"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#occursIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#locatedIn"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemicEvent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#involves">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemicEvent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isSubjectOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemicEvent"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasReservoir">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#Host"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasVector">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#VectorBorneDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#BiologicalVector"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasImmunologicalStatus">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasState"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#Host"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#ImmunologicalStatus"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#targetsPopulation">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#influences"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasEfficacy">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#hasAttribute"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#InterventionEfficacy"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isLocatedIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.pacadi.org/these/piponto/module0#locatedIn"/>
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+    </owl:ObjectProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // SECTION 2 : PROPRIÉTÉS DE DONNÉES
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasR0Value">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>[M8-D7] R0 : critère SPARQL primaire pour sélection de modèle.
+        R0 > 1 → épidémie possible. Alimente calibratesParameter beta = R0 x gamma (M2/M4).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasIncubationPeriodDays">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>[M8-D7] Durée incubation (jours). > 0 → compartiment E requis → SEIR/SEIRS (M2).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasInfectiousPeriodDays">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Durée d'infectiosite (jours). Alimente gamma = 1/hasInfectiousPeriodDays (M2).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasImmunityDurationDays">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>[M8-D7] Durée immunité (jours). Finie → SIRS/SEIRS (M2). INF → SIR/SEIR.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasCaseFatalityRate">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>CFR. > 0.05 → compartiment D requis dans le modèle (M2). Alimente EpidemicPeakMetric (M6).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#isZoonotic">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment>Vrai si zoonotique → modéliser le réservoir animal dans M2/M3.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasPopulationSize">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>[pont M8→M4] N de la population → InitialCondition N (M4). Extrait par NLP.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasPopulationDensity">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Densité (hab/km2) → influence beta effectif dans les ABM (M3).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasCoverageRate">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>[pont M8→M4] Taux de couverture → reduit S0 dans InitialCondition (M4).
+        VaccinationCampaign(coverage=0.7, efficacy=0.9) → S0_eff = S0 x (1 - 0.63).</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasEfficacyValue">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InterventionEfficacy"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasISOCountryCode">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Code ISO 3166-1 → liaison bases démographiques OMS/ONU/MSAS/INSPQ.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasGeoCoordinates">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Coordonnées (lat, lon) → charge GISTopology (M3) pour simulations spatiales.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // SECTION 3 : CLASSES
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!-- ═══ MALADIES INFECTIEUSES (M0 + IDO via M7) ═══ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#InfectiousDisease">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Perdurant"/>
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/IDO_0000528"/>
+        <rdfs:comment>[M8-D1 à D7] Classe centrale de M8. Ancrée dans Perdurant (M0).
+        Alignée IDO (M7 instancié). Connectée à M2 (bestModeledBy), M4 (isSimulatedBy via EpidemicEvent),
+        M5 (requiresCalibration, isSubjectOfExperiment), M6 (isQuantifiedBy).
+        Pilote toute la chaine de sélection automatique de modele de la plateforme.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#SIRDisease">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:comment>Pas d'incubation + immunité permanente → SIRModel (M2). Ex: Rougeole.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#SEIRDisease">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:comment>Incubation + immunité permanente → SEIRModel (M2). Ex: COVID-19, SARS, Ebola.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#SIRSDisease">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:comment>Pas d'incubation + immunité temporaire → SIRSModel (M2).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#SEIRSDisease">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:comment>Incubation + immunité temporaire → SEIRSModel (M2). Ex: COVID-19 avec réinfection, Paludisme, Dengue.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#VectorBorneDisease">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:comment>Transmission vectorielle → modèle deux populations hôtes+vecteurs M2/M3. Ex: Paludisme, Dengue.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#AirborneDisease">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:comment>Transmission aérienne. beta influencé par densité, ventilation, distance → GISTopology (M3).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#ZoonoticDisease">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:comment>Maladie zoonotique → réservoir animal modélisé dans M2/M3.</rdfs:comment>
+    </owl:Class>
+
+    <!-- ═══ PATHOGÈNES (M0) ═══ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Pathogen">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#BiologicalObject"/>
+        <rdfs:comment>[M8-D7] Ses propriétés biologiques (R0, incubation, infectiosite, immunité)
+        sont les paramètres d'entrée du pipeline de sélection automatique (M2) et de calibration (M5).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Virus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Bacterium">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Parasite">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#Pathogen"/>
+    </owl:Class>
+
+    <!-- Instances pathogènes -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#SARS_CoV_2">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#Virus"/>
+        <rdfs:label>SARS-CoV-2</rdfs:label>
+        <rdfs:comment>R0 ≈ 2.5–3.5 ; incubation ≈ 5.1j ; infectiosite ≈ 5-10j.
+        bestModeledBy → SEIRModel. calibratesParameter : beta ≈ 0.3/j, sigma ≈ 1/5.1, gamma ≈ 1/7.</rdfs:comment>
+        <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/NCBITaxon_2697049"/>
+            <m8:hasR0Value rdf:datatype="http://www.w3.org/2001/XMLSchema#double">3.0</m8:hasR0Value>
+        <m8:hasIncubationPeriodDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.1</m8:hasIncubationPeriodDays>
+        <m8:hasInfectiousPeriodDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">7.0</m8:hasInfectiousPeriodDays>
+        <m8:hasImmunityDurationDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">120.0</m8:hasImmunityDurationDays>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#InfluenzaVirus">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#Virus"/>
+        <rdfs:label>Influenza Virus A/B</rdfs:label>
+        <rdfs:comment>R0 ≈ 1.2–1.4 (saisonnier) ; immunité saisonnière. bestModeledBy → SIRSModel ou SEIRSModel.</rdfs:comment>
+            <m8:hasR0Value rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3</m8:hasR0Value>
+        <m8:hasIncubationPeriodDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.0</m8:hasIncubationPeriodDays>
+        <m8:hasInfectiousPeriodDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.0</m8:hasInfectiousPeriodDays>
+        <m8:hasImmunityDurationDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">180.0</m8:hasImmunityDurationDays>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#PlasmodiumFalciparum">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#Parasite"/>
+        <rdfs:label>Plasmodium falciparum</rdfs:label>
+        <rdfs:comment>Pathogène du Paludisme — endémie Sénégal/Afrique subsaharienne. Contexte Thiès.
+        VectorBorneDisease + SEIRSDisease → modèle Ross-Macdonald (M2) + deux populations (M3).</rdfs:comment>
+            <m8:hasR0Value rdf:datatype="http://www.w3.org/2001/XMLSchema#double">100.0</m8:hasR0Value>
+        <m8:hasIncubationPeriodDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">12.0</m8:hasIncubationPeriodDays>
+        <m8:hasInfectiousPeriodDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">30.0</m8:hasInfectiousPeriodDays>
+        <m8:hasImmunityDurationDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">180.0</m8:hasImmunityDurationDays>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#EbolaVirus">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#Virus"/>
+        <rdfs:label>Ebola Virus</rdfs:label>
+        <rdfs:comment>R0 ≈ 1.5–2.5 ; incubation ≈ 8-21j ; CFR ≈ 50-90%.
+        bestModeledBy → SEIRModel avec compartiment D (mortalité).</rdfs:comment>
+            <m8:hasR0Value rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.0</m8:hasR0Value>
+        <m8:hasIncubationPeriodDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">12.0</m8:hasIncubationPeriodDays>
+        <m8:hasInfectiousPeriodDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">9.0</m8:hasInfectiousPeriodDays>
+        <m8:hasImmunityDurationDays rdf:datatype="http://www.w3.org/2001/XMLSchema#double">99999.0</m8:hasImmunityDurationDays>
+    </owl:NamedIndividual>
+
+    <!-- ═══ HÔTES ET STATUTS IMMUNOLOGIQUES (M0+M1, IDO via M7, M3) ═══ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Host">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#BiologicalAgent"/>
+        <owl:equivalentClass rdf:resource="http://purl.obolibrary.org/obo/IDO_0000531"/>
+        <rdfs:comment>[M8-D2, M8-D6] Aligné IDO (M7 instancié). Lié à SimulatedAgent (M3)
+        via isModeledByAgent. ImmunologicalStatus correspond à EpidemiologicalStatus (M3).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#HumanHost">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#Host"/>
+        <rdfs:comment>→ EpidemiologicalAgent (M3). Propriétés démographiques influencent beta et gamma.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#AnimalHost">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#Host"/>
+        <rdfs:comment>Réservoir ou hôte intermédiaire → population secondaire M2/M3.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#BiologicalVector">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#Host"/>
+        <rdfs:comment>Vecteur biologique → population active dans modèles vectoriels (M2/M3).</rdfs:comment>
+    </owl:Class>
+
+    <!-- Statuts immunologiques — correspondance avec compartiments M2 ET statuts M3 -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#ImmunologicalStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#State"/>
+        <skos:closeMatch rdf:resource="http://purl.obolibrary.org/obo/IDO_0000622"/>
+        <rdfs:comment>[M8-D2, M8-D6] Etat immunologique d'un hôte. Triple correspondance :
+        compartiment modèle (M2) + statut agent simulé (M3) + condition initiale (M4).
+        correspondsToStatus relie chaque instance à son équivalent simulé (M3).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#SusceptibleStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#ImmunologicalStatus"/>
+        <rdfs:comment>→ Compartiment S (M2) ; → SusceptibleAgent (M3) ; → InitialCondition S0 (M4).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#ExposedStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#ImmunologicalStatus"/>
+        <rdfs:comment>→ Compartiment E (M2, SEIR) ; → ExposedAgent (M3) ; → E0 (M4).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#InfectedStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#ImmunologicalStatus"/>
+        <rdfs:comment>→ Compartiment I (M2) ; → InfectiousAgent (M3) → déclenche TransmissionAction (M3) ;
+        → I0 (M4) ; → EpidemicPeakMetric (M6).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#RecoveredStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#ImmunologicalStatus"/>
+        <rdfs:comment>→ Compartiment R (M2) ; → RecoveredAgent (M3) ; → FinalEpidemicSizeMetric (M6).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#VaccinatedStatus">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#ImmunologicalStatus"/>
+        <rdfs:comment>→ Compartiment V ; → S→V via VaccinationAction (M3) dans ABM ;
+        → S0 réduit (M4) ; → HerdImmunityThresholdMetric (M6).</rdfs:comment>
+    </owl:Class>
+
+    <!-- ═══ TRANSMISSION ═══ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#TransmissionRoute">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+        <rdfs:comment>Voie de transmission → formalisme modèle (M2) et paramètres contact (M3).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#AerialTransmission">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#TransmissionRoute"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#DirectContactTransmission">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#TransmissionRoute"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#VectorialTransmission">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#TransmissionRoute"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#FecalOralTransmission">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#TransmissionRoute"/>
+    </owl:Class>
+
+    <!-- ═══ ÉVÉNEMENTS ÉPIDÉMIQUES (pont M8→M4, M5) ═══ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#EpidemicEvent">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InteractionEvent"/>
+        <rdfs:comment>[M8-D3, M8-D4] Entité centrale — l'événement réel que PIPOnto modélise.
+        isSimulatedBy → Simulation (M4) : raison d'être de la simulation.
+        isSubjectOfExperiment → Experiment (M5) : objet de la recherche.
+        occursIn → GeographicContext ; involves → PopulationGroup.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Epidemic">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemicEvent"/>
+        <rdfs:comment>R(t) > 1. → LocalScope (M2).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Pandemic">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemicEvent"/>
+        <rdfs:comment>Diffusion mondiale → modèles multi-régions avec migration. → GlobalScope (M2).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Endemic">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemicEvent"/>
+        <rdfs:comment>R(t) ≈ 1 en équilibre → modèles avec démographie (naissances/décès) + longue durée (M4).</rdfs:comment>
+    </owl:Class>
+
+    <!-- ═══ POPULATIONS ET GÉOGRAPHIE (ponts M8→M4) ═══ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#PopulationGroup">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#AgentPopulation"/>
+        <rdfs:comment>[M8-D3] Fournit InitialCondition (M4) : N, S0, I0...
+        Extrait par NLP de la requête utilisateur.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#AgeGroup">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:comment>Sous-groupe par âge → paramètres différentiels beta, gamma dans M2/M3.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#GeographicContext">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module1#PhysicalEnvironment"/>
+        <rdfs:comment>[M8-D3] definesGeographicScope → SimulationConfiguration (M4).
+        Charge GISTopology (M3). Extrait par NLP : "à Montréal", "au Sénégal".</rdfs:comment>
+    </owl:Class>
+
+    <!-- Instances géographiques — interrogeables par SPARQL -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#Montreal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label>Montréal, Québec, Canada</rdfs:label>
+        <rdfs:comment>Cas d'usage principal de la thèse. ISO: CA-QC.
+        Population ≈ 2 049 000 ; densité ≈ 4 517 hab/km2.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#Senegal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label>Sénégal</rdfs:label>
+        <rdfs:comment>Contexte institutionnel (UCAD). ISO: SN. Population ≈ 17 700 000.
+        Endémie Paludisme + cas COVID-19.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#Thies">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label>Thiès, Sénégal</rdfs:label>
+        <rdfs:comment>Région Thiès — simulations locales Sénégal. Population ≈ 1 100 000.
+        Paludisme saison des pluies, contexte urbain/rural mixte.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- ═══ INTERVENTIONS (ponts M8→M2/M3/M4/M5/M6) ═══ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Process"/>
+        <rdfs:comment>[M8-D2 à M8-D5] Classe multi-connectée — traversée par toute la chaine :
+        M2 : reducesParameter (beta, gamma...)
+        M3 : isImplementedAsAction (VaccinationAction, SimulatedNorm...)
+        M4 : configuresScenario (InterventionScenario)
+        M5 : isTestedBy (ScenarioComparisonExperiment)
+        M6 : informs / generatesRecommendation (ComparisonResult → PolicyRecommendation)
+        Point d'entrée NLP : "avec vaccination", "sous confinement", "avec distanciation".</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#VaccinationCampaign">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:comment>→ VaccinationAction (M3) ; → S0 réduit (M4) ; → HerdImmunityThresholdMetric (M6).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Quarantine">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:comment>→ SimulatedNorm (M3) sur InfectedAgent ; → beta réduit (M4).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#SocialDistancing">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:comment>→ réduction hasPerceptionRadius dans MoveAction (M3) ; → beta réduit (M4).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#MaskWearing">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:comment>→ beta réduit (efficacite x compliance) dans maladies aériennes (M4).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#Lockdown">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:comment>→ SimulatedNorm (M3) contraignant MoveAction + beta réduit fortement (M4).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#ContactTracing">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PublicHealthIntervention"/>
+        <rdfs:comment>→ inspection réseau de contacts SimulatedAgent (M3) — naturellement modélisé ABM.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#InterventionEfficacy">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#Attribute"/>
+    </owl:Class>
+
+    <!-- ═══ HISTOIRE NATURELLE ═══ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#NaturalHistory">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module0#InformationObject"/>
+        <rdfs:comment>Progression naturelle d'une maladie → structure les compartiments (M2)
+        et le BaselineScenario (M4).</rdfs:comment>
+    </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // SECTION 4 : INDIVIDU CANONIQUE — PIPELINE NLP COMPLET
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#COVIDMontreal2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#Epidemic"/>
+        <rdfs:label>COVID-19 à Montréal (2020)</rdfs:label>
+        <rdfs:comment>EpidemicEvent canonique — illustre le pipeline complet de PIPOnto.
+        Requête NLP : "simule COVID-19 à Montréal"
+
+        [M8]  EpidemicEvent : COVIDMontreal2020
+              isCausedBy       → SARS-CoV-2 (Pathogen M8)
+              occursIn         → Montreal (GeographicContext M8)
+              involves         → PopulationGroup(N=2049000) (M8)
+
+        [M8→M2] SARS-CoV-2 bestModeledBy → SEIRModel (M2)
+              calibratesParameter → beta, sigma, gamma (M2)
+
+        [M8→M3] HumanHost isModeledByAgent → EpidemiologicalAgent (M3)
+              ImmunologicalStatus correspondsToStatus → EpidemiologicalStatus (M3)
+              VaccinationCampaign isImplementedAsAction → VaccinationAction (M3)
+
+        [M8→M4] COVIDMontreal2020 isSimulatedBy → GAMASimulation(SEIRModel, N=2049000)
+              PopulationGroup providesInitialConditions → InitialCondition(S0=2048990, I0=10) (M4)
+              GeographicContext definesGeographicScope → SimulationConfig(GISTopology=Montreal.shp) (M4)
+              VaccinationCampaign configuresScenario → InterventionScenario (M4)
+
+        [M8→M5] COVIDMontreal2020 isSubjectOfExperiment → ModelValidationExperiment (M5)
+              VaccinationCampaign isTestedBy → ScenarioComparisonExperiment (M5)
+              SARS-CoV-2 requiresCalibration → ModelCalibrationExperiment(contexte Montreal) (M5)
+
+        [M8→M6] InfectiousDisease isQuantifiedBy → EpidemicPeakMetric, AttackRateMetric (M6)
+              ComparisonResult(vaccination vs lockdown) informs → VaccinationCampaign (M8)
+              SimulationReport generatesRecommendation → VaccinationCampaign(coverage=0.67) (M8)
+
+        [M7]  InfectiousDisease = IDO_0000528 ; Experiment = prov:Activity ; Result = prov:Entity
+              SimulationReport → PROV-O compatible pour archivage et reproductibilité.</rdfs:comment>
+    </owl:NamedIndividual>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // SECTION 5 : ABOX — INSTANCES (données)
+    // Individus concrets : maladies, pathogènes, populations, événements, interventions
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+
+    
+
+    <!-- COVID-19 -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#COVID19">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#SEIRDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#AirborneDisease"/>
+        <rdfs:label xml:lang="fr">COVID-19</rdfs:label>
+        <m8:isCausedBy rdf:resource="http://www.pacadi.org/these/piponto/module8#SARS_CoV_2"/>
+        <m8:bestModeledBy rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRModel"/>
+        <m8:hasTransmissionRoute rdf:resource="http://www.pacadi.org/these/piponto/module8#AerialTransmission"/>
+        <m8:hasCaseFatalityRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.02</m8:hasCaseFatalityRate>
+        <m8:isZoonotic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</m8:isZoonotic>
+        <rdfs:comment>Maladie à coronavirus SARS-CoV-2. Incubation ~5j → compartiment E requis.
+        Immunité temporaire selon variant → SEIRModel (souche originale) ou SEIRSModel (réinfections).
+        bestModeledBy → SEIRModel par défaut.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- COVID-19 avec réinfection (variant Omicron) -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#COVID19_Reinfection">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#SEIRSDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#AirborneDisease"/>
+        <rdfs:label xml:lang="fr">COVID-19 avec réinfection (Omicron)</rdfs:label>
+        <m8:isCausedBy rdf:resource="http://www.pacadi.org/these/piponto/module8#SARS_CoV_2"/>
+        <m8:bestModeledBy rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRSModel"/>
+        <m8:hasCaseFatalityRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.005</m8:hasCaseFatalityRate>
+        <m8:isZoonotic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</m8:isZoonotic>
+    </owl:NamedIndividual>
+
+    <!-- Grippe saisonnière -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#SeasonalInfluenza">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#SIRSDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#AirborneDisease"/>
+        <rdfs:label xml:lang="fr">Grippe saisonnière</rdfs:label>
+        <m8:isCausedBy rdf:resource="http://www.pacadi.org/these/piponto/module8#InfluenzaVirus"/>
+        <m8:bestModeledBy rdf:resource="http://www.pacadi.org/these/piponto/module2#SIRSModel"/>
+        <m8:hasTransmissionRoute rdf:resource="http://www.pacadi.org/these/piponto/module8#AerialTransmission"/>
+        <m8:hasCaseFatalityRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.001</m8:hasCaseFatalityRate>
+        <m8:isZoonotic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m8:isZoonotic>
+        <rdfs:comment>Immunité saisonnière (~6 mois) → compartiment R rechargeable → SIRS.
+        Incubation courte (1-4j) souvent intégrée dans beta → pas de compartiment E explicite.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Paludisme -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#Malaria">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#SEIRSDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#VectorBorneDisease"/>
+        <rdfs:label xml:lang="fr">Paludisme</rdfs:label>
+        <m8:isCausedBy rdf:resource="http://www.pacadi.org/these/piponto/module8#PlasmodiumFalciparum"/>
+        <m8:bestModeledBy rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRSModel"/>
+        <m8:hasTransmissionRoute rdf:resource="http://www.pacadi.org/these/piponto/module8#VectorialTransmission"/>
+        <m8:hasCaseFatalityRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.003</m8:hasCaseFatalityRate>
+        <m8:isZoonotic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m8:isZoonotic>
+        <rdfs:comment>Endémie majeure Sénégal/Afrique subsaharienne. Contexte Thiès.
+        Vecteur Anopheles → deux populations (hôtes + moustiques).
+        Immunité partielle et temporaire → SEIRS. Modèle Ross-Macdonald ou SEIRS deux populations.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Rougeole -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#Measles">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#SIRDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#AirborneDisease"/>
+        <rdfs:label xml:lang="fr">Rougeole</rdfs:label>
+        <m8:bestModeledBy rdf:resource="http://www.pacadi.org/these/piponto/module2#SIRModel"/>
+        <m8:hasTransmissionRoute rdf:resource="http://www.pacadi.org/these/piponto/module8#AerialTransmission"/>
+        <m8:hasCaseFatalityRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.001</m8:hasCaseFatalityRate>
+        <m8:isZoonotic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m8:isZoonotic>
+        <rdfs:comment>Immunité à vie après infection ou vaccination → compartiment R permanent → SIR.
+        R0 = 12-18 (le plus élevé des maladies communes).</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Ebola -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#EbolaDiseaseInstance">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#SEIRDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#ZoonoticDisease"/>
+        <rdfs:label xml:lang="fr">Maladie à virus Ebola</rdfs:label>
+        <m8:isCausedBy rdf:resource="http://www.pacadi.org/these/piponto/module8#EbolaVirus"/>
+        <m8:bestModeledBy rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRModel"/>
+        <m8:hasTransmissionRoute rdf:resource="http://www.pacadi.org/these/piponto/module8#DirectContactTransmission"/>
+        <m8:hasCaseFatalityRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.70</m8:hasCaseFatalityRate>
+        <m8:isZoonotic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</m8:isZoonotic>
+        <rdfs:comment>CFR très élevé (~50-90%) → compartiment D requis dans le modèle.
+        Pertinent Afrique de l'Ouest.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Dengue -->
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#Dengue">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#SEIRSDisease"/>
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#VectorBorneDisease"/>
+        <rdfs:label xml:lang="fr">Dengue</rdfs:label>
+        <m8:bestModeledBy rdf:resource="http://www.pacadi.org/these/piponto/module2#SEIRSModel"/>
+        <m8:hasTransmissionRoute rdf:resource="http://www.pacadi.org/these/piponto/module8#VectorialTransmission"/>
+        <m8:hasCaseFatalityRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.001</m8:hasCaseFatalityRate>
+        <m8:isZoonotic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</m8:isZoonotic>
+        <rdfs:comment>Vecteur Aedes aegypti. 4 sérotypes → immunité croisée partielle → SEIRS.
+        Pertinent zones tropicales.</rdfs:comment>
+    </owl:NamedIndividual>
+
+
+    <!-- ═══════════════════════════════════════════
+         PROPRIÉTÉS DES PATHOGÈNES (valeurs numériques)
+         ═══════════════════════════════════════════ -->
+
+    <!-- SARS-CoV-2 -->
+
+    <!-- Influenza -->
+
+    <!-- Plasmodium falciparum -->
+
+    <!-- Ebola -->
+
+
+    <!-- ═══════════════════════════════════════════
+         POPULATIONS
+         ═══════════════════════════════════════════ -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#PopulationMontreal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label>Population de Montréal</rdfs:label>
+        <m8:isLocatedIn rdf:resource="http://www.pacadi.org/these/piponto/module8#Montreal"/>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2049000</m8:hasPopulationSize>
+        <m8:hasPopulationDensity rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4517.0</m8:hasPopulationDensity>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#PopulationSenegal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label>Population du Sénégal</rdfs:label>
+        <m8:isLocatedIn rdf:resource="http://www.pacadi.org/these/piponto/module8#Senegal"/>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17700000</m8:hasPopulationSize>
+        <m8:hasPopulationDensity rdf:datatype="http://www.w3.org/2001/XMLSchema#double">90.0</m8:hasPopulationDensity>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#PopulationThies">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label>Population de Thiès</rdfs:label>
+        <m8:isLocatedIn rdf:resource="http://www.pacadi.org/these/piponto/module8#Thies"/>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1100000</m8:hasPopulationSize>
+        <m8:hasPopulationDensity rdf:datatype="http://www.w3.org/2001/XMLSchema#double">120.0</m8:hasPopulationDensity>
+    </owl:NamedIndividual>
+
+
+    <!-- ═══════════════════════════════════════════
+         ÉVÉNEMENTS ÉPIDÉMIQUES
+         ═══════════════════════════════════════════ -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#COVIDMontreal2020">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#Epidemic"/>
+        <rdfs:label>COVID-19 à Montréal (2020)</rdfs:label>
+        <m8:occursIn rdf:resource="http://www.pacadi.org/these/piponto/module8#Montreal"/>
+        <m8:involves rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationMontreal"/>
+        <m8:isSubjectOf rdf:resource="http://www.pacadi.org/these/piponto/module8#VaccinationMontreal"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#MalariaSenegal2023">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#Endemic"/>
+        <rdfs:label>Endémie Paludisme Sénégal (2023)</rdfs:label>
+        <m8:occursIn rdf:resource="http://www.pacadi.org/these/piponto/module8#Senegal"/>
+        <m8:involves rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationSenegal"/>
+    </owl:NamedIndividual>
+
+
+    <!-- ═══════════════════════════════════════════
+         INTERVENTIONS (instances avec valeurs)
+         ═══════════════════════════════════════════ -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#VaccinationMontreal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#VaccinationCampaign"/>
+        <rdfs:label>Campagne de vaccination COVID-19 Montréal</rdfs:label>
+        <m8:hasCoverageRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.75</m8:hasCoverageRate>
+        <m8:targetsPopulation rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationMontreal"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#LockdownMontreal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#Lockdown"/>
+        <rdfs:label>Confinement Montréal printemps 2020</rdfs:label>
+        <m8:hasCoverageRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.85</m8:hasCoverageRate>
+        <m8:targetsPopulation rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationMontreal"/>
+    </owl:NamedIndividual>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // EXTENSION M8 — VERSION 2.0
+    // [M8-EXT-1] Sous-classes de population spécifiques
+    // [M8-EXT-2] Classe ExternalDataSource + sous-classes
+    // [M8-EXT-3] Nouvelles propriétés (pont M8→M2, fraction scolaire, source données)
+    // [M8-EXT-4] Nouvelles géographies (Paris, France, Afrique...)
+    // [M8-EXT-5] ABox enrichie — individus concrets
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <!-- ═══════════════════════════════════════════════════
+         [M8-EXT-1] SOUS-CLASSES DE POPULATION SPÉCIFIQUES
+         subClassOf PopulationGroup existant
+         ═══════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#SchoolChildren">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">Enfants scolarisés</rdfs:label>
+        <rdfs:label xml:lang="en">School Children</rdfs:label>
+        <rdfs:comment>[M8-EXT-1] Population scolaire (6-18 ans). Taux de contact élevé en classe.
+        Mots-clés NLP : écoliers, élèves, enfants, collégiens, lycéens, école.
+        Lié à m2:SchoolPopulation via hasM2PopulationContext.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#ElderlyPopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">Personnes âgées (65+)</rdfs:label>
+        <rdfs:label xml:lang="en">Elderly Population</rdfs:label>
+        <rdfs:comment>[M8-EXT-1] Population de 65 ans et plus. Risque élevé de formes graves.
+        Mots-clés NLP : personnes âgées, seniors, EHPAD, retraités.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#HealthcareWorkers">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">Travailleurs de santé</rdfs:label>
+        <rdfs:label xml:lang="en">Healthcare Workers</rdfs:label>
+        <rdfs:comment>[M8-EXT-1] Personnel soignant exposé professionnellement.
+        Mots-clés NLP : soignants, médecins, infirmiers, hôpital, personnel médical.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#UrbanPopulationGroup">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">Population urbaine dense</rdfs:label>
+        <rdfs:label xml:lang="en">Dense Urban Population</rdfs:label>
+        <rdfs:comment>[M8-EXT-1] Population en milieu urbain dense. Forte densité = transmission élevée.
+        Mots-clés NLP : ville, urbain, métropole, centre-ville.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#RuralPopulationGroup">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">Population rurale</rdfs:label>
+        <rdfs:label xml:lang="en">Rural Population</rdfs:label>
+        <rdfs:comment>[M8-EXT-1] Population en milieu rural. Accès aux soins limité.
+        Mots-clés NLP : rural, campagne, village, zone rurale.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#VulnerablePopulation">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">Population vulnérable</rdfs:label>
+        <rdfs:label xml:lang="en">Vulnerable Population</rdfs:label>
+        <rdfs:comment>[M8-EXT-1] Personnes immunodéprimées, comorbidités, malnutrition.
+        Mots-clés NLP : vulnérables, immunodéprimés, comorbidités, diabétiques.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         [M8-EXT-2] CLASSE ExternalDataSource
+         Pour INSEE, ANSD, OMS, SPF, GitHub, POLYMOD...
+         ═══════════════════════════════════════════════════ -->
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#ExternalDataSource">
+        <rdfs:label xml:lang="fr">Source de données externe</rdfs:label>
+        <rdfs:label xml:lang="en">External Data Source</rdfs:label>
+        <rdfs:comment>[M8-EXT-2] Source externe fournissant des données pour calibrer ou contextualiser
+        une simulation. Ex: INSEE pour démographie Paris, ANSD pour Sénégal, OMS pour données globales.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#DemographicDataSource">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:label xml:lang="fr">Source de données démographiques</rdfs:label>
+        <rdfs:comment>Fournit : taille population, pyramide des âges, densité, proportion scolaire.
+        Ex: INSEE (France), ANSD (Sénégal), Statistics Canada.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#EpidemiologicalDataSource">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:label xml:lang="fr">Source de données épidémiologiques</rdfs:label>
+        <rdfs:comment>Fournit : cas confirmés, hospitalisations, décès, taux vaccination.
+        Ex: Santé Publique France, PNLP Sénégal, ECDC, OMS.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#ContactMatrixDataSource">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:label xml:lang="fr">Source de matrice de contacts</rdfs:label>
+        <rdfs:comment>Fournit : matrices de contacts par tranche d'âge et lieu (école, famille, travail).
+        Ex: POLYMOD (Mossong 2008), Prem et al. 2017 (matrices synthétiques mondiales).</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.pacadi.org/these/piponto/module8#MobilityDataSource">
+        <rdfs:subClassOf rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:label xml:lang="fr">Source de données de mobilité</rdfs:label>
+        <rdfs:comment>Fournit : données de déplacements, transports en commun, flux domicile-travail.
+        Ex: Google Mobility Reports, Apple Mobility, données RATP.</rdfs:comment>
+    </owl:Class>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         [M8-EXT-3] NOUVELLES PROPRIÉTÉS
+         ═══════════════════════════════════════════════════ -->
+
+    <!-- Pont M8 PopulationGroup → M2 PopulationContext -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasM2PopulationContext">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module2#PopulationContext"/>
+        <rdfs:label xml:lang="fr">correspond au contexte populationnel M2</rdfs:label>
+        <rdfs:comment>Pont M8→M2. Lie un groupe de population (M8) à son contexte M2.
+        Permet aux requêtes SPARQL de traverser les deux modules.
+        Ex: m8:SchoolChildren_Paris → m2:Pop_School</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Lien maladie/événement → groupe de population ciblé -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#affectsPopulationGroup">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#InfectiousDisease"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:label xml:lang="fr">affecte le groupe de population</rdfs:label>
+        <rdfs:comment>Lie une maladie ou un événement épidémique à la population cible de la simulation.
+        Clé de sélection NLP : 'chez les écoliers' → SchoolChildren → m2:SEIR_School_Cauchemez.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Lien contexte géographique/population → source de données externe -->
+    <owl:ObjectProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasDataSource">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:range rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:label xml:lang="fr">a pour source de données</rdfs:label>
+        <rdfs:comment>Lie un contexte géographique à sa source de données officielle.
+        Ex: m8:Paris → m8:INSEE_France</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Proportion scolaire dans une population -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasSchoolAgeFraction">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">fraction d'âge scolaire</rdfs:label>
+        <rdfs:comment>Proportion de la population en âge scolaire (6-18 ans).
+        Ex: Paris = 0.13 (13% des 2.16M habitants). Source INSEE.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Proportion de personnes âgées -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasElderlyFraction">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#PopulationGroup"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">fraction de personnes âgées (65+)</rdfs:label>
+        <rdfs:comment>Proportion de la population de 65 ans et plus.
+        Ex: France = 0.21 (21%). Source INSEE 2023.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- URL de la source de données -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasSourceURL">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+        <rdfs:label xml:lang="fr">URL de la source</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <!-- Format des données disponibles -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasDataFormat">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">format des données</rdfs:label>
+        <rdfs:comment>Ex: CSV, JSON, API REST, RDF.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Couverture géographique de la source -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasCoverageArea">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#ExternalDataSource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="fr">couverture géographique</rdfs:label>
+        <rdfs:comment>Territoire couvert par cette source. Ex: France, Sénégal, Mondial.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Taux de vaccination dans un contexte géographique -->
+    <owl:DatatypeProperty rdf:about="http://www.pacadi.org/these/piponto/module8#hasVaccinationRate">
+        <rdfs:domain rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:label xml:lang="fr">taux de vaccination</rdfs:label>
+        <rdfs:comment>Proportion de la population vaccinée contre la maladie concernée.
+        Ex: France COVID-19 2022 = 0.78 (78%). Source SPF.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M8-EXT-4] NOUVELLES GÉOGRAPHIES (ABox)
+         Paris, France, Afrique subsaharienne
+         ═══════════════════════════════════════════════════════════ -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#France">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label xml:lang="fr">France</rdfs:label>
+        <rdfs:label xml:lang="en">France</rdfs:label>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">68000000</m8:hasPopulationSize>
+        <m8:hasPopulationDensity rdf:datatype="http://www.w3.org/2001/XMLSchema#double">122.0</m8:hasPopulationDensity>
+        <m8:hasVaccinationRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.78</m8:hasVaccinationRate>
+        <rdfs:comment>France métropolitaine. N=68M, densité=122/km². Source : INSEE 2023.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#Paris">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label xml:lang="fr">Paris</rdfs:label>
+        <rdfs:label xml:lang="en">Paris</rdfs:label>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2161000</m8:hasPopulationSize>
+        <m8:hasPopulationDensity rdf:datatype="http://www.w3.org/2001/XMLSchema#double">20755.0</m8:hasPopulationDensity>
+        <m8:hasVaccinationRate rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.81</m8:hasVaccinationRate>
+        <m8:isLocatedIn rdf:resource="http://www.pacadi.org/these/piponto/module8#France"/>
+        <rdfs:comment>Ville de Paris intra-muros. N=2 161 000, densité=20 755/km² (très élevée).
+        Fraction scolaire ≈ 13%. Source : INSEE 2023.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#AfriqueSubsaharienne">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label xml:lang="fr">Afrique subsaharienne</rdfs:label>
+        <rdfs:label xml:lang="en">Sub-Saharan Africa</rdfs:label>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1200000000</m8:hasPopulationSize>
+        <rdfs:comment>Région Afrique subsaharienne. Population jeune (médiane 18 ans).
+        Accès aux soins limité. Prévalence paludisme élevée.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#Montreal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#GeographicContext"/>
+        <rdfs:label xml:lang="fr">Montréal</rdfs:label>
+        <rdfs:label xml:lang="en">Montreal</rdfs:label>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2049000</m8:hasPopulationSize>
+        <m8:hasPopulationDensity rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4662.0</m8:hasPopulationDensity>
+        <rdfs:comment>Ville de Montréal. N=2 049 000. Source : Statistique Canada 2021.</rdfs:comment>
+    </owl:NamedIndividual>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         [M8-EXT-5] ABOX ENRICHIE
+         Groupes de population spécifiques + Sources de données
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ── GROUPES DE POPULATION SPÉCIFIQUES PAR VILLE ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#SchoolChildren_Paris">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#SchoolChildren"/>
+        <rdfs:label xml:lang="fr">Écoliers de Paris</rdfs:label>
+        <m8:isLocatedIn rdf:resource="http://www.pacadi.org/these/piponto/module8#Paris"/>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">280000</m8:hasPopulationSize>
+        <m8:hasSchoolAgeFraction rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.13</m8:hasSchoolAgeFraction>
+        <m8:hasM2PopulationContext rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_School"/>
+        <rdfs:comment>Écoliers Paris 6-15 ans. N ≈ 280 000 (13% de 2.16M).
+        Contact scolaire élevé → beta_école > beta_général.
+        Source : Ministère Éducation Nationale 2023.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#SchoolChildren_Thies">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#SchoolChildren"/>
+        <rdfs:label xml:lang="fr">Écoliers de Thiès</rdfs:label>
+        <m8:isLocatedIn rdf:resource="http://www.pacadi.org/these/piponto/module8#Thies"/>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">242000</m8:hasPopulationSize>
+        <m8:hasSchoolAgeFraction rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.22</m8:hasSchoolAgeFraction>
+        <m8:hasM2PopulationContext rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_School"/>
+        <rdfs:comment>Écoliers Thiès 6-15 ans. N ≈ 242 000 (22% de 1.1M — population jeune).
+        Source : ANSD Sénégal 2023.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#ElderlyPop_France">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#ElderlyPopulation"/>
+        <rdfs:label xml:lang="fr">Personnes âgées France (65+)</rdfs:label>
+        <m8:isLocatedIn rdf:resource="http://www.pacadi.org/these/piponto/module8#France"/>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14280000</m8:hasPopulationSize>
+        <m8:hasElderlyFraction rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.21</m8:hasElderlyFraction>
+        <m8:hasM2PopulationContext rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_Elderly"/>
+        <rdfs:comment>Personnes de 65 ans et plus en France. N ≈ 14.28M (21% de 68M).
+        Risque élevé de formes graves COVID-19. Source : INSEE 2023.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#GeneralPop_Paris">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#UrbanPopulationGroup"/>
+        <rdfs:label xml:lang="fr">Population générale Paris</rdfs:label>
+        <m8:isLocatedIn rdf:resource="http://www.pacadi.org/these/piponto/module8#Paris"/>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2161000</m8:hasPopulationSize>
+        <m8:hasSchoolAgeFraction rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.13</m8:hasSchoolAgeFraction>
+        <m8:hasElderlyFraction rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.17</m8:hasElderlyFraction>
+        <m8:hasM2PopulationContext rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_Urban"/>
+        <rdfs:comment>Population générale Paris intra-muros. Très dense (20 755/km²).
+        Source : INSEE Recensement 2023.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#RuralPop_Thies">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#RuralPopulationGroup"/>
+        <rdfs:label xml:lang="fr">Population rurale région Thiès</rdfs:label>
+        <m8:isLocatedIn rdf:resource="http://www.pacadi.org/these/piponto/module8#Thies"/>
+        <m8:hasPopulationSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">680000</m8:hasPopulationSize>
+        <m8:hasM2PopulationContext rdf:resource="http://www.pacadi.org/these/piponto/module2#Pop_Rural_Africa"/>
+        <rdfs:comment>Population rurale région de Thiès. Accès limité aux soins.
+        Source : ANSD Sénégal 2023.</rdfs:comment>
+    </owl:NamedIndividual>
+
+
+    <!-- ── SOURCES DE DONNÉES EXTERNES ── -->
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#INSEE_France">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#DemographicDataSource"/>
+        <rdfs:label>INSEE — Institut National de la Statistique et des Études Économiques</rdfs:label>
+        <m8:hasSourceURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://api.insee.fr/catalogue</m8:hasSourceURL>
+        <m8:hasDataFormat>JSON, CSV, API REST</m8:hasDataFormat>
+        <m8:hasCoverageArea>France</m8:hasCoverageArea>
+        <rdfs:comment>Source officielle pour : population France, pyramide des âges, densité, 
+        données par commune/département/région. API REST disponible.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#ANSD_Senegal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#DemographicDataSource"/>
+        <rdfs:label>ANSD — Agence Nationale de la Statistique et de la Démographie du Sénégal</rdfs:label>
+        <m8:hasSourceURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://www.ansd.sn</m8:hasSourceURL>
+        <m8:hasDataFormat>CSV, PDF</m8:hasDataFormat>
+        <m8:hasCoverageArea>Sénégal</m8:hasCoverageArea>
+        <rdfs:comment>Source officielle démographique Sénégal. Données régions, pyramide des âges,
+        projection démographique. Accès CSV/PDF.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#SantePubliqueFrance">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemiologicalDataSource"/>
+        <rdfs:label>Santé Publique France (SPF)</rdfs:label>
+        <m8:hasSourceURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://www.data.gouv.fr/fr/datasets/donnees-relatives-a-lepidemie-de-covid-19-en-france</m8:hasSourceURL>
+        <m8:hasDataFormat>CSV, JSON</m8:hasDataFormat>
+        <m8:hasCoverageArea>France</m8:hasCoverageArea>
+        <rdfs:comment>Données épidémio France : cas COVID, hospitalisations, décès, vaccination.
+        Mise à jour quotidienne. Open data sur data.gouv.fr.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#PNLP_Senegal">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemiologicalDataSource"/>
+        <rdfs:label>PNLP — Programme National de Lutte contre le Paludisme (Sénégal)</rdfs:label>
+        <m8:hasSourceURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://www.pnlp.sn</m8:hasSourceURL>
+        <m8:hasDataFormat>CSV, rapport annuel</m8:hasDataFormat>
+        <m8:hasCoverageArea>Sénégal</m8:hasCoverageArea>
+        <rdfs:comment>Données paludisme Sénégal : cas par région, mortalité, couverture MII,
+        saisonnalité. Données par district sanitaire disponibles.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#POLYMOD_Mossong2008">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#ContactMatrixDataSource"/>
+        <rdfs:label>POLYMOD — Mossong et al. (2008)</rdfs:label>
+        <m8:hasSourceURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://doi.org/10.1371/journal.pmed.0050074</m8:hasSourceURL>
+        <m8:hasDataFormat>CSV, matrice</m8:hasDataFormat>
+        <m8:hasCoverageArea>Europe (8 pays dont France)</m8:hasCoverageArea>
+        <rdfs:comment>Matrices de contacts sociales par tranche d'âge et lieu (école, famille, travail, autres).
+        Référence mondiale pour modélisation épidémio structurée par âge.
+        Données France disponibles. DOI: 10.1371/journal.pmed.0050074</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#Prem2017_ContactMatrices">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#ContactMatrixDataSource"/>
+        <rdfs:label>Prem et al. (2017) — Matrices de contacts synthétiques mondiales</rdfs:label>
+        <m8:hasSourceURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://doi.org/10.1371/journal.pcbi.1005697</m8:hasSourceURL>
+        <m8:hasDataFormat>CSV, matrice</m8:hasDataFormat>
+        <m8:hasCoverageArea>Mondial (152 pays dont Sénégal)</m8:hasCoverageArea>
+        <rdfs:comment>Matrices de contacts synthétiques pour 152 pays. Couvre Sénégal et Afrique.
+        Inclut domicile, école, travail, autres. Essentiel pour modélisation Afrique.</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://www.pacadi.org/these/piponto/module8#OpenCOVID19_France">
+        <rdf:type rdf:resource="http://www.pacadi.org/these/piponto/module8#EpidemiologicalDataSource"/>
+        <rdfs:label>OpenCOVID19-fr (GitHub)</rdfs:label>
+        <m8:hasSourceURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://github.com/opencovid19-fr/data</m8:hasSourceURL>
+        <m8:hasDataFormat>CSV, JSON</m8:hasDataFormat>
+        <m8:hasCoverageArea>France</m8:hasCoverageArea>
+        <rdfs:comment>Données COVID-19 France open source. Mis à jour quotidiennement.
+        Idéal pour calibration du paramètre beta sur données réelles françaises.</rdfs:comment>
+    </owl:NamedIndividual>
+
+
+    <!-- ── LIENS GÉOGRAPHIES → SOURCES DE DONNÉES ── -->
+
+    <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module8#Paris">
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#INSEE_France"/>
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#SantePubliqueFrance"/>
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#POLYMOD_Mossong2008"/>
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#OpenCOVID19_France"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module8#France">
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#INSEE_France"/>
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#SantePubliqueFrance"/>
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#POLYMOD_Mossong2008"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module8#Thies">
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#ANSD_Senegal"/>
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#PNLP_Senegal"/>
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#Prem2017_ContactMatrices"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://www.pacadi.org/these/piponto/module8#Senegal">
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#ANSD_Senegal"/>
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#PNLP_Senegal"/>
+        <m8:hasDataSource rdf:resource="http://www.pacadi.org/these/piponto/module8#Prem2017_ContactMatrices"/>
+    </rdf:Description>
+
+</rdf:RDF>
