@@ -34,7 +34,7 @@ def scenario_covid():
     header("Scénario 1 — Recherche de modèles COVID-19 SEIR")
 
     # Recherche
-    print("\n📋 Recherche : COVID-19, SEIR, avec code disponible")
+    print("\n Recherche : COVID-19, SEIR, avec code disponible")
     resp = requests.get(f"{BASE}/models/search", params={
         "disease":  "COVID",
         "formalism": "SEIR",
@@ -56,7 +56,7 @@ def scenario_covid():
 
     # Prendre le premier modèle pour la suite
     model_id = data["models"][0]["model_id"]
-    print(f"\n🔍 Fiche complète : {model_id}")
+    print(f"\n Fiche complète : {model_id}")
     resp = requests.get(f"{BASE}/models/{model_id}")
     m = resp.json()
     print(f"   Titre article : {(m.get('ref_title') or '—')[:70]}...")
@@ -68,7 +68,7 @@ def scenario_covid():
               f"  ({p['param_type']})")
 
     # Simulation avec ce modèle
-    print(f"\n🧮 Simulation avec {model_id} — N=68M (France)")
+    print(f"\n Simulation avec {model_id} — N=68M (France)")
     resp = requests.post(f"{BASE}/simulate", json={
         "model_id": model_id,
         "N":        68_000_000,
@@ -192,7 +192,7 @@ if __name__ == "__main__":
         print(f"🧬 PIPOnto API — statut : {health.get('status')}")
         print(f"   Modèles validés : {health.get('validated_models')}")
     except Exception:
-        print(f"❌ API inaccessible à {BASE}")
+        print(f" API inaccessible à {BASE}")
         print(f"   Lancez d'abord : python3 run_api.py")
         exit(1)
 
