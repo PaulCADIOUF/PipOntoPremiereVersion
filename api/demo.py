@@ -2,13 +2,7 @@
 api/demo.py
 ============
 Démo interactive de l'API PIPOnto.
-Exemples d'utilisation commentés — à copier dans vos propres scripts.
-
-Usage :
-    python3 api/demo.py                     # démo complète
-    python3 api/demo.py --scenario covid    # COVID-19 seulement
-    python3 api/demo.py --scenario senegal  # Sénégal seulement
-    python3 api/demo.py --scenario compare  # Comparaison de modèles
+pour plus d'explication cest juste une demonstration pour un contexte donne pour un test
 """
 
 import json
@@ -86,7 +80,7 @@ def scenario_covid():
 def scenario_senegal():
     header("Scénario 2 — Modèles épidémiologiques pour le Sénégal")
 
-    print("\n📋 Modèles avec géographie Sénégal (SN)")
+    print("\n Modèles avec géographie Sénégal (SN)")
     resp = requests.get(f"{BASE}/models/search", params={
         "country": "SN",
         "limit": 10,
@@ -98,7 +92,7 @@ def scenario_senegal():
         print(f"     {m.get('disease_name')} | {m.get('formalism')} | "
               f"conf={m.get('extraction_confidence'):.2f}")
 
-    print("\n📋 Maladies avec modèles disponibles")
+    print("\n Maladies avec modèles disponibles")
     resp = requests.get(f"{BASE}/diseases", params={"with_models_only": "true"})
     for d in resp.json()["diseases"][:8]:
         print(f"   • {d['name_en']:30s}  {d['model_count']:3d} modèles  "
@@ -189,7 +183,7 @@ if __name__ == "__main__":
     # Vérifier que l'API répond
     try:
         health = requests.get(f"{BASE}/", timeout=3).json()
-        print(f"🧬 PIPOnto API — statut : {health.get('status')}")
+        print(f" PIPOnto API — statut : {health.get('status')}")
         print(f"   Modèles validés : {health.get('validated_models')}")
     except Exception:
         print(f" API inaccessible à {BASE}")
